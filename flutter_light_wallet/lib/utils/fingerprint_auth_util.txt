@@ -1,0 +1,78 @@
+import 'package:flutter/services.dart';
+import 'package:local_auth/local_auth.dart';
+
+class FingerprintAuthUtil {
+  // make this nullable by adding '?'
+  static FingerprintAuthUtil? _instance;
+  LocalAuthentication? _auth;
+
+  FingerprintAuthUtil._() {
+    // initialization and stuff
+    _auth = LocalAuthentication();
+  }
+
+  Future<bool> canCheckBiometrics() async {
+    late bool canCheckBiometrics;
+    try {
+      canCheckBiometrics = await _auth!.canCheckBiometrics;
+    } on PlatformException catch (e) {
+      canCheckBiometrics = false;
+      print(e);
+    }
+    return canCheckBiometrics;
+  }
+
+  Future<List<BiometricType>> getAvailableBiometrics() async {
+    late List<BiometricType> availableBiometrics;
+    try {
+      availableBiometrics = await _auth!.getAvailableBiometrics();
+    } on PlatformException catch (e) {
+      availableBiometrics = <BiometricType>[];
+      print(e);
+    }
+    print(availableBiometrics);
+    return availableBiometrics;
+  }
+
+  Future<bool> authenticate() async {
+    bool authenticated = false;
+    try {
+      authenticated = await _auth!.authenticate(
+          localizedReason: 'Let OS determine authentication method',
+          useErrorDialogs: true,
+          stickyAuth: true);
+    } on PlatformException catch (e) {
+      print(e);
+    }
+    return authenticated;
+  }
+
+  Future<bool> authenticateWithBiometrics() async {
+    bool authenticated = false;
+    try {
+      authenticated = await _auth!.authenticate(
+          localizedReason:
+              'Scan your fingerprint (or face or whatever) to authenticate',
+          useErrorDialogs: true,
+          stickyAuth: true,
+          biometricOnly: true);
+    } on PlatformException catch (e) {
+      print(e);
+    }
+    return authenticated;
+  }
+
+  factory FingerprintAuthUtil() {
+    if (_instance == null) {
+      _instance = new FingerprintAuthUtil._();
+    }
+    // since you are sure you will return non-null value, add '!' operator
+    return _instance!;
+  }
+}
+
+enum SupportState {
+  UNKNOWN,
+  SUPPORTED,
+  UNSUPPORTED,
+}
