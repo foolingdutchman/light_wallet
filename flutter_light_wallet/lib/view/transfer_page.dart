@@ -1,12 +1,13 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_page_state.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
+import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/model/wallet.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
+import 'package:flutter_light_wallet/view/transfer_complete_page.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 import 'password_page.dart';
@@ -47,13 +48,13 @@ class _TransferPageState extends BasePageState<TransferPage> {
 
   bool isValidRequest() {
     if (!StringUtil.isICPAddress(_address.text)) {
-      StringUtil.showToast('请输入有效的ICP地址');
+      StringUtil.showToast(S.of(context).invalid_address_hint);
       return false;
     } else if (_amount.text == '' ||
         (double.tryParse(_amount.text) ?? 0) >
             wallet!.getAvalidTransferAmount() ||
         (double.tryParse(_amount.text) ?? 0) == 0) {
-      StringUtil.showToast('请输入有效转账金额');
+      StringUtil.showToast(S.of(context).invalid_amount_hint);
       return false;
     }
     return true;
@@ -61,7 +62,8 @@ class _TransferPageState extends BasePageState<TransferPage> {
 
   void _verifyPasswordForTransaction() async {
     String result = '';
-    if (InstanceStore.deviceInfo!.isGuesturePrintPasswordActive) {
+    if (InstanceStore.deviceInfo!.isGuesturePrintPasswordActive &&
+        InstanceStore.currentWallet!.guesturePassword != '') {
       result = await Navigator.push(
           context,
           SlideRightRoute(
@@ -75,15 +77,31 @@ class _TransferPageState extends BasePageState<TransferPage> {
     }
 
     if (result == 'OK') {
-      StringUtil.showToast('密码已验证！');
-      //_proceedTransaction(_amount.text, _address.text);
+      StringUtil.showToast(S.current.password_verified);
+      _proceedTransaction(_amount.text, _address.text);
     }
   }
 
   void _proceedTransaction(String amount, String address) async {
     SmartDialog.showLoading();
-    String result = await ICPAccountUtils.transfer(wallet, address, amount);
-    SmartDialog.dismiss();
+    ICPAccountUtils.transfer(wallet, address, amount).then((value) {
+      SmartDialog.dismiss();
+
+      InstanceStore.currentWallet!.getICP().balance =
+          (InstanceStore.currentWallet!.getICPBalance() * 10000 -
+                  (num.parse(amount) * 10000).round() -
+                  1) /
+              10000;
+      EventBusUtil.fire(TransactionEvent());
+      Navigator.push(
+          context,
+          SlideRightRoute(
+              page: TransactionCompletePage(
+            height: value,
+          )));
+    }).onError((error, stackTrace) {
+      SmartDialog.dismiss();
+    });
   }
 
   @override
@@ -98,7 +116,7 @@ class _TransferPageState extends BasePageState<TransferPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '转账',
+                S.of(context).transfer,
                 style: TextStyle(
                   fontSize: 30,
                   color: Colors.black87,
@@ -109,7 +127,7 @@ class _TransferPageState extends BasePageState<TransferPage> {
                 height: 30,
               ),
               Text(
-                '当前地址',
+                S.of(context).current_address ,
                 style: TextStyle(
                   fontSize: 15,
                   color: Colors.black87,
@@ -130,7 +148,7 @@ class _TransferPageState extends BasePageState<TransferPage> {
                 )),
               ),
               Text(
-                '转账数量',
+                S.of(context).transfer_amount,
                 style: TextStyle(
                   fontSize: 15,
                   color: Colors.black87,
@@ -141,12 +159,12 @@ class _TransferPageState extends BasePageState<TransferPage> {
                   Expanded(
                     child: TextField(
                       decoration: InputDecoration(
-                        labelText: '数量',
+                        labelText: S.of(context).amount,
                         labelStyle: TextStyle(
                           color: Colors.pink,
                           fontSize: 12,
                         ),
-                        hintText: '数量',
+                        hintText: S.of(context).amount,
                         suffix: InkWell(
                           onTap: () {
                             _maxAmountClick();
@@ -156,7 +174,7 @@ class _TransferPageState extends BasePageState<TransferPage> {
                                 top: 8, bottom: 5, left: 5, right: 5),
                             child: Container(
                               child: Text(
-                                '最大金额',
+                               S.of(context).max_amount,
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.blueAccent,
@@ -182,13 +200,13 @@ class _TransferPageState extends BasePageState<TransferPage> {
                 padding: const EdgeInsets.only(top: 20, bottom: 20),
                 child: Row(
                   children: [
-                    Text('余额：' + wallet!.getICPBalance().toString()),
+                    Text(S.of(context).balance+":"+ wallet!.getICPBalance().toString()),
                     Expanded(child: Container())
                   ],
                 ),
               ),
               Text(
-                '收款地址',
+                S.of(context).receipt_address,
                 style: TextStyle(
                   fontSize: 15,
                   color: Colors.black87,
@@ -196,12 +214,12 @@ class _TransferPageState extends BasePageState<TransferPage> {
               ),
               TextField(
                 decoration: InputDecoration(
-                  labelText: '收款地址',
+                  labelText: S.of(context).receipt_address,
                   labelStyle: TextStyle(
                     color: Colors.pink,
                     fontSize: 12,
                   ),
-                  hintText: '收款地址',
+                  hintText: S.of(context).receipt_address,
                   border: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.pink,
@@ -214,7 +232,7 @@ class _TransferPageState extends BasePageState<TransferPage> {
                 padding: const EdgeInsets.only(top: 20, bottom: 40),
                 child: Row(
                   children: [
-                    Text('Fee: 0.0001 ICP'),
+                    Text(S.of(context).fee+ ': 0.0001 ICP'),
                     Expanded(child: Container())
                   ],
                 ),
@@ -224,7 +242,7 @@ class _TransferPageState extends BasePageState<TransferPage> {
                     fixedSize: MaterialStateProperty.all(
                         Size(MediaQuery.of(context).size.width - 50, 50))),
                 onPressed: onButtonPressed,
-                child: Text('确定'),
+                child: Text( S.of(context).confirm),
               ),
             ],
           ),
@@ -235,10 +253,14 @@ class _TransferPageState extends BasePageState<TransferPage> {
 
   @override
   void hanldEvent(Event event) {
-    if (event is SwitchWalletEvent || event is DeleteWalletEvent) {
+    if (event is SwitchWalletEvent ||
+        event is DeleteWalletEvent ||
+        event is TransactionEvent) {
       setState(() {
         wallet = InstanceStore.currentWallet;
       });
+    } else if (event is ClearWalletEvent) {
+     // Navigator.pop(context);
     }
   }
 

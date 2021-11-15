@@ -1,26 +1,36 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
+import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/model/wallet.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 import 'confirm_mnemonic_page.dart';
 import 'mnemonic_page.dart';
 
 class PasswordPage extends StatefulWidget {
   const PasswordPage(
-      {Key? key, required this.type, this.password = '', this.mnemonic = ''})
+      {Key? key,
+      required this.type,
+      this.password = '',
+      this.mnemonic = '',
+      this.wallet})
       : super(key: key);
   final String type;
   final String password;
   final String mnemonic;
+  final Wallet? wallet;
 
   @override
   _PasswordPageState createState() => _PasswordPageState(
-      type: this.type, password: this.password, mnemonic: this.mnemonic);
+      type: this.type,
+      password: this.password,
+      mnemonic: this.mnemonic,
+      wallet: this.wallet);
 }
 
 class _PasswordPageState extends State<PasswordPage> {
@@ -30,11 +40,16 @@ class _PasswordPageState extends State<PasswordPage> {
   String _receivedPassword = '';
   String _mnemonic = '';
   bool _obscureText = true;
+  Wallet? _wallet;
   _PasswordPageState(
-      {required String type, String password = '', String mnemonic = ''}) {
+      {required String type,
+      String password = '',
+      String mnemonic = '',
+      Wallet? wallet}) {
     this._type = type;
     this._receivedPassword = password;
     this._mnemonic = mnemonic;
+    this._wallet = wallet;
   }
 
   @override
@@ -49,7 +64,11 @@ class _PasswordPageState extends State<PasswordPage> {
             Padding(
               padding: const EdgeInsets.only(bottom: 10.0),
               child: Text(
-                _receivedPassword == '' ? '输入密码' : '再次输入密码',
+                _type == 'modify_password_verify'
+                    ?S.of(context).input_orignal_password
+                    : _receivedPassword == ''
+                        ?S.of(context).input_password
+                        :S.of(context).input_password_again,
                 style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.w500,
@@ -61,7 +80,8 @@ class _PasswordPageState extends State<PasswordPage> {
               child: TextField(
                 obscureText: _obscureText,
                 decoration: InputDecoration(
-                  labelText: _receivedPassword == '' ? '输入密码' : '再次输入密码',
+                  labelText: _receivedPassword == '' ? S.of(context).input_password
+                      : S.of(context).input_password_again,
                   labelStyle: TextStyle(
                     color: Colors.pink,
                     fontSize: 12,
@@ -71,7 +91,7 @@ class _PasswordPageState extends State<PasswordPage> {
                     color: Colors.redAccent,
                     fontSize: 12,
                   ),
-                  hintText: '请输入密码',
+                  hintText: S.of(context).input_password,
                   prefixIcon: Icon(Icons.lock),
                   suffixIcon: IconButton(
                       onPressed: () {
@@ -108,7 +128,7 @@ class _PasswordPageState extends State<PasswordPage> {
                       onPressed: () {
                         if (_passwodController.text.isEmpty) {
                           setState(() {
-                            _helptext = '密码不能为空';
+                            _helptext =S.of(context).empty_password_hint;
                           });
                         } else {
                           print('type is :' + _type);
@@ -128,7 +148,7 @@ class _PasswordPageState extends State<PasswordPage> {
                               if (_passwodController.text !=
                                   _receivedPassword) {
                                 setState(() {
-                                  _helptext = '密码输入不一致';
+                                  _helptext =S.of(context).password_insist_hint;
                                 });
                               } else {
                                 String mnemonic =
@@ -140,6 +160,10 @@ class _PasswordPageState extends State<PasswordPage> {
                               Wallet? wallet = InstanceStore.currentWallet;
                               if (wallet!.password == _passwodController.text) {
                                 Navigator.pop(context, 'OK');
+                              } else {
+                                setState(() {
+                                  _helptext =S.of(context).password_wrong_hint;
+                                });
                               }
                               break;
                             case 'import_wallet':
@@ -155,16 +179,53 @@ class _PasswordPageState extends State<PasswordPage> {
                               if (_passwodController.text !=
                                   _receivedPassword) {
                                 setState(() {
-                                  _helptext = '密码输入不一致';
+                                  _helptext =S.of(context).password_insist_hint;
                                 });
                               } else {
                                 _generateAccount(_mnemonic, _receivedPassword);
                               }
                               break;
+                            case 'modify_password_verify':
+                              if (_wallet!.password ==
+                                  _passwodController.text) {
+                                Navigator.pushReplacement(
+                                    context,
+                                    SlideRightRoute(
+                                        page: PasswordPage(
+                                      type: 'modify_password_new',
+                                      wallet: _wallet,
+                                    )));
+                              } else {
+                                setState(() {
+                                  _helptext =S.of(context).password_wrong_hint ;
+                                });
+                              }
+                              break;
+                            case 'modify_password_new':
+                              Navigator.pushReplacement(
+                                  context,
+                                  SlideRightRoute(
+                                      page: PasswordPage(
+                                    type: 'modify_password_confirm',
+                                    password: _passwodController.text,
+                                    wallet: _wallet,
+                                  )));
+
+                              break;
+                            case 'modify_password_confirm':
+                              if (_passwodController.text !=
+                                  _receivedPassword) {
+                                setState(() {
+                                  _helptext = S.of(context).password_insist_hint;
+                                });
+                              } else {
+                                _updateWalletPassword(_wallet, _receivedPassword );
+                              }
+                              break;
                           }
                         }
                       },
-                      child: Text('确定')),
+                      child: Text(S.of(context).confirm)),
                 ),
               ),
             ),
@@ -172,6 +233,18 @@ class _PasswordPageState extends State<PasswordPage> {
         ),
       ),
     );
+  }
+
+  void _updateWalletPassword(Wallet? wallet ,String password)  async{
+    wallet!.password = password;
+    SmartDialog.showLoading();
+    // await InstanceStore.saveCurrentDeviceInfo();
+    // InstanceStore.updateCurrentWallet();
+    await InstanceStore.updateHiveDB();
+    SmartDialog.dismiss();
+    StringUtil.showToast(S.current.password_modified_hint);
+    Navigator.pop(context, 'OK');
+
   }
 
   void _confirmMnemonicForResult(BuildContext context, String mnemonic) async {
@@ -186,10 +259,10 @@ class _PasswordPageState extends State<PasswordPage> {
     Wallet wallet = ICPAccountUtils.generateWallet(password, mnemonic);
     bool iscreate = await InstanceStore.createWallet(wallet);
     if (iscreate) {
-      StringUtil.showToast('钱包已生成！');
+      StringUtil.showToast(S.current.wallet_created_hint);
       EventBusUtil.fire(NewWalletEvent(wallet));
     } else {
-      StringUtil.showToast('本地已存在此钱包');
+      StringUtil.showToast(S.current.wallet_exists_hint);
     }
 
     Navigator.pop(context);
@@ -206,7 +279,7 @@ class _PasswordPageState extends State<PasswordPage> {
 
   void _onTextChange(s) {
     setState(() {
-      _helptext = s.toString().isEmpty ? '密码不能为空' : '';
+      _helptext = s.toString().isEmpty ? S.current.empty_password_hint : '';
     });
   }
 

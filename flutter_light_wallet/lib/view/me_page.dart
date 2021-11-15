@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_page_state.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
+import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/model/wallet.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
@@ -37,7 +37,7 @@ class _MePageState extends BasePageState<MePage> {
               Row(
                 children: [
                   Text(
-                    '我的',
+                    S.of(context).mine,
                     style: TextStyle(
                       color: Colors.black87,
                       fontSize: 30,
@@ -50,8 +50,8 @@ class _MePageState extends BasePageState<MePage> {
                     child: InkWell(
                       onTap: () => _onSettingClick(),
                       child: Container(
-                        child:
-                            Icon(Icons.settings, size: 28, color: Colors.black54),
+                        child: Icon(Icons.settings,
+                            size: 28, color: Colors.black54),
                       ),
                     ),
                   ),
@@ -102,7 +102,7 @@ class _MePageState extends BasePageState<MePage> {
                                                 padding: const EdgeInsets.only(
                                                     top: 8.0),
                                                 child: Text(
-                                                  '添加钱包',
+                                                  S.of(context).add_wallet,
                                                   style: TextStyle(
                                                       fontSize: 18,
                                                       fontWeight:
@@ -115,8 +115,10 @@ class _MePageState extends BasePageState<MePage> {
                                           ),
                                         ),
                                       ),
+                                    ),
+                                    SizedBox(
+                                      height: 50,
                                     )
-                                    ,SizedBox(height: 50,)
                                   ],
                                 ),
                               );
@@ -145,6 +147,8 @@ class _MePageState extends BasePageState<MePage> {
       setState(() {
         _items = InstanceStore.walletLists;
       });
+    } else if (event is ClearWalletEvent) {
+      // Navigator.pop(context);
     }
   }
 
@@ -182,7 +186,7 @@ class _MePageState extends BasePageState<MePage> {
                   child: Container(
                     height: 50,
                     width: MediaQuery.of(context).size.width - 100,
-                    child: Center(child: Text('创建钱包')),
+                    child: Center(child: Text(S.of(context).create_wallet)),
                   )),
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),
@@ -194,7 +198,7 @@ class _MePageState extends BasePageState<MePage> {
                     child: Container(
                       height: 50,
                       width: MediaQuery.of(context).size.width - 100,
-                      child: Center(child: Text('导入钱包')),
+                      child: Center(child: Text(S.of(context).import_wallet)),
                     )),
               ),
             ],
@@ -239,9 +243,15 @@ class _MePageState extends BasePageState<MePage> {
             height: 150,
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
-                color: position == 0
-                    ? Colors.lightBlue[300]
-                    : Colors.lightBlue[100],
+                gradient: LinearGradient(
+                  colors: [
+                    Color(position == 0 ? 0xfff3ab39 : 0x66f3ab39),
+                    Color(position == 0 ? 0xffe4542a : 0x66e4542a),
+                    Color(position == 0 ? 0xffe91f6f : 0x66e91f6f),
+                    Color(position == 0 ? 0xff39267e : 0x6639267e),
+                    Color(position == 0 ? 0xff27a1e4 : 0x6627a1e4),
+                  ],
+                ),
                 boxShadow: [
                   BoxShadow(
                       offset: Offset(5, 5),
@@ -258,7 +268,7 @@ class _MePageState extends BasePageState<MePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Pricinpal ID:',
+                  S.current.pricinpal_id,
                   style: TextStyle(fontSize: 12, color: Colors.white),
                 ),
                 Padding(
@@ -291,7 +301,7 @@ class _MePageState extends BasePageState<MePage> {
                   ),
                 ),
                 Text(
-                  'Address:',
+                  S.current.address,
                   style: TextStyle(fontSize: 12, color: Colors.white),
                 ),
                 Padding(
@@ -333,7 +343,7 @@ class _MePageState extends BasePageState<MePage> {
                         onTap: () => walletManage(_items[position]),
                         child: Container(
                           child: Text(
-                            '管理',
+                            S.current.manage,
                             style: TextStyle(fontSize: 12, color: Colors.white),
                           ),
                         ),

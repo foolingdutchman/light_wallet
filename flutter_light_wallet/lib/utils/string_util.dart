@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 class StringUtil {
@@ -12,7 +13,7 @@ class StringUtil {
   static void copyTexttoClipboard(String text) {
     print(" copy clicked!");
     Clipboard.setData(ClipboardData(text: text));
-    showToast("已复制到剪切板");
+    showToast(S.current.has_copy_to_clipboard);
   }
 
   static showToast(String content) {

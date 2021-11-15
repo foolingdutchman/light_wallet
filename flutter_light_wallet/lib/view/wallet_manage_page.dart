@@ -1,11 +1,12 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
+import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/model/wallet.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
+import 'package:flutter_light_wallet/view/%08password_page.dart';
 
 import 'guesture_password.dart';
 import 'mnemonic_page.dart';
@@ -35,7 +36,7 @@ class _WalletMangementPageState extends State<WalletMangementPage> {
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
               child: Text(
-                '钱包管理',
+                S.of(context).wallet_manage,
                 style: TextStyle(
                   color: Colors.black87,
                   fontSize: 30,
@@ -44,7 +45,7 @@ class _WalletMangementPageState extends State<WalletMangementPage> {
               ),
             ),
             Text(
-              '地址',
+              S.of(context).address,
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
@@ -69,7 +70,7 @@ class _WalletMangementPageState extends State<WalletMangementPage> {
               ),
             ),
             Text(
-              'Pricinpal',
+              S.of(context).pricinpal_id,
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
@@ -103,13 +104,14 @@ class _WalletMangementPageState extends State<WalletMangementPage> {
                     onPressed: () {
                       InstanceStore.swithCurrentWallet(wallet);
                       EventBusUtil.fire(SwitchWalletEvent(wallet));
-                      StringUtil.showToast('已将当前钱包设为默认钱包');
+                      StringUtil.showToast(
+                          S.of(context).select_default_wallet_hint);
                     },
                     child: Container(
                       height: 50,
                       width: MediaQuery.of(context).size.width - 60,
                       child: Center(
-                        child: Text('设置为默认钱包'),
+                        child: Text(S.of(context).select_as_default_wallet),
                       ),
                     )),
             !InstanceStore.deviceInfo!.isGuesturePrintPasswordActive
@@ -135,11 +137,31 @@ class _WalletMangementPageState extends State<WalletMangementPage> {
                           width: MediaQuery.of(context).size.width - 60,
                           child: Center(
                             child: Text(wallet.guesturePassword == ''
-                                ? '设置手势密码'
-                                : '修改手势密码'),
+                                ? S.of(context).set_guesture_password
+                                : S.of(context).modify_guesture_password),
                           ),
                         )),
                   ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        SlideRightRoute(
+                            page: PasswordPage(
+                          type: 'modify_password_verify',
+                          wallet: wallet,
+                        )));
+                  },
+                  child: Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width - 60,
+                    child: Center(
+                      child: Text(S.of(context).modify_password),
+                    ),
+                  )),
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 20.0),
               child: ElevatedButton(
@@ -153,7 +175,7 @@ class _WalletMangementPageState extends State<WalletMangementPage> {
                     height: 50,
                     width: MediaQuery.of(context).size.width - 60,
                     child: Center(
-                      child: Text('导出助记词'),
+                      child: Text(S.of(context).export_mnemonic),
                     ),
                   )),
             ),
@@ -161,15 +183,13 @@ class _WalletMangementPageState extends State<WalletMangementPage> {
               padding: const EdgeInsets.only(top: 20.0),
               child: ElevatedButton(
                   onPressed: () {
-                    InstanceStore.removeWallet(wallet);
-                    EventBusUtil.fire(DeleteWalletEvent(wallet));
-                    Navigator.pop(context);
+                    _deleteClick();
                   },
                   child: Container(
                     height: 50,
                     width: MediaQuery.of(context).size.width - 60,
                     child: Center(
-                      child: Text('删除钱包'),
+                      child: Text(S.of(context).delete_wallet),
                     ),
                   )),
             ),
@@ -177,5 +197,20 @@ class _WalletMangementPageState extends State<WalletMangementPage> {
         ),
       ),
     );
+  }
+
+  void _deleteClick() async {
+    String result = await Navigator.push(
+        context, SlideRightRoute(page: PasswordPage(type: 'verify_password')));
+
+    if (result == 'OK') {
+      InstanceStore.removeWallet(wallet);
+      if (InstanceStore.walletLists.length != 0) {
+        EventBusUtil.fire(DeleteWalletEvent(wallet));
+      } else {
+        EventBusUtil.fire(ClearWalletEvent());
+      }
+      Navigator.pop(context);
+    }
   }
 }

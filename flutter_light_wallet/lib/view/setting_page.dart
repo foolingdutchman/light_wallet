@@ -1,7 +1,7 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
+import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
@@ -17,7 +17,7 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   bool _isGuestureOn = false;
   bool _isFigurePrintOn = false;
-  static const List<String> _titles = ['开启手势密码', '开启指纹密码', '版本信息'];
+  static final List<String> _titles = [S.current.activate_guester_password,S.current.version];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +29,7 @@ class _SettingPageState extends State<SettingPage> {
             Row(
               children: [
                 Text(
-                  '设置',
+                  S.of(context).settings,
                   style: TextStyle(
                     color: Colors.black87,
                     fontSize: 30,
@@ -71,7 +71,7 @@ class _SettingPageState extends State<SettingPage> {
                         height: 1,
                         color: Colors.black26,
                       ),
-                  itemCount: 3),
+                  itemCount: _titles.length),
             ),
           ],
         ),

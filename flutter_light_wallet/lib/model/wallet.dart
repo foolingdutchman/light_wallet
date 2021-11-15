@@ -51,10 +51,14 @@ class Wallet {
     return icp.balance;
   }
 
+  Token getICP() {
+    return tokenList.firstWhere((element) => element.symbol == 'ICP');
+  }
+
   double getAvalidTransferAmount() {
     double amount = 0;
     if (getICPBalance() != 0 || getICPBalance() - 0.0001 > 0) {
-      amount = getICPBalance() - 0.0001;
+      amount = (getICPBalance()*10000 - 1)/10000;
     }
     print("availid amount is : " + amount.toString());
     return amount;

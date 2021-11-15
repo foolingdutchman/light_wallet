@@ -13,9 +13,9 @@ class ICPAccountUtils {
   }
 
   static Wallet generateWallet(String password, String mnemonic) {
-    ICPSigner signer = ICPSigner.fromPhrase(mnemonic, passphase: password);
+    ICPSigner signer = ICPSigner.fromPhrase(mnemonic);
     String signerecPricinpal =
-        signer.account.identity?.getPrincipal().toString() ?? '';
+        signer.account.ecIdentity?.getPrincipal().toString() ?? '';
     String signerecKey = signer.account.ecKeys?.ecPrivateKey?.toHex() ?? '';
     String signerecChecksumAddress = signer.ecChecksumAddress ?? '';
     Token token = Token('ICP', 0);
@@ -37,7 +37,7 @@ class ICPAccountUtils {
     return wallet;
   }
 
-  static Future<String> transfer(
+  static Future<BigInt> transfer(
       Wallet? wallet, String toAddress, String amount,
       {String? memoString}) async {
     AgentFactory agent = await prepareAgent(wallet);
@@ -52,12 +52,11 @@ class ICPAccountUtils {
               memoString == null ? null : memoString.plainToHex().hexToBn());
     print('Transaction is completed! The blockHeight is ' +
         blockHeight.toString());
-    return blockHeight.toString();
+    return blockHeight;
   }
 
   static Future<AgentFactory> prepareAgent(Wallet? wallet) async {
-    ICPSigner signer = ICPSigner.fromPhrase(wallet?.mnomenic ?? '',
-        passphase: wallet?.password ?? '');
+    ICPSigner signer = ICPSigner.fromPhrase(wallet?.mnomenic ?? '');
     return await AgentFactory.createAgent(
         canisterId: "ryjl3-tyaaa-aaaaa-aaaba-cai",
         // local ledger canister id, should change accourdingly

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_page_state.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
+import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 
 import 'password_page.dart';
@@ -30,7 +31,7 @@ class _ImportWalletPageState extends BasePageState<ImportWalletPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '导入助记词',
+              S.of(context).import_mnemonic,
               style: TextStyle(
                 fontSize: 30,
                 color: Colors.black87,
@@ -41,7 +42,7 @@ class _ImportWalletPageState extends BasePageState<ImportWalletPage> {
               padding: const EdgeInsets.only(bottom: 50, top: 50),
               child: TextField(
                 decoration: InputDecoration(
-                  labelText: '输入助记词',
+                  labelText:S.of(context).input_mnemonic,
                   labelStyle: TextStyle(
                     color: Colors.pink,
                     fontSize: 12,
@@ -51,7 +52,7 @@ class _ImportWalletPageState extends BasePageState<ImportWalletPage> {
                     color: Colors.redAccent,
                     fontSize: 12,
                   ),
-                  hintText: '输入助记词',
+                  hintText: S.of(context).input_mnemonic,
                   border: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.pink,
@@ -76,7 +77,7 @@ class _ImportWalletPageState extends BasePageState<ImportWalletPage> {
                         fixedSize: MaterialStateProperty.all(
                             Size(MediaQuery.of(context).size.width - 50, 50)),
                       ),
-                      child: Text('确认导入助记词'),
+                      child: Text(S.of(context).confirm_import_mnemonic),
                       onPressed: () {
                         if (_checkMnemonicValid()) {
                           Navigator.pushReplacement(
@@ -88,7 +89,7 @@ class _ImportWalletPageState extends BasePageState<ImportWalletPage> {
                               )));
                         } else {
                           setState(() {
-                            _helptext = '助记词格式不正确';
+                            _helptext =S.of(context).wrong_mnemonic_words_sequences;
                           });
                         }
                       }),

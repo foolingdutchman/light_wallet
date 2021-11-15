@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/model/wallet.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
@@ -38,7 +38,9 @@ class _GuesturePasswordPageState extends State<GuesturePasswordPage> {
             Container(
               margin: EdgeInsets.only(top: 150.0, bottom: 10.0),
               child: Text(
-                type == 'create_password' ? '请设置手势密码' : '请输入手势密码',
+                type == 'create_password'
+                    ? S.of(context).set_guesture_password
+                    : S.of(context).input_guesture_password,
                 textAlign: TextAlign.start,
                 style: TextStyle(
                   fontSize: 22.0,
@@ -128,7 +130,7 @@ class _GuesturePasswordPageState extends State<GuesturePasswordPage> {
               }
               print('result is : ' + _temp.join(', '));
               setState(() {
-                _result = '请再次输入手势密码';
+                _result = S.of(context).repeat_guesture_password;
               });
             } else if (_temp.join(',') == data.join(',')) {
               _savePassword(data.join(','));
@@ -136,10 +138,8 @@ class _GuesturePasswordPageState extends State<GuesturePasswordPage> {
               wrongtime++;
               if (wrongtime < 5) {
                 setState(() {
-                  _result = '重复输入不正确,' +
-                      '你还有' +
-                      (MAX_WRONG_TIME - wrongtime).toString() +
-                      '次机会';
+                  _result = S.of(context).wrong_guesture_password_hint(
+                      (MAX_WRONG_TIME - wrongtime).toString());
                 });
               } else {
                 Navigator.pop(context);
@@ -150,17 +150,15 @@ class _GuesturePasswordPageState extends State<GuesturePasswordPage> {
             if (!isPasswordVerified) {
               if (wallet!.guesturePassword == data.join(','))
                 setState(() {
-                  _result = '请输入新的手势密码';
+                  _result =S.of(context).new_guesture_password;
                   isPasswordVerified = true;
                 });
               else {
                 wrongtime++;
                 if (wrongtime < 5) {
                   setState(() {
-                    _result = '密码输入不正确,' +
-                        '你还有' +
-                        (MAX_WRONG_TIME - wrongtime).toString() +
-                        '次机会';
+                    _result = S.of(context).wrong_guesture_password_hint(
+                        (MAX_WRONG_TIME - wrongtime).toString());
                   });
                 } else {
                   Navigator.pop(context);
@@ -173,7 +171,7 @@ class _GuesturePasswordPageState extends State<GuesturePasswordPage> {
                 }
                 print('result is : ' + _temp.join(', '));
                 setState(() {
-                  _result = '请再次输入手势密码';
+                  _result =S.of(context).repeat_guesture_password;
                 });
               } else if (_temp.join(',') == data.join(',')) {
                 _savePassword(data.join(','));
@@ -181,10 +179,8 @@ class _GuesturePasswordPageState extends State<GuesturePasswordPage> {
                 wrongtime++;
                 if (wrongtime < MAX_WRONG_TIME) {
                   setState(() {
-                    _result = '密码输入不正确,' +
-                        '你还有' +
-                        (MAX_WRONG_TIME - wrongtime).toString() +
-                        '次机会';
+                    _result = S.of(context).wrong_guesture_password_hint(
+                        (MAX_WRONG_TIME - wrongtime).toString());
                   });
                 } else {
                   Navigator.pop(context);
@@ -200,10 +196,8 @@ class _GuesturePasswordPageState extends State<GuesturePasswordPage> {
               wrongtime++;
               if (wrongtime < MAX_WRONG_TIME) {
                 setState(() {
-                  _result = '密码输入不正确,' +
-                      '你还有' +
-                      (MAX_WRONG_TIME - wrongtime).toString() +
-                      '次机会';
+                  _result = S.of(context).wrong_guesture_password_hint(
+                      (MAX_WRONG_TIME - wrongtime).toString());
                 });
               } else {
                 Navigator.pop(context);
@@ -223,7 +217,7 @@ class _GuesturePasswordPageState extends State<GuesturePasswordPage> {
     // InstanceStore.updateCurrentWallet();
     await InstanceStore.updateHiveDB();
     SmartDialog.dismiss();
-    StringUtil.showToast('手势密码已设置');
+    StringUtil.showToast(S.current.guesture_password_settled);
     Navigator.pop(context, 'OK');
   }
 }

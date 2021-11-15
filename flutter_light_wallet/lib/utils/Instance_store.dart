@@ -48,7 +48,7 @@ class InstanceStore {
 
   static Future<void> updateHiveDB() async {
     HiveDBUtils.box?.clear();
-    HiveDBUtils.box?.addAll(walletLists);
+    if (walletLists.length != 0) HiveDBUtils.box?.addAll(walletLists);
   }
 
   static void updateCurrentWallet() {
@@ -88,7 +88,10 @@ class InstanceStore {
 
   static void removeWallet(Wallet wallet) {
     walletLists.remove(wallet);
-    currentWallet = walletLists[0];
+    if (walletLists.length != 0) {
+      currentWallet = walletLists[0];
+    } else
+      currentWallet = null;
     updateHiveDB();
   }
 

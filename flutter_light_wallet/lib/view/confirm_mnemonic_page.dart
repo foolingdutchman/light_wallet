@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_light_wallet/generated/l10n.dart';
 
 class ConfirmMnemonicPage extends StatefulWidget {
   const ConfirmMnemonicPage({Key? key, required this.mnemonic})
@@ -30,7 +31,7 @@ class _ConfirmMnemonicPageState extends State<ConfirmMnemonicPage> {
             Padding(
               padding: const EdgeInsets.only(bottom: 30),
               child: Text(
-                '确认助记词',
+                S.of(context).confirm_mnemonic,
                 style: TextStyle(
                   fontSize: 30,
                   color: Colors.black87,
@@ -50,7 +51,7 @@ class _ConfirmMnemonicPageState extends State<ConfirmMnemonicPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                '选择助记词',
+                S.of(context).select_mnemonic_words,
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w400,
@@ -79,7 +80,7 @@ class _ConfirmMnemonicPageState extends State<ConfirmMnemonicPage> {
                       Size(MediaQuery.of(context).size.width - 50, 50)),
                 ),
                 onPressed: confirMnemonic,
-                child: Text('确定')),
+                child: Text(S.of(context).confirm)),
           ],
         ),
       ),
@@ -92,7 +93,7 @@ class _ConfirmMnemonicPageState extends State<ConfirmMnemonicPage> {
       Navigator.pop(context, "OK");
     } else
       setState(() {
-        this._helpText = '助记词顺序不正确';
+        this._helpText =S.current.wrong_mnemonic_words_sequences;
       });
   }
 

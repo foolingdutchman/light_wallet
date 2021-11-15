@@ -49,3 +49,11 @@ class SwitchWalletEvent extends Event {
   Wallet wallet;
   SwitchWalletEvent(this.wallet);
 }
+
+class TransactionEvent extends Event {
+  TransactionEvent();
+}
+
+class ClearWalletEvent extends Event {
+  
+}

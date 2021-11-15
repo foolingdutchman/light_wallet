@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_light_wallet/base/base_page_state.dart';
+import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/model/wallet.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
@@ -33,7 +34,7 @@ class _RecordPageState extends BasePageState<RecordPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '转账记录',
+              S.of(context).transaction_record,
               style: TextStyle(
                 fontSize: 30,
                 color: Colors.black87,
@@ -84,8 +85,8 @@ class _RecordPageState extends BasePageState<RecordPage> {
                                               Text(
                                                 _transactions[i]
                                                         .isWalletReceive(wallet)
-                                                    ? 'From:'
-                                                    : 'To:',
+                                                    ?S.of(context).from+":"
+                                                    :S.of(context).to+":",
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     fontWeight:
@@ -177,12 +178,15 @@ class _RecordPageState extends BasePageState<RecordPage> {
 
   @override
   void hanldEvent(Event event) {
-    if (event is SwitchWalletEvent || event is DeleteWalletEvent) {
+    if (event is SwitchWalletEvent || event is DeleteWalletEvent ||
+        event is TransactionEvent) {
       InstanceStore.needRefreshData();
       setState(() {
         wallet = InstanceStore.currentWallet;
         _transactions = [];
       });
+    } else if (event is ClearWalletEvent) {
+     // Navigator.pop(context);
     }
   }
 
@@ -213,7 +217,7 @@ class _RecordPageState extends BasePageState<RecordPage> {
         });
       } else {
         setState(() {
-          this._helpText = '没有更多数据了';
+          this._helpText = S.current.no_more_data;
         });
       }
       InstanceStore.isRecordUpdated = true;

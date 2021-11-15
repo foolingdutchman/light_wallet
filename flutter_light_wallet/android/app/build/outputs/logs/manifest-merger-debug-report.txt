@@ -109,9 +109,9 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /Users/heha
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.1.0] /Users/hehao/.gradle/caches/transforms-2/files-2.1/2e94107f30f39be366a17347c2bf100b/core-1.1.0/AndroidManifest.xml:24:18-86
 	android:label
-		ADDED from /Users/hehao/light_wallet/flutter_light_wallet/android/app/src/main/AndroidManifest.xml:27:9-45
+		ADDED from /Users/hehao/light_wallet/flutter_light_wallet/android/app/src/main/AndroidManifest.xml:27:9-32
 	android:icon
-		ADDED from /Users/hehao/light_wallet/flutter_light_wallet/android/app/src/main/AndroidManifest.xml:28:9-43
+		ADDED from /Users/hehao/light_wallet/flutter_light_wallet/android/app/src/main/AndroidManifest.xml:28:9-36
 activity#com.example.flutter_light_wallet.MainActivity
 ADDED from /Users/hehao/light_wallet/flutter_light_wallet/android/app/src/main/AndroidManifest.xml:29:9-57:20
 	android:launchMode

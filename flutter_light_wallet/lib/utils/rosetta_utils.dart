@@ -5,7 +5,6 @@ import 'package:agent_dart/wallet/types.dart';
 import 'package:flutter_light_wallet/model/wallet.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
 
-
 class RosettaUtils {
   static RosettaApi? _rosettaApi;
   static bool isInit = false;
@@ -14,6 +13,11 @@ class RosettaUtils {
     _rosettaApi = new RosettaApi();
     await _rosettaApi?.init();
     isInit = true;
+  }
+
+  static getBlockByHeight(BigInt blockHeight) async {
+    BlockResponse resp = await _rosettaApi!.blockByIndex(blockHeight.toInt());
+    print(resp.toJson());
   }
 
   static Future<List<RosettaTransactionRecord>> getWalletTransactions(

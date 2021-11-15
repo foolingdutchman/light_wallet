@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
 
 class MnemonicPage extends StatefulWidget {
@@ -27,7 +28,7 @@ class _MnemonicPageState extends State<MnemonicPage> {
           children: [
             
             Text(
-              '保存助记词',
+              S.of(context).save_mnemonic,
               style: TextStyle(
                  fontSize: 30,
                 color: Colors.black87,
@@ -117,7 +118,7 @@ class _MnemonicPageState extends State<MnemonicPage> {
                 onPressed: () {
                   StringUtil.copyTexttoClipboard(mnemonic);
                 },
-                child: Text('复制助记词')),
+                child: Text(S.of(context).copy_mnemonic)),
             SizedBox(
               height: 25,
             ),
@@ -129,7 +130,7 @@ class _MnemonicPageState extends State<MnemonicPage> {
                 onPressed: () {
                   Navigator.pop(context, 'OK');
                 },
-                child: Text('确认助记词已备份'))
+                child: Text(S.of(context).comfirm_mnemonic_backup))
           ],
         ),
       ),
