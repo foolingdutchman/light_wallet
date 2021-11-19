@@ -127,7 +127,7 @@ class _TransferPageState extends BasePageState<TransferPage> {
                 height: 30,
               ),
               Text(
-                S.of(context).current_address ,
+                S.of(context).current_address,
                 style: TextStyle(
                   fontSize: 15,
                   color: Colors.black87,
@@ -140,12 +140,12 @@ class _TransferPageState extends BasePageState<TransferPage> {
                 ),
                 margin: EdgeInsets.only(top: 10, bottom: 30),
                 height: 80,
+                width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.all(15),
-                child: Expanded(
-                    child: Text(
+                child: Text(
                   wallet!.address,
                   style: TextStyle(color: Colors.black45),
-                )),
+                ),
               ),
               Text(
                 S.of(context).transfer_amount,
@@ -154,53 +154,48 @@ class _TransferPageState extends BasePageState<TransferPage> {
                   color: Colors.black87,
                 ),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        labelText: S.of(context).amount,
-                        labelStyle: TextStyle(
-                          color: Colors.pink,
-                          fontSize: 12,
-                        ),
-                        hintText: S.of(context).amount,
-                        suffix: InkWell(
-                          onTap: () {
-                            _maxAmountClick();
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 8, bottom: 5, left: 5, right: 5),
-                            child: Container(
-                              child: Text(
-                               S.of(context).max_amount,
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.blueAccent,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.pink,
+              TextField(
+                decoration: InputDecoration(
+                  labelText: S.of(context).amount,
+                  labelStyle: TextStyle(
+                    color: Colors.pink,
+                    fontSize: 12,
+                  ),
+                  hintText: S.of(context).amount,
+                  suffix: InkWell(
+                    onTap: () {
+                      _maxAmountClick();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 8, bottom: 5, left: 5, right: 5),
+                      child: Container(
+                        child: Text(
+                          S.of(context).max_amount,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.blueAccent,
                           ),
                         ),
                       ),
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
-                      controller: _amount,
                     ),
                   ),
-                ],
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.pink,
+                    ),
+                  ),
+                ),
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                controller: _amount,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20, bottom: 20),
                 child: Row(
                   children: [
-                    Text(S.of(context).balance+":"+ wallet!.getICPBalance().toString()),
+                    Text(S.of(context).balance +
+                        ":" +
+                        wallet!.getICPBalance().toString()),
                     Expanded(child: Container())
                   ],
                 ),
@@ -232,7 +227,7 @@ class _TransferPageState extends BasePageState<TransferPage> {
                 padding: const EdgeInsets.only(top: 20, bottom: 40),
                 child: Row(
                   children: [
-                    Text(S.of(context).fee+ ': 0.0001 ICP'),
+                    Text(S.of(context).fee + ': 0.0001 ICP'),
                     Expanded(child: Container())
                   ],
                 ),
@@ -242,7 +237,7 @@ class _TransferPageState extends BasePageState<TransferPage> {
                     fixedSize: MaterialStateProperty.all(
                         Size(MediaQuery.of(context).size.width - 50, 50))),
                 onPressed: onButtonPressed,
-                child: Text( S.of(context).confirm),
+                child: Text(S.of(context).confirm),
               ),
             ],
           ),
@@ -260,7 +255,7 @@ class _TransferPageState extends BasePageState<TransferPage> {
         wallet = InstanceStore.currentWallet;
       });
     } else if (event is ClearWalletEvent) {
-     // Navigator.pop(context);
+      // Navigator.pop(context);
     }
   }
 

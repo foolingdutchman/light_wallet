@@ -1,0 +1,5 @@
+service : {
+  downLoad: () -> (nat);
+  getDownLoadNum: () -> (nat);
+  greet: (text) -> (text);
+}
