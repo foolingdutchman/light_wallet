@@ -1,0 +1,15 @@
+# Various IDEs and Editors
+.vscode/
+.idea/
+**/*~
+
+# Mac OSX temporary files
+.DS_Store
+**/.DS_Store
+
+# dfx temporary files
+light_wallet_intro/.dfx/
+
+# frontend code
+light_wallet_intro/node_modules/
+light_wallet_intro/dist/
