@@ -21,3 +21,8 @@ flutter_light_wallet/light_wallet/.dfx/
 # frontend code
 flutter_light_wallet/light_wallet/node_modules/
 flutter_light_wallet/light_wallet/dist/
+
+# Various IDEs and Editors
+flutter_light_wallet/.vscode/
+flutter_light_wallet/.idea/
+flutter_light_wallet/**/*~

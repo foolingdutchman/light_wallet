@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
 import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
+import 'package:flutter_light_wallet/utils/local_auth_util.dart';
+import 'package:flutter_light_wallet/utils/string_util.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:local_auth/local_auth.dart';
 
 import 'guesture_password.dart';
 
@@ -17,7 +20,12 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   bool _isGuestureOn = false;
   bool _isFigurePrintOn = false;
-  static final List<String> _titles = [S.current.activate_guester_password,S.current.version];
+  static final List<String> _titles = [
+    S.current.activate_guester_password,
+    S.current.activate_local_auth,
+    S.current.version
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,8 +70,7 @@ class _SettingPageState extends State<SettingPage> {
                                   if (postion == 0) {
                                     _swithGuesturePassWord(swithed);
                                   } else {
-                                    //  InstanceStore.deviceInfo!
-                                    //      .isFigerPrintPasswordActive = swithed;
+                                    _swithFingerPassWord(swithed);
                                   }
                                 }),
                       ),
@@ -96,12 +103,43 @@ class _SettingPageState extends State<SettingPage> {
           )));
       if (result == 'OK') {
         InstanceStore.deviceInfo!.isGuesturePrintPasswordActive = isOn;
+        if (InstanceStore.deviceInfo!.isFigerPrintPasswordActive)
+          InstanceStore.deviceInfo!.isFigerPrintPasswordActive = false;
         _updateInfo();
       }
     } else {
+      if (isOn && InstanceStore.deviceInfo!.isFigerPrintPasswordActive)
+        InstanceStore.deviceInfo!.isFigerPrintPasswordActive = false;
       InstanceStore.deviceInfo!.isGuesturePrintPasswordActive = isOn;
       _updateInfo();
     }
+  }
+
+  Future<void> _swithFingerPassWord(bool isOn) async {
+    print(' swithched on: ' +
+        isOn.toString() +
+        '\n isFigerPrintPasswordActive : ' +
+        InstanceStore.deviceInfo!.isFigerPrintPasswordActive.toString());
+
+    if (isOn) {
+      bool canCheckBio = await LocalAuthUtil().checkBiometrics();
+      if (canCheckBio) {
+        bool supportFingerAuth =
+            await LocalAuthUtil().isSupportFingerprintAuth();
+        if (supportFingerAuth) {
+          InstanceStore.deviceInfo!.isFigerPrintPasswordActive = isOn;
+          if (InstanceStore.deviceInfo!.isGuesturePrintPasswordActive)
+            InstanceStore.deviceInfo!.isGuesturePrintPasswordActive = false;
+          _updateInfo();
+        }else _showUnsupportMessage();
+      }else _showUnsupportMessage();
+    } else {
+      InstanceStore.deviceInfo!.isFigerPrintPasswordActive = isOn;
+      _updateInfo();
+    }
+  }
+  _showUnsupportMessage(){
+    StringUtil.showToast(S.current.hint_unsupport_local_auth);
   }
 
   Future<void> _updateInfo() async {

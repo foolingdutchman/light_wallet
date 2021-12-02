@@ -1,9 +1,13 @@
+import 'dart:math';
+import 'dart:typed_data';
+
 import 'package:agent_dart/wallet/ledger.dart';
 
 import 'package:agent_dart/agent_dart.dart';
 import 'package:agent_dart/wallet/keysmith.dart' as keysmith;
 import 'package:flutter_light_wallet/model/token.dart';
 import 'package:flutter_light_wallet/model/wallet.dart';
+import 'package:flutter_light_wallet/utils/constans.dart';
 
 class ICPAccountUtils {
   static String generateBip39Mnemonic() {
@@ -55,15 +59,35 @@ class ICPAccountUtils {
     return blockHeight;
   }
 
+  static Future<Wallet> getIcpBalance(Wallet wallet) async {
+    AgentFactory agent = await prepareAgent(wallet);
+    ICPTs? bigIntBalance =
+        await Ledger.getBalance(agent: agent, accountId: wallet.address);
+    double balance = (bigIntBalance.e8s / BigInt.from(pow(10, 8))).toDouble();
+    wallet.tokenList[0].balance = balance;
+    return wallet;
+  }
+
   static Future<AgentFactory> prepareAgent(Wallet? wallet) async {
     ICPSigner signer = ICPSigner.fromPhrase(wallet?.mnomenic ?? '');
     return await AgentFactory.createAgent(
-        canisterId: "ryjl3-tyaaa-aaaaa-aaaba-cai",
+        canisterId: Constants.LEDGER_CANISTER_ID,
         // local ledger canister id, should change accourdingly
-        url: "https://boundary.ic0.app/",
+        url: Constants.ICP_NETWORK_ADDRESS,
         // For Android emulator, please use 10.0.2.2 as endpoint
         idl: ledgerIdl,
         identity: signer.account.ecIdentity,
         debug: true);
+  }
+
+  static Identity? getWalletIdentity(Wallet? wallet) {
+    ICPSigner signer = ICPSigner.fromPhrase(wallet?.mnomenic ?? '');
+    return signer.account.ecIdentity;
+  }
+
+  static Principal createPrincipal(Uint8List bytes) {
+    var sha = sha224Hash(bytes.buffer);
+    var u8a = Uint8List.fromList([...sha, SELF_AUTHENTICATING_SUFFIX]);
+    return Principal(u8a);
   }
 }

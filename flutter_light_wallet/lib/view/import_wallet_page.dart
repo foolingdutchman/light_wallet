@@ -112,7 +112,7 @@ class _ImportWalletPageState extends BasePageState<ImportWalletPage> {
   void onVisible() {}
 
   bool _checkMnemonicValid() {
-    //return true;
+    return true;
     return _mnemonicsController.text.split(' ').length == 12;
   }
 }

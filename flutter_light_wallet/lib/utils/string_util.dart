@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:intl/intl.dart';
 
 class StringUtil {
   static String longTimeStampToDateString(int timestasmp) {
@@ -35,4 +36,10 @@ class StringUtil {
     }
     return intList;
   }
+
+  static String getNumberFormatStr(dynamic number) {
+    var f = NumberFormat("#,###", "en_US");
+    return f.format(number);
+  }
+  
 }

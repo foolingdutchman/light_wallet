@@ -1,12 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_page_state.dart';
+import 'package:flutter_light_wallet/base/slide_right_route.dart';
 import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/model/wallet.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
+import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
 import 'package:flutter_light_wallet/utils/rosetta_utils.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
+import 'package:flutter_light_wallet/view/collect_page.dart';
+import 'package:flutter_light_wallet/view/scan_page.dart';
+import 'package:flutter_light_wallet/view/transfer_page.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
@@ -62,6 +67,7 @@ class _WalletPageState extends BasePageState<WalletPage> {
       print('refresh********* is update wallet balance called!');
       SmartDialog.showLoading();
       await RosettaUtils.getWalletBalance(wallet!);
+      // await ICPAccountUtils.getIcpBalance(wallet!);
 
       print('refresh********** network call finished!');
       InstanceStore.isBlanceUpdated = true;
@@ -95,45 +101,52 @@ class _WalletPageState extends BasePageState<WalletPage> {
                       itemBuilder: (context, posiotn) => Container(
                             width: MediaQuery.of(context).size.width,
                             height: 50,
-                            child: Row(children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 30),
-                                child: Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                    image: new DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/ic_icp.png'),
-                                      fit: BoxFit.cover,
+                            child: InkWell(
+                              onTap: () {
+                                // Navigator.push(context,
+                                //     SlideRightRoute(page: CanisterPage()));
+                              },
+                              child: Row(children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 30),
+                                  child: Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                      image: new DecorationImage(
+                                        image: AssetImage(
+                                            'assets/images/ic_icp.png'),
+                                        fit: BoxFit.cover,
+                                      ),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            offset: Offset(1, 2),
+                                            blurRadius: 2,
+                                            color: Colors.black26),
+                                      ],
                                     ),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          offset: Offset(1, 2),
-                                          blurRadius: 2,
-                                          color: Colors.black26),
-                                    ],
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Text(
-                                  wallet!.tokenList[posiotn].symbol,
-                                  style: TextStyle(fontSize: 15),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    wallet!.tokenList[posiotn].symbol,
+                                    style: TextStyle(fontSize: 15),
+                                  ),
                                 ),
-                              ),
-                              Expanded(child: Container()),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 30),
-                                child: Text(
-                                  wallet!.tokenList[posiotn].balance.toString(),
-                                  style: TextStyle(fontSize: 15),
+                                Expanded(child: Container()),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 30),
+                                  child: Text(
+                                    wallet!.tokenList[posiotn].balance
+                                        .toString(),
+                                    style: TextStyle(fontSize: 15),
+                                  ),
                                 ),
-                              ),
-                            ]),
+                              ]),
+                            ),
                           ),
                       separatorBuilder: (_, i) => Divider(
                             color: Colors.black12,
@@ -155,20 +168,33 @@ class _WalletPageState extends BasePageState<WalletPage> {
             Color(0xffe4542a),
             Color(0xffe91f6f),
             Color(0xff39267e),
-           
           ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 20),
-                child: Text(
-                  S.of(context).wallet,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                    fontWeight: FontWeight.w700,
-                  ),
+                child: Row(
+                  children: [
+                    Text(
+                      S.of(context).wallet,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Expanded(child: Container()),
+                    InkWell(
+                        onTap: () {
+                          Navigator.push(context, SlideRightRoute(page: CollectPage()));
+                        },
+                        child: Icon(
+                          Icons.qr_code,
+                          size: 30,
+                          color: Colors.white,
+                        ))
+                  ],
                 ),
               ),
               Expanded(

@@ -53,7 +53,7 @@ class _WalletMangementPageState extends State<WalletMangementPage> {
             ),
             InkWell(
               onTap: () {
-                StringUtil.copyTexttoClipboard(wallet.principal);
+                StringUtil.copyTexttoClipboard(wallet.address);
               },
               child: Container(
                 height: 80,

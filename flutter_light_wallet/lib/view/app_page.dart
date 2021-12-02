@@ -5,6 +5,7 @@ import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/view/home_page.dart';
 import 'package:flutter_light_wallet/view/wallet_page.dart';
+
 import 'me_page.dart';
 import 'record_page.dart';
 import 'transfer_page.dart';
@@ -28,6 +29,7 @@ class _AppPageState extends BasePageState<AppPage> {
   ];
   final List<BottomNavigationBarItem> bottomNavItems = [
     BottomNavigationBarItem(
+
         backgroundColor: Colors.blue,
         icon: Icon(Icons.wallet_membership),
         label: S.current.wallet),
