@@ -5,8 +5,10 @@ import 'package:flutter_light_wallet/base/slide_right_route.dart';
 import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/model/wallet.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
+
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/rosetta_utils.dart';
+
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 import 'password_page.dart';
@@ -73,6 +75,9 @@ class _HomePageState extends BasePageState<HomePage>
       if (!RosettaUtils.isInit) {
         await RosettaUtils.init();
       }
+      // if (!CanisterUtil.isCanisterInit) {
+      //   await CanisterUtil.initWalletCanister();
+      // }
       SmartDialog.dismiss();
       // go to home page
       Navigator.pushReplacement(
@@ -86,10 +91,9 @@ class _HomePageState extends BasePageState<HomePage>
   }
 
   void _checkSigner(Wallet wallet) {
-    ICPSigner signer =
-        ICPSigner.fromPhrase(wallet.mnomenic, passphase: wallet.password);
+    ICPSigner signer = ICPSigner.fromPhrase(wallet.mnomenic);
     String signerecPricinpal =
-        signer.account.identity?.getPrincipal().toString() ?? '';
+        signer.account.ecIdentity?.getPrincipal().toString() ?? '';
     String signerecKey = signer.account.ecKeys?.ecPrivateKey?.toHex() ?? '';
     String signerecChecksumAddress = signer.ecChecksumAddress ?? '';
 

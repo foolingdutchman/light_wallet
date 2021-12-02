@@ -6,7 +6,9 @@ import 'package:flutter_light_wallet/model/wallet.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
+import 'package:flutter_light_wallet/utils/local_auth_util.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
+import 'package:flutter_light_wallet/view/scan_page.dart';
 import 'package:flutter_light_wallet/view/transfer_complete_page.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
@@ -24,6 +26,8 @@ class TransferPage extends StatefulWidget {
 class _TransferPageState extends BasePageState<TransferPage> {
   TextEditingController _amount = TextEditingController();
   TextEditingController _address = TextEditingController();
+  FocusNode _addressFusNode = FocusNode();
+  bool _isAddressFocus = false;
   Wallet? wallet;
 
   _TransferPageState(String observerKey) : super(observerKey);
@@ -40,10 +44,17 @@ class _TransferPageState extends BasePageState<TransferPage> {
     super.initState();
     this._amount.text = '';
     this._address.text = '';
+    _addressFusNode.addListener(() {
+      setState(() {
+        _isAddressFocus = _addressFusNode.hasFocus;
+      });
+    });
+    super.initState();
   }
 
   void onButtonPressed() {
     if (isValidRequest()) _verifyPasswordForTransaction();
+    // _verifyFingerprintPassword();
   }
 
   bool isValidRequest() {
@@ -62,7 +73,10 @@ class _TransferPageState extends BasePageState<TransferPage> {
 
   void _verifyPasswordForTransaction() async {
     String result = '';
-    if (InstanceStore.deviceInfo!.isGuesturePrintPasswordActive &&
+    if (InstanceStore.deviceInfo!.isFigerPrintPasswordActive) {
+      bool _localAuth = await _verifyFingerprintPassword();
+      if (_localAuth) result = 'OK';
+    } else if (InstanceStore.deviceInfo!.isGuesturePrintPasswordActive &&
         InstanceStore.currentWallet!.guesturePassword != '') {
       result = await Navigator.push(
           context,
@@ -80,6 +94,16 @@ class _TransferPageState extends BasePageState<TransferPage> {
       StringUtil.showToast(S.current.password_verified);
       _proceedTransaction(_amount.text, _address.text);
     }
+  }
+
+  Future<bool> _verifyFingerprintPassword() async {
+    bool _isAuth = false;
+    if (InstanceStore.deviceInfo!.isFigerPrintPasswordActive) {
+      _isAuth = await LocalAuthUtil().authenticate();
+    }
+    StringUtil.showToast(_isAuth ? "Auth success!" : " Auth failed!");
+
+    return _isAuth;
   }
 
   void _proceedTransaction(String amount, String address) async {
@@ -104,10 +128,20 @@ class _TransferPageState extends BasePageState<TransferPage> {
     });
   }
 
+  void _scanAddress() async {
+    print("clicked scan...");
+    FocusScope.of(context).requestFocus(FocusNode());
+    var result =
+        await Navigator.push(context, SlideRightRoute(page: ScanPage()));
+    setState(() {
+      _address.text = result+"";
+    });
+  }
+
   @override
   Widget constructView(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white60,
+      backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Container(
@@ -156,11 +190,6 @@ class _TransferPageState extends BasePageState<TransferPage> {
               ),
               TextField(
                 decoration: InputDecoration(
-                  labelText: S.of(context).amount,
-                  labelStyle: TextStyle(
-                    color: Colors.pink,
-                    fontSize: 12,
-                  ),
                   hintText: S.of(context).amount,
                   suffix: InkWell(
                     onTap: () {
@@ -195,7 +224,8 @@ class _TransferPageState extends BasePageState<TransferPage> {
                   children: [
                     Text(S.of(context).balance +
                         ":" +
-                        wallet!.getICPBalance().toString()),
+                        wallet!.getICPBalance().toString() +
+                        " ICP"),
                     Expanded(child: Container())
                   ],
                 ),
@@ -207,21 +237,46 @@ class _TransferPageState extends BasePageState<TransferPage> {
                   color: Colors.black87,
                 ),
               ),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: S.of(context).receipt_address,
-                  labelStyle: TextStyle(
-                    color: Colors.pink,
-                    fontSize: 12,
+              Container(
+                height: 80,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: _isAddressFocus ? Colors.blue : Colors.black26,
+                    width: _isAddressFocus ? 2 : 1,
                   ),
-                  hintText: S.of(context).receipt_address,
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.pink,
-                    ),
-                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
                 ),
-                controller: _address,
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: TextField(
+                          focusNode: _addressFusNode,
+                          decoration: InputDecoration(
+                            hintText: S.of(context).receipt_address,
+                            border: InputBorder.none,
+                          ),
+                          controller: _address,
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        _scanAddress();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: Icon(
+                          Icons.qr_code_scanner,
+                          size: 28,
+                          color: Color(0xff39267e),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20, bottom: 40),
@@ -235,7 +290,9 @@ class _TransferPageState extends BasePageState<TransferPage> {
               ElevatedButton(
                 style: ButtonStyle(
                     fixedSize: MaterialStateProperty.all(
-                        Size(MediaQuery.of(context).size.width - 50, 50))),
+                        Size(MediaQuery.of(context).size.width - 50, 50)),
+                    backgroundColor:
+                        MaterialStateProperty.all(Color(0xff39267e))),
                 onPressed: onButtonPressed,
                 child: Text(S.of(context).confirm),
               ),

@@ -55,6 +55,7 @@ class Wallet {
     return tokenList.firstWhere((element) => element.symbol == 'ICP');
   }
 
+
   double getAvalidTransferAmount() {
     double amount = 0;
     if (getICPBalance() != 0 || getICPBalance() - 0.0001 > 0) {
