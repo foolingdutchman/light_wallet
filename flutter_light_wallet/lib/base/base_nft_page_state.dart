@@ -4,7 +4,8 @@ import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/canister_util.dart';
 import 'package:flutter_light_wallet/utils/constans.dart';
 import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
-import 'package:flutter_light_wallet/utils/wallet_canister.dart';
+import 'package:flutter_light_wallet/utils/nft_canister.dart';
+
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 import 'base_page_state.dart';

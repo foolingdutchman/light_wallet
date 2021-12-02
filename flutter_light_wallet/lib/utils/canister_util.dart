@@ -1,5 +1,7 @@
 
-import 'package:flutter_light_wallet/utils/wallet_canister.dart';
+
+
+import 'package:flutter_light_wallet/utils/nft_canister.dart';
 
 import 'Instance_store.dart';
 import 'constans.dart';

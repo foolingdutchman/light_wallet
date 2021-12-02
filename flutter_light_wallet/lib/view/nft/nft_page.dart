@@ -1,19 +1,14 @@
 import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:agent_dart/agent/agent.dart';
-import 'package:agent_dart/agent_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_nft_page_state.dart';
-import 'package:flutter_light_wallet/base/base_page_state.dart';
 import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/canister_util.dart';
-import 'package:flutter_light_wallet/utils/constans.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/file_util.dart';
-import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
-import 'package:flutter_light_wallet/utils/wallet_canister.dart';
+import 'package:flutter_light_wallet/utils/nft_canister.dart';
+
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 class NftPage extends StatefulWidget {
@@ -356,7 +351,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
     SmartDialog.showLoading();
 
     // get nft data below
-    nftData = await CanisterUtil.walletCanister!.getNft(_principal);
+    nftData = (await CanisterUtil.walletCanister!.getNft(_principal)) as NftData? ;
 
     _file = await FileUtil.writeBytestoFile(
         _principal + 'thumbnail', nftData!.mediaType, (nftData!.thumbnail)!);
