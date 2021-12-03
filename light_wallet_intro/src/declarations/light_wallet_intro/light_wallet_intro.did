@@ -1,5 +1,19 @@
-service : {
-  downLoad: () -> (nat);
-  getDownLoadNum: () -> (nat);
-  greet: (text) -> (text);
-}
+type Hub = 
+ service {
+   downLoad: () -> (nat);
+   getContractInfo: () -> (ContractInfo);
+   getDownLoadNum: () -> (nat);
+   getIOSDownLoadNum: () -> (nat);
+   getOwner: () -> (principal);
+   greet: (text) -> (text);
+   init: (nat, nat, vec principal) -> ();
+   iosDownLoad: () -> (nat);
+ };
+type ContractInfo = 
+ record {
+   cycles: nat;
+   heap_size: nat;
+   max_live_size: nat;
+   memory_size: nat;
+ };
+service : () -> Hub

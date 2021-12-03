@@ -1899,6 +1899,7 @@ THE SOFTWARE.
 --------------------------------------------------------------------------------
 args
 logging
+protobuf
 
 Copyright 2013, the Dart project authors. 
 
@@ -6312,6 +6313,7 @@ SOFTWARE.
 --------------------------------------------------------------------------------
 flutter_plugin_android_lifecycle
 local_auth
+package_info
 path_provider
 path_provider_linux
 path_provider_macos
@@ -10912,7 +10914,6 @@ SOFTWARE.
 
 --------------------------------------------------------------------------------
 intl
-protobuf
 
 Copyright 2013, the Dart project authors. All rights reserved.
 Redistribution and use in source and binary forms, with or without

@@ -44,6 +44,7 @@ dependencies:
   qr_flutter: ^4.0.0
   image_gallery_saver: ^1.7.1
   scan: ^1.5.0
+  package_info: ^2.0.2
   flutter_image_compress: ^1.1.0
   flutter_localizations:
     sdk: flutter

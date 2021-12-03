@@ -310,10 +310,10 @@ class S {
     );
   }
 
-  /// `Activate Guesture Password`
+  /// `Activate Gesture Password`
   String get activate_guester_password {
     return Intl.message(
-      'Activate Guesture Password',
+      'Activate Gesture Password',
       name: 'activate_guester_password',
       desc: '',
       args: [],
@@ -610,60 +610,60 @@ class S {
     );
   }
 
-  /// `Guesture Password has been set`
+  /// `Gesture Password has been set`
   String get guesture_password_settled {
     return Intl.message(
-      'Guesture Password has been set',
+      'Gesture Password has been set',
       name: 'guesture_password_settled',
       desc: '',
       args: [],
     );
   }
 
-  /// `Modify Guesture Password`
+  /// `Modify Gesture Password`
   String get modify_guesture_password {
     return Intl.message(
-      'Modify Guesture Password',
+      'Modify Gesture Password',
       name: 'modify_guesture_password',
       desc: '',
       args: [],
     );
   }
 
-  /// `Repeat Guesture Password`
+  /// `Repeat Gesture Password`
   String get repeat_guesture_password {
     return Intl.message(
-      'Repeat Guesture Password',
+      'Repeat Gesture Password',
       name: 'repeat_guesture_password',
       desc: '',
       args: [],
     );
   }
 
-  /// `Input New Guesture Password`
+  /// `Input New Gesture Password`
   String get new_guesture_password {
     return Intl.message(
-      'Input New Guesture Password',
+      'Input New Gesture Password',
       name: 'new_guesture_password',
       desc: '',
       args: [],
     );
   }
 
-  /// `Set Guesture Password`
+  /// `Set Gesture Password`
   String get set_guesture_password {
     return Intl.message(
-      'Set Guesture Password',
+      'Set Gesture Password',
       name: 'set_guesture_password',
       desc: '',
       args: [],
     );
   }
 
-  /// `Input Guesture Password`
+  /// `Input Gesture Password`
   String get input_guesture_password {
     return Intl.message(
-      'Input Guesture Password',
+      'Input Gesture Password',
       name: 'input_guesture_password',
       desc: '',
       args: [],
