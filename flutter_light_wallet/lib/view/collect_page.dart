@@ -59,6 +59,11 @@ class _CollectPageState extends BasePageState<CollectPage> {
                     data: InstanceStore.currentWallet!.address,
                     version: QrVersions.auto,
                     size: 200.0,
+                    gapless: false,
+                    embeddedImage: AssetImage('assets/images/logo.png'),
+                    embeddedImageStyle: QrEmbeddedImageStyle(
+                      size: Size(40, 40),
+                    ),
                   ),
                 ),
               ),

@@ -28,7 +28,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "activate_fingerprint_password": MessageLookupByLibrary.simpleMessage(
             "Activate Fingerprint Password"),
         "activate_guester_password":
-            MessageLookupByLibrary.simpleMessage("Activate Guesture Password"),
+            MessageLookupByLibrary.simpleMessage("Activate Gesture Password"),
         "activate_local_auth": MessageLookupByLibrary.simpleMessage(
             "Activiate Biometric Authentication"),
         "add_wallet": MessageLookupByLibrary.simpleMessage("Add Wallet"),
@@ -76,7 +76,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Fingerprint Authentication"),
         "from": MessageLookupByLibrary.simpleMessage("From"),
         "guesture_password_settled": MessageLookupByLibrary.simpleMessage(
-            "Guesture Password has been set"),
+            "Gesture Password has been set"),
         "has_copy_to_clipboard": MessageLookupByLibrary.simpleMessage(
             "content has copied to clipboard"),
         "hint_save_code_failded":
@@ -93,7 +93,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "input_author": MessageLookupByLibrary.simpleMessage("Input Author"),
         "input_desc": MessageLookupByLibrary.simpleMessage("Input Description"),
         "input_guesture_password":
-            MessageLookupByLibrary.simpleMessage("Input Guesture Password"),
+            MessageLookupByLibrary.simpleMessage("Input Gesture Password"),
         "input_mnemonic":
             MessageLookupByLibrary.simpleMessage("Input Mnemonic"),
         "input_orignal_password":
@@ -116,11 +116,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "mnemonic_format_incorrect":
             MessageLookupByLibrary.simpleMessage("Mnemonic Format Incorrect"),
         "modify_guesture_password":
-            MessageLookupByLibrary.simpleMessage("Modify Guesture Password"),
+            MessageLookupByLibrary.simpleMessage("Modify Gesture Password"),
         "modify_password":
             MessageLookupByLibrary.simpleMessage("Modify Password"),
         "new_guesture_password":
-            MessageLookupByLibrary.simpleMessage("Input New Guesture Password"),
+            MessageLookupByLibrary.simpleMessage("Input New Gesture Password"),
         "no_more_data": MessageLookupByLibrary.simpleMessage("No more data"),
         "not_for_sell": MessageLookupByLibrary.simpleMessage("Not For Sell"),
         "os_determine_auth": MessageLookupByLibrary.simpleMessage(
@@ -142,7 +142,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Receipt Address"),
         "record": MessageLookupByLibrary.simpleMessage("Record"),
         "repeat_guesture_password":
-            MessageLookupByLibrary.simpleMessage("Repeat Guesture Password"),
+            MessageLookupByLibrary.simpleMessage("Repeat Gesture Password"),
         "save_2d_code": MessageLookupByLibrary.simpleMessage("Save 2D Code"),
         "save_mnemonic": MessageLookupByLibrary.simpleMessage("Save Mnemonic"),
         "select_as_default_wallet":
@@ -153,7 +153,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Select Mnemonic words"),
         "sell": MessageLookupByLibrary.simpleMessage("Sell"),
         "set_guesture_password":
-            MessageLookupByLibrary.simpleMessage("Set Guesture Password"),
+            MessageLookupByLibrary.simpleMessage("Set Gesture Password"),
         "set_price": MessageLookupByLibrary.simpleMessage("Set Price"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "spawnCreator": MessageLookupByLibrary.simpleMessage("Spawn Creator"),

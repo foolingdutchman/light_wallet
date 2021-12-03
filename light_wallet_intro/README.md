@@ -55,3 +55,6 @@ Creating canister "light_wallet_intro"...
 "light_wallet_intro" canister created on network "ic" with canister id: "ioq3w-sqaaa-aaaai-qa6lq-cai"
 Creating canister "light_wallet_intro_assets"...
 "light_wallet_intro_assets" canister created on network "ic" with canister id: "jd67y-5yaaa-aaaai-qa6ma-cai"
+
+
+dfx canister call light_wallet_intro init '(75,0,vec {principal "jn6lw-epeve-hpfvv-uftlr-5hlxb-lfoai-xiyhm-iyywh-zdhyh-yvgl6-zae"})'
