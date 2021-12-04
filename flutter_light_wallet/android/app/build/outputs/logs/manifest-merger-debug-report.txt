@@ -7,6 +7,7 @@ INJECTED from /Users/hehao/light_wallet/flutter_light_wallet/android/app/src/mai
 MERGED from /Users/hehao/light_wallet/flutter_light_wallet/android/app/src/main/AndroidManifest.xml:1:1-68:12
 MERGED from [:video_player] /Users/hehao/light_wallet/flutter_light_wallet/build/video_player/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:flutter_image_compress] /Users/hehao/light_wallet/flutter_light_wallet/build/flutter_image_compress/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
+MERGED from [:package_info] /Users/hehao/light_wallet/flutter_light_wallet/build/package_info/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:local_auth] /Users/hehao/light_wallet/flutter_light_wallet/build/local_auth/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
 MERGED from [:flutter_plugin_android_lifecycle] /Users/hehao/light_wallet/flutter_light_wallet/build/flutter_plugin_android_lifecycle/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:photo_manager] /Users/hehao/light_wallet/flutter_light_wallet/build/photo_manager/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
@@ -250,6 +251,8 @@ MERGED from [:video_player] /Users/hehao/light_wallet/flutter_light_wallet/build
 MERGED from [:video_player] /Users/hehao/light_wallet/flutter_light_wallet/build/video_player/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:flutter_image_compress] /Users/hehao/light_wallet/flutter_light_wallet/build/flutter_image_compress/intermediates/library_manifest/debug/AndroidManifest.xml:6:5-9:55
 MERGED from [:flutter_image_compress] /Users/hehao/light_wallet/flutter_light_wallet/build/flutter_image_compress/intermediates/library_manifest/debug/AndroidManifest.xml:6:5-9:55
+MERGED from [:package_info] /Users/hehao/light_wallet/flutter_light_wallet/build/package_info/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:package_info] /Users/hehao/light_wallet/flutter_light_wallet/build/package_info/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:local_auth] /Users/hehao/light_wallet/flutter_light_wallet/build/local_auth/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:local_auth] /Users/hehao/light_wallet/flutter_light_wallet/build/local_auth/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:flutter_plugin_android_lifecycle] /Users/hehao/light_wallet/flutter_light_wallet/build/flutter_plugin_android_lifecycle/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44

@@ -6,7 +6,7 @@ import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/local_auth_util.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:local_auth/local_auth.dart';
+import 'package:package_info/package_info.dart';
 
 import 'guesture_password.dart';
 
@@ -25,6 +25,7 @@ class _SettingPageState extends State<SettingPage> {
     S.current.activate_local_auth,
     S.current.version
   ];
+  String _version="";
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +59,11 @@ class _SettingPageState extends State<SettingPage> {
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.black87,
+                            fontWeight: FontWeight.bold
                           ),
                         ),
                         trailing: postion == _titles.length - 1
-                            ? Text('1.0.0')
+                            ? Text('$_version')
                             : Switch(
                                 value: (postion == 0
                                     ? _isGuestureOn
@@ -157,5 +159,13 @@ class _SettingPageState extends State<SettingPage> {
     _isFigurePrintOn = InstanceStore.deviceInfo!.isFigerPrintPasswordActive;
     _isGuestureOn = InstanceStore.deviceInfo!.isGuesturePrintPasswordActive;
     super.initState();
+    _getVersionInfo();
+  }
+
+  _getVersionInfo()async{
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      _version = packageInfo.version;
+    });
   }
 }

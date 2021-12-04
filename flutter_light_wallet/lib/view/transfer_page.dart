@@ -134,7 +134,7 @@ class _TransferPageState extends BasePageState<TransferPage> {
     var result =
         await Navigator.push(context, SlideRightRoute(page: ScanPage()));
     setState(() {
-      _address.text = result+"";
+      _address.text = result == null ? "" : result;
     });
   }
 

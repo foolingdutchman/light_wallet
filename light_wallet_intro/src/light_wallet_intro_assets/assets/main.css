@@ -231,16 +231,34 @@ span {
   font-size: 18px;
 }
 .show-case {
+  align-items: center;
   height: auto;
   box-shadow: 5px 5px 10px gray;
   border: 1px, solid #0e0e0e;
   margin-top: 50px;
   margin-bottom: 50px;
 }
-
+.show-case > span {
+  
+  align-self: center;
+  margin-top: 50px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #0e0e0e;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
 .show-case-image {
   height: 100%;
   width: 100%;
+}
+.functions-box {
+  height: auto;
+  width: 100%;
+  box-shadow: 5px 5px 10px gray;
+  border: 1px, solid #0e0e0e;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 @media screen and (max-width: 960px) {

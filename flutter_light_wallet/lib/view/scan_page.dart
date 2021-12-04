@@ -19,11 +19,10 @@ class _ScanPageState extends State<ScanPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      body: Column(
         children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
+          Expanded(
+            flex: 6,
             child: ScanView(
               controller: _controller,
               scanAreaScale: .7,
@@ -33,38 +32,32 @@ class _ScanPageState extends State<ScanPage> {
               },
             ),
           ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: Column(children: [
-              Expanded(
-                child: Container(),
-              ),
-              Container(
-                height: 50,
-                margin: EdgeInsets.only(bottom: 80, left: 80, right: 80),
-                child: Row(children: [
-                  InkWell(
-                    onTap: () {
-                      _toggleFlash();
-                    },
-                    child: Icon(_isFlashOn ? Icons.flash_on : Icons.flash_off,
-                        color: Colors.white, size: 40),
+          Expanded(
+            flex: 1,
+            child: Container(
+              color: Color(0x22ffffff),
+              padding: EdgeInsets.only(left: 80, right: 80),
+              child: Row(children: [
+                InkWell(
+                  onTap: () {
+                    _toggleFlash();
+                  },
+                  child: Icon(_isFlashOn ? Icons.flash_on : Icons.flash_off,
+                      color: Color(0xff39267e), size: 40),
+                ),
+                Expanded(child: Container()),
+                InkWell(
+                  onTap: () {
+                    _selectCodeImage(context);
+                  },
+                  child: Icon(
+                    Icons.collections,
+                    color: Color(0xff39267e),
+                    size: 40,
                   ),
-                  Expanded(child: Container()),
-                  InkWell(
-                    onTap: () {
-                      _selectCodeImage(context);
-                    },
-                    child: Icon(
-                      Icons.collections,
-                      color: Colors.white,
-                      size: 40,
-                    ),
-                  ),
-                ]),
-              ),
-            ]),
+                ),
+              ]),
+            ),
           )
         ],
       ),
@@ -80,14 +73,16 @@ class _ScanPageState extends State<ScanPage> {
 
   void _selectCodeImage(BuildContext context) async {
     AssetEntity? assetEntity = await ImageUtil.pickImage(context);
-    File? file = await assetEntity!.file;
-    String path = file?.path ?? "";
-    if (path != "") {
-      String? result = await Scan.parse(path);
-      if (result != null) {
-        setResult(context, result);
+    if (assetEntity != null) {
+      File? file = await assetEntity.file;
+      String path = file?.path ?? "";
+      if (path != "") {
+        String? result = await Scan.parse(path);
+        if (result != null) {
+          setResult(context, result);
+        }
+        print("result is : $result");
       }
-      print("result is : " + result! ?? "");
     }
   }
 
