@@ -6,6 +6,7 @@ import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/model/wallet.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
+import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
 import 'package:flutter_light_wallet/utils/rosetta_utils.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
 import 'package:flutter_light_wallet/view/collect_page.dart';
@@ -64,8 +65,8 @@ class _WalletPageState extends BasePageState<WalletPage> {
     if (!InstanceStore.isBlanceUpdated) {
       print('refresh********* is update wallet balance called!');
       SmartDialog.showLoading();
-      await RosettaUtils.getWalletBalance(wallet!);
-      // await ICPAccountUtils.getIcpBalance(wallet!);
+    //  await RosettaUtils.getWalletBalance(wallet!);
+       await ICPAccountUtils.getIcpBalance(wallet!);
 
       print('refresh********** network call finished!');
       InstanceStore.isBlanceUpdated = true;

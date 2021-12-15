@@ -214,4 +214,75 @@ class _WorkRoomPageState extends BaseNftPageState<WorkRoomPage> {
     setState(() {});
     SmartDialog.dismiss();
   }
+
+
+   Widget createListView(List<NftData>? nftDatas){
+    return Expanded(
+       child: ListView.separated(
+           itemBuilder: (context, position) => InkWell(
+             onTap: () {
+               Navigator.push(
+                   context,
+                   SlideRightRoute(
+                       page: NftPage(
+                         principal:
+                         "",nftData: nftDatas![position],
+                       )));
+             },
+             child: Container(
+               height: 120,
+               width: MediaQuery.of(context).size.width,
+               padding: EdgeInsets.all(10),
+               child: Row(
+                 children: [
+                   thumbnails.length == 0
+                       ? Container(
+                     width: 82,
+                     height: 110,
+                   )
+                       : Image.file(
+                     thumbnails![position],
+                     width: 82,
+                     height: 110,
+                     fit: BoxFit.fitWidth,
+                   ),
+                   Expanded(
+                       child: Padding(
+                         padding: const EdgeInsets.only(
+                           left: 15.0,
+                           top: 10,
+                           bottom: 10,
+                         ),
+                         child: Column(
+                           crossAxisAlignment: CrossAxisAlignment.start,
+                           children: [
+                             Text(
+                               "Title",
+                               style: TextStyle(
+                                   fontSize: 14,
+                                   fontWeight: FontWeight.bold),
+                             ),
+                             Text(nfts![position].title),
+                             Text(
+                               "Owner Id",
+                               style: TextStyle(
+                                   fontSize: 14,
+                                   fontWeight: FontWeight.bold),
+                             ),
+                             Text(nfts![position].owner.toString()),
+                           ],
+                         ),
+                       ))
+                 ],
+               ),
+             ),
+           ),
+           separatorBuilder: (context, position) => new Divider(
+             height: 1,
+             color: Colors.black26,
+           ),
+           itemCount: nfts == null ? 0 : nfts!.length),
+     );
+
+  }
 }

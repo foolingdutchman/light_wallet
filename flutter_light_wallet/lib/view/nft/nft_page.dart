@@ -322,7 +322,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
   }
 
   bool isNftSell() {
-    return nftData != null && nftData!.sellId != 0;
+    return nftData != null ;
   }
 
   bool isOwnerView() {

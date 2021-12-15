@@ -31,6 +31,9 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
   String _helptext = "";
   FocusNode _descFusNode = FocusNode();
   bool _isDescFocus = false;
+  BigInt cost =BigInt.zero;
+  String price ="0";
+  String principalStr ="";
 
   @override
   Widget constructView(BuildContext context) {
@@ -60,7 +63,7 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
                       height: 20,
                     ),
                     Padding(
-                      padding: EdgeInsets.only( left: 30, right: 30, bottom: 5),
+                      padding: EdgeInsets.only(left: 30, right: 30, bottom: 5),
                       child: Text(
                         S.of(context).input_author,
                         style: TextStyle(
@@ -70,8 +73,7 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.only( left: 30, right: 30),
+                      padding: const EdgeInsets.only(left: 30, right: 30),
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: S.of(context).input_author,
@@ -85,7 +87,8 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 30, left: 30, right: 30, bottom: 5),
+                      padding: EdgeInsets.only(
+                          top: 30, left: 30, right: 30, bottom: 5),
                       child: Text(
                         S.of(context).input_title,
                         style: TextStyle(
@@ -95,8 +98,7 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.only( left: 30, right: 30),
+                      padding: const EdgeInsets.only(left: 30, right: 30),
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: S.of(context).input_title,
@@ -110,7 +112,8 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 30, left: 30, right: 30, bottom: 5),
+                      padding: EdgeInsets.only(
+                          top: 30, left: 30, right: 30, bottom: 5),
                       child: Text(
                         S.of(context).input_desc,
                         style: TextStyle(
@@ -121,7 +124,7 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
-                           left: 30, right: 30, bottom: 30),
+                          left: 30, right: 30, bottom: 30),
                       child: Container(
                         height: 120,
                         padding: EdgeInsets.all(8),
@@ -163,7 +166,8 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
                             width: MediaQuery.of(context).size.width - 120,
                             height: MediaQuery.of(context).size.width - 120,
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black12, width: 0.5),
+                              border:
+                                  Border.all(color: Colors.black12, width: 0.5),
                               color: Colors.white,
                               boxShadow: [
                                 BoxShadow(
@@ -203,13 +207,26 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
                                         image: AssetEntityImageProvider(asset!,
                                             isOriginal: false),
                                         width:
-                                            MediaQuery.of(context).size.width - 118,
+                                            MediaQuery.of(context).size.width -
+                                                118,
                                         height:
-                                            MediaQuery.of(context).size.width - 118,
+                                            MediaQuery.of(context).size.width -
+                                                118,
                                       ),
                                     ),
                             ),
                           ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30, right: 30, top: 15 ),
+                      child: Text(
+                        " Mint Cost is $price ICP" ,
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red,
                         ),
                       ),
                     ),
@@ -247,8 +264,10 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
                   ),
                   ElevatedButton(
                       onPressed: () {
-                        _mintNft(context);
-                      }, child: Text(S.of(context).make_nft)),
+                       // _mintNft(context);
+                        _getMintInvoice();
+                      },
+                      child: Text(S.of(context).make_nft)),
                 ],
               ),
             ),
@@ -288,14 +307,45 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
     asset = await ImageUtil.pickImage(context);
     if (asset != null) {
       setState(() {});
+      _getMintPrice();
     }
+  }
+
+  _getMintPrice() async{
+    if(isCanisterInit&& asset != null ){
+      SmartDialog.showLoading();
+      File? file =await asset!.file;
+      var size = await file!.length();
+      cost = await walletCanister!.getMintPrice(size);
+      SmartDialog.dismiss();
+      setState(() {
+        price = getMintPriceString();
+      });
+    }
+  }
+
+  String getMintPriceString(){
+   return (cost / BigInt.from(100000000)).toString();
+  }
+
+  _getMintInvoice() async{
+    if(isCanisterInit&& asset != null ){
+      SmartDialog.showLoading();
+      if(principalStr.isEmpty) principalStr =ICPAccountUtils.createTempPrincipalString();
+      File? file =await asset!.file;
+      var size = await file!.length();
+      await walletCanister!.claimMintInvoice(principalStr, size);
+      SmartDialog.dismiss();
+
+    }
+
   }
 
   _mintNft(BuildContext context) async {
     if (isCanisterInit && asset != null) {
       SmartDialog.showLoading();
       File? file = await asset!.file;
-      var data =await file!.readAsBytes();
+      var data = await file!.readAsBytes();
       var thumbnail = await ImageUtil.getThumbnailData(data);
       var path = file.path;
       var name = path.substring(path.lastIndexOf("/") + 1, path.length);
@@ -321,7 +371,5 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
   }
 
   @override
-  void afterCaniterInted() {
-
-  }
+  void afterCaniterInted() {}
 }

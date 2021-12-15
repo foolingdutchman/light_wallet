@@ -20,6 +20,17 @@ class WalletCanisterProperty {
   static const sellId = 'sellId';
   static const nftData = 'nftData';
   static const price = 'price';
+  static const isPrivate = 'price';
+}
+
+class Order {
+  int? id;
+  int? timestamp_nanos;
+  Principal? principal;
+  Principal? owner;
+  int? price;
+
+
 }
 
 class NftData {
@@ -29,15 +40,15 @@ class NftData {
   String desc = "";
   String mediaType = "";
   int? timeStamp;
-  int? sellId;
   Uint8List? thumbnail;
   Principal? principal;
   Principal? owner;
   Principal? creater;
+  bool isPrivate= false;
 
-  NftData(int id,
+  NftData(
+      int id,
       int timeStamp,
-      int sellId,
       String author,
       String title,
       String desc,
@@ -45,7 +56,9 @@ class NftData {
       Uint8List? thumbnail,
       Principal? principal,
       Principal? owner,
-      Principal? creater) {
+      Principal? creater,
+      bool isPrivate,
+      ) {
     this.principal = principal;
     this.timeStamp = timeStamp;
     this.title = title;
@@ -55,7 +68,7 @@ class NftData {
     this.id = id;
     this.mediaType = mediaType;
     this.owner = owner;
-    this.sellId = sellId;
+    this.isPrivate = isPrivate;
     this.thumbnail = thumbnail;
   }
 
@@ -63,7 +76,6 @@ class NftData {
     return NftData(
         map[WalletCanisterProperty.id].toInt(),
         map[WalletCanisterProperty.timeStamp].toInt(),
-        map[WalletCanisterProperty.sellId].toInt(),
         map[WalletCanisterProperty.author],
         map[WalletCanisterProperty.title],
         map[WalletCanisterProperty.desc],
@@ -71,17 +83,18 @@ class NftData {
         Uint8List.fromList(map[WalletCanisterProperty.thumbnail].cast<int>()),
         map[WalletCanisterProperty.principal],
         map[WalletCanisterProperty.owner],
-        map[WalletCanisterProperty.creater]);
+        map[WalletCanisterProperty.creater],
+        map[WalletCanisterProperty.isPrivate],
+
+    );
   }
 }
 
- class WalletCanisterMethod {
+ class CanisterMethod {
   /// use staic const as method name
   static const getCaller = "getCaller";
-  static const greet = "greet";
   static const getNft = 'getNft';
   static const getNftAddress = 'getNftAddress';
-  static const mintNft = 'mintNft';
   static const spawnCreator = 'spawnCreator';
   static const getPrincipal = 'getPrincipal';
   static const cancelOrder = 'cancelOrder';
@@ -93,68 +106,20 @@ class NftData {
   static const queryOrders = 'queryOrders';
   static const getRemainSpace = 'getRemainSpace';
   static const getContractInfo = 'getContractInfo';
+  static const balanceOf = 'balanceOf';
+  static const confirmOrder = 'confirmOrder';
+  static const getTokenByPrincipalString = 'getTokenByPrincipalString';
+  static const getTokenMetaByPrincipalString = 'getTokenMetaByPrincipalString';
+  static const getTokenWithOrderByIndex = 'getTokenWithOrderByIndex';
+  static const getTokenWithOrderByPrincipalString = 'getTokenWithOrderByPrincipalString';
+  static const mint = 'mint';
+  static const claimMintInvoice = 'claimMintInvoice';
+  static const getMintPrice = 'getMintPrice';
 }
 
-ServiceClass _initService() {
-  final Property = IDL.Rec();
-  final Query = IDL.Rec();
-  final Update = IDL.Rec();
-  final Callback = IDL.Func([], [], []);
-  final Properties = IDL.Vec(Property);
-  final ContractMetadata = IDL.Record({
-    'name': IDL.Text,
-    'symbol': IDL.Text,
-  });
-  final Metadata = IDL.Record({
-    'id': IDL.Text,
-    'contentType': IDL.Text,
-    'owner': IDL.Principal,
-    'createdAt': IDL.Int,
-    'properties': Properties,
-  });
-  final Chunk = IDL.Record({
-    'data': IDL.Vec(IDL.Nat8),
-    'totalPages': IDL.Nat,
-    'nextPage': IDL.Opt(IDL.Nat),
-  });
-  final PayloadResult = IDL.Variant({
-    'Complete': IDL.Vec(IDL.Nat8),
-    'Chunk': Chunk,
-  });
-  final PublicToken = IDL.Record({
-    'id': IDL.Text,
-    'contentType': IDL.Text,
-    'owner': IDL.Principal,
-    'createdAt': IDL.Int,
-    'properties': Properties,
-    'payload': PayloadResult,
-  });
-  final WriteAsset = IDL.Variant({
-    'Init': IDL.Record({
-      'id': IDL.Text,
-      'size': IDL.Nat,
-      'callback': IDL.Opt(Callback),
-    }),
-    'Chunk': IDL.Record({
-      'id': IDL.Text,
-      'chunk': IDL.Vec(IDL.Nat8),
-      'callback': IDL.Opt(Callback),
-    }),
-  });
-  final AssetRequest = IDL.Variant({
-    'Put': IDL.Record({
-      'key': IDL.Text,
-      'contentType': IDL.Text,
-      'callback': IDL.Opt(Callback),
-      'payload': IDL.Variant({
-        'StagedData': IDL.Null,
-        'Payload': IDL.Vec(IDL.Nat8),
-      }),
-    }),
-    'Remove': IDL.Record({ 'key': IDL.Text, 'callback': IDL.Opt(Callback)}),
-    'StagedWrite': WriteAsset,
-  });
-  final Error = IDL.Variant({
+class ServiceProperties {
+  
+   static final Error = IDL.Variant({
     'Immutable': IDL.Null,
     'NotFound': IDL.Null,
     'Unauthorized': IDL.Null,
@@ -162,20 +127,57 @@ ServiceClass _initService() {
     'AuthorizedPrincipalLimitReached': IDL.Nat,
     'FailedToWrite': IDL.Text,
   });
-  final Result = IDL.Variant({ 'ok': IDL.Text, 'err': Error});
-  final Result_1 = IDL.Variant({ 'ok': Properties, 'err': Error});
-  final Result_2 = IDL.Variant({ 'ok': IDL.Null, 'err': Error});
-  final Result_3 = IDL.Variant({ 'ok': Metadata, 'err': Error});
-  final Result_4 = IDL.Variant({ 'ok': Chunk, 'err': Error});
-  final Result_5 = IDL.Variant({ 'ok': PublicToken, 'err': Error});
-  final Result_6 = IDL.Variant({ 'ok': IDL.Principal, 'err': Error});
-
-  final AuthorizeRequest = IDL.Record({
-    'p': IDL.Principal,
-    'id': IDL.Text,
-    'isAuthorized': IDL.Bool,
+  static final Result_1 = IDL.Variant({'ok': IDL.Principal, 'err': Error});
+  static final UncheckInvoice = IDL.Variant({
+    'Mint': IDL.Record({
+      'counterAddress': IDL.Text,
+      'timeStamp': IDL.Nat64,
+      'issueTo': IDL.Principal,
+      'charge': IDL.Nat64,
+      'nft_principal': IDL.Principal,
+    }),
+    'Purchase': IDL.Record({
+      'counterAddress': IDL.Text,
+      'timeStamp': IDL.Nat64,
+      'issueTo': IDL.Principal,
+      'charge': IDL.Nat64,
+      'amount': IDL.Nat64,
+      'receiptAddress': IDL.Text,
+      'nft_principal': IDL.Principal,
+    }),
   });
-  final  ContractInfo = IDL.Record({
+  static final Result_7 = IDL.Variant({'ok': UncheckInvoice, 'err': Error});
+  static final Order = IDL.Record({
+    'id': IDL.Nat,
+    'timestamp_nanos': IDL.Nat64,
+    'principal': IDL.Principal,
+    'owner': IDL.Principal,
+    'price': IDL.Nat64,
+  });
+  static final Invoice = IDL.Variant({
+    'Mint': IDL.Record({
+      'id': IDL.Nat,
+      'counterAddress': IDL.Text,
+      'timeStamp': IDL.Nat64,
+      'issueTo': IDL.Principal,
+      'charge': IDL.Nat64,
+      'nft_principal': IDL.Principal,
+      'checktimeStamp': IDL.Nat64,
+    }),
+    'Purchase': IDL.Record({
+      'id': IDL.Nat,
+      'counterAddress': IDL.Text,
+      'timeStamp': IDL.Nat64,
+      'issueTo': IDL.Principal,
+      'charge': IDL.Nat64,
+      'amount': IDL.Nat64,
+      'receiptAddress': IDL.Text,
+      'nft_principal': IDL.Principal,
+      'checktimeStamp': IDL.Nat64,
+    }),
+  });
+  static final Result_5 = IDL.Variant({'ok': Invoice, 'err': Error});
+  static final ContractInfo = IDL.Record({
     'nft_payload_size': IDL.Nat,
     'memory_size': IDL.Nat,
     'max_live_size': IDL.Nat,
@@ -184,177 +186,117 @@ ServiceClass _initService() {
     'heap_size': IDL.Nat,
     'authorized_users': IDL.Vec(IDL.Principal),
   });
-   final TopupCallback = IDL.Func([], [], []);
-   final Contract = IDL.Variant({
-    'ContractAuthorize': IDL.Record({
-      'isAuthorized': IDL.Bool,
-      'user': IDL.Principal,
-    }),
-    'Mint': IDL.Record({ 'id': IDL.Text, 'owner': IDL.Principal}),
+  static final ContractMetadata = IDL.Record({
+    'name': IDL.Text,
+    'symbol': IDL.Text,
   });
-   final Token = IDL.Variant({
-    'Authorize': IDL.Record({
-      'id': IDL.Text,
-      'isAuthorized': IDL.Bool,
-      'user': IDL.Principal,
-    }),
-    'Transfer': IDL.Record({
-      'id': IDL.Text,
-      'to': IDL.Principal,
-      'from': IDL.Principal,
-    }),
+  static final Time = IDL.Int;
+  static final TransferRecord = IDL.Record({
+    'to': IDL.Principal,
+    'transaction_hash': IDL.Nat,
+    'timeStamp': Time,
+    'from': IDL.Principal,
+    'nftPrincipal': IDL.Principal,
   });
-   final Message = IDL.Record({
-    'topupCallback': TopupCallback,
-    'createdAt': IDL.Int,
-    'topupAmount': IDL.Nat,
-    'event': IDL.Variant({ 'ContractEvent': Contract, 'TokenEvent': Token}),
-  });
-   final Callback__1 = IDL.Func([Message], [], []);
-   final CallbackStatus = IDL.Record({
-    'failedCalls': IDL.Nat,
-    'failedCallsLimit': IDL.Nat,
-    'callback': IDL.Opt(Callback__1),
-    'noTopupCallLimit': IDL.Nat,
-    'callsSinceLastTopup': IDL.Nat,
-  });
-
-   final HeaderField = IDL.Tuple([IDL.Text, IDL.Text]);
-   final Request = IDL.Record({
-    'url': IDL.Text,
-    'method': IDL.Text,
-    'body': IDL.Vec(IDL.Nat8),
-    'headers': IDL.Vec(HeaderField),
-  });
-   final StreamingCallbackToken = IDL.Record({
-    'key': IDL.Text,
-    'index': IDL.Nat,
-    'content_encoding': IDL.Text,
-  });
-   final StreamingCallbackResponse = IDL.Record({
-    'token': IDL.Opt(StreamingCallbackToken),
-    'body': IDL.Vec(IDL.Nat8),
-  });
-   final StreamingCallback = IDL.Func(
-    [StreamingCallbackToken],
-    [StreamingCallbackResponse],
-    ['query'],
-  );
-   final StreamingStrategy = IDL.Variant({
-    'Callback': IDL.Record({
-      'token': StreamingCallbackToken,
-      'callback': StreamingCallback,
-    }),
-  });
-   final Response = IDL.Record({
-    'body': IDL.Vec(IDL.Nat8),
-    'headers': IDL.Vec(HeaderField),
-    'streaming_strategy': IDL.Opt(StreamingStrategy),
-    'status_code': IDL.Nat16,
-  });
-   final Value = IDL.Variant({
-    'Int': IDL.Int,
-    'Nat': IDL.Nat,
-    'Empty': IDL.Null,
-    'Bool': IDL.Bool,
-    'Text': IDL.Text,
-    'Float': IDL.Float64,
-    'Principal': IDL.Principal,
-    'Class': IDL.Vec(Property),
-  });
-  Property.fill(
-      IDL.Record({ 'value': Value, 'name': IDL.Text, 'immutable': IDL.Bool})
-  );
-
-   final Egg = IDL.Record({
-    'contentType': IDL.Text,
-    'owner': IDL.Opt(IDL.Principal),
-    'properties': Properties,
+  static final NftData = IDL.Record({
+    'id': IDL.Nat,
+    'title': IDL.Text,
+    'creater': IDL.Principal,
+    'principal': IDL.Principal,
+    'thumbnail': IDL.Vec(IDL.Nat8),
+    'owner': IDL.Principal,
+    'timeStamp': Time,
+    'desc': IDL.Text,
+    'author': IDL.Text,
     'isPrivate': IDL.Bool,
-    'payload': IDL.Variant({
-      'StagedData': IDL.Text,
-      'Payload': IDL.Vec(IDL.Nat8),
-    }),
+    'mediaType': IDL.Text,
   });
-
-  Query.fill(IDL.Record({ 'name': IDL.Text, 'next': IDL.Vec(Query)}));
-  final QueryMode = IDL.Variant(
-      { 'All': IDL.Null, 'Some': IDL.Vec(Query)});
-
-  final QueryRequest = IDL.Record({ 'id': IDL.Text, 'mode': QueryMode});
-
-
-  final UpdateEventCallback = IDL.Variant({
-    'Set': Callback__1,
-    'Remove': IDL.Null,
+  static final Result_3 = IDL.Variant({'ok': NftData, 'err': Error});
+  static final Result_2 = IDL.Variant({'ok': IDL.Vec(IDL.Nat8), 'err': Error});
+  static final NftDatawithOrder = IDL.Record({
+    'order': IDL.Opt(Order),
+    'nftData': NftData,
   });
-   final UpdateMode = IDL.Variant(
-      { 'Set': Value, 'Next': IDL.Vec(Update)});
-  Update.fill(IDL.Record({ 'mode': UpdateMode, 'name': IDL.Text}));
-   final UpdateRequest = IDL.Record({
-    'id': IDL.Text,
-    'update': IDL.Vec(Update),
+  static final Result_6 = IDL.Variant({'ok': NftDatawithOrder, 'err': Error});
+  static final PublicNftData = IDL.Record({
+    'title': IDL.Text,
+    'thumbnail': IDL.Vec(IDL.Nat8),
+    'desc': IDL.Text,
+    'author': IDL.Text,
+    'isPrivate': IDL.Bool,
+    'mediaType': IDL.Text,
   });
-   final WriteNFT = IDL.Variant({
-    'Init': IDL.Record({ 'size': IDL.Nat, 'callback': IDL.Opt(Callback)}),
-    'Chunk': IDL.Record({
-      'id': IDL.Text,
-      'chunk': IDL.Vec(IDL.Nat8),
-      'callback': IDL.Opt(Callback),
-    }),
+  static final Result_4 = IDL.Variant({
+    'ok': IDL.Vec(NftDatawithOrder),
+    'err': Error,
   });
-  final ServiceClass Hub = IDL.Service({
-    'assetRequest': IDL.Func([AssetRequest], [Result_2], []),
-    'authorize': IDL.Func([AuthorizeRequest], [Result_2], []),
-    'balanceOf': IDL.Func([IDL.Principal], [IDL.Vec(IDL.Text)], ['query']),
-    'getAuthorized': IDL.Func([IDL.Text], [IDL.Vec(IDL.Principal)], ['query']),
-    'getContractInfo': IDL.Func([], [ContractInfo], []),
-    'getEventCallbackStatus': IDL.Func([], [CallbackStatus], []),
-    'getMetadata': IDL.Func([], [ContractMetadata], ['query']),
-    'getTotalMinted': IDL.Func([], [IDL.Nat], ['query']),
-    'http_request': IDL.Func([Request], [Response], ['query']),
-    'http_request_streaming_callback': IDL.Func(
-      [StreamingCallbackToken],
-      [StreamingCallbackResponse],
+  static final Result = IDL.Variant({'ok': IDL.Null, 'err': Error});
+
+}
+
+ServiceClass _initService() {
+
+ 
+  final LWalletNft = IDL.Service({
+    'balanceOf': IDL.Func(
+      [IDL.Principal],
+      [IDL.Vec(IDL.Principal)],
       ['query'],
     ),
-    'init': IDL.Func([IDL.Vec(IDL.Principal), ContractMetadata], [], []),
-    'isAuthorized': IDL.Func([IDL.Text, IDL.Principal], [IDL.Bool], ['query']),
-    'listAssets': IDL.Func(
-      [],
-      [IDL.Vec(IDL.Tuple([IDL.Text, IDL.Text, IDL.Nat]))],
-      ['query'],
-    ),
-    'mint': IDL.Func([Egg], [Result], []),
-    'nftStreamingCallback': IDL.Func(
-      [StreamingCallbackToken],
-      [StreamingCallbackResponse],
-      ['query'],
-    ),
-    'ownerOf': IDL.Func([IDL.Text], [Result_6], ['query']),
-    'queryProperties': IDL.Func([QueryRequest], [Result_1], ['query']),
-    'staticStreamingCallback': IDL.Func(
-      [StreamingCallbackToken],
-      [StreamingCallbackResponse],
-      ['query'],
-    ),
-    'tokenByIndex': IDL.Func([IDL.Text], [Result_5], []),
-    'tokenChunkByIndex': IDL.Func([IDL.Text, IDL.Nat], [Result_4], []),
-    'tokenMetadataByIndex': IDL.Func([IDL.Text], [Result_3], []),
-    'transfer': IDL.Func([IDL.Principal, IDL.Text], [Result_2], []),
-    'updateContractOwners': IDL.Func(
-      [IDL.Principal, IDL.Bool],
-      [Result_2],
+    'cancelOrder': IDL.Func([IDL.Principal], [ServiceProperties.Result_1], []),
+    'claimMintInvoice': IDL.Func([IDL.Nat, IDL.Principal], [ServiceProperties.Result_7], []),
+    'claimPurchaseInvoice': IDL.Func([ServiceProperties.Order], [ServiceProperties.UncheckInvoice], []),
+    'confirmOrder': IDL.Func(
+      [IDL.Principal, IDL.Nat64, ServiceProperties.UncheckInvoice],
+      [ServiceProperties.Result_5],
       [],
     ),
-    'updateEventCallback': IDL.Func([UpdateEventCallback], [], []),
-    'updateProperties': IDL.Func([UpdateRequest], [Result_1], []),
+    'getCaller': IDL.Func([], [IDL.Text], []),
+    'getCallerAddress': IDL.Func([], [IDL.Text], []),
+    'getContractInfo': IDL.Func([], [ServiceProperties.ContractInfo], []),
+    'getMetadata': IDL.Func([], [ServiceProperties.ContractMetadata], ['query']),
+    'getMintPrice': IDL.Func([IDL.Nat], [IDL.Nat64], []),
+    'getOwnTransferRecord': IDL.Func([], [IDL.Vec(ServiceProperties.TransferRecord)], []),
+    'getOwner': IDL.Func([], [IDL.Principal], []),
+    'getPrincipal': IDL.Func([IDL.Text], [IDL.Principal], []),
+    'getRemainSpace': IDL.Func([], [IDL.Nat], []),
+    'getTokenByPrincipalString': IDL.Func([IDL.Text], [ServiceProperties.Result_3], []),
+    'getTokenMetaByPrincipalString': IDL.Func([IDL.Text], [ServiceProperties.Result_2], []),
+    'getTokenWithOrderByIndex': IDL.Func([IDL.Nat], [ServiceProperties.Result_6], []),
+    'getTokenWithOrderByPrincipalString': IDL.Func([IDL.Text], [ServiceProperties.Result_6], []),
+    'getTransferRecordByHash': IDL.Func(
+      [IDL.Nat],
+      [IDL.Vec(ServiceProperties.TransferRecord)],
+      ['query'],
+    ),
+    'getTransferRecordByPrincipal': IDL.Func(
+      [IDL.Principal],
+      [IDL.Vec(ServiceProperties.TransferRecord)],
+      ['query'],
+    ),
+    'init': IDL.Func([IDL.Vec(IDL.Principal), ServiceProperties.ContractMetadata], [], []),
+    'makeOrder': IDL.Func([IDL.Principal, IDL.Nat64], [ServiceProperties.Result_1], []),
+    'mint': IDL.Func(
+      [
+        ServiceProperties.PublicNftData, IDL.Text, IDL.Vec(IDL.Nat8), IDL.Nat64, ServiceProperties.UncheckInvoice],
+      [ServiceProperties.Result_5],
+      [],
+    ),
+    'ownerOf': IDL.Func([IDL.Text], [ServiceProperties.Result_1], ['query']),
+    'queryNftsWithOrder': IDL.Func([IDL.Nat], [ServiceProperties.Result_4], []),
+    'spawnCreator': IDL.Func([], [IDL.Text], []),
+    'tokenByIndex': IDL.Func([IDL.Nat], [ServiceProperties.Result_3], []),
+    'tokenMetaByIndex': IDL.Func([IDL.Nat], [ServiceProperties.Result_2], []),
+    'transfer': IDL.Func([IDL.Principal, IDL.Text], [ServiceProperties.Result], []),
+    'updateOrder': IDL.Func([IDL.Principal, IDL.Nat64], [ServiceProperties.Result_1], []),
+    'updateTokenPrivate': IDL.Func([IDL.Principal, IDL.Bool], [ServiceProperties.Result], []),
     'wallet_receive': IDL.Func([], [], []),
-    'writeStaged': IDL.Func([WriteNFT], [Result], []),
   });
+  return LWalletNft;
 
-
-  return Hub;
+ 
+  
+  
 }
 
 class WalletCanister {
@@ -388,17 +330,11 @@ class WalletCanister {
   ///  CanisterActor.getFunc(String)?.call(List<dynamic>) -> Future<dynamic>
   /// ```
 
-  Future<void> greet(String word) async {
-    try {
-      await actor?.getFunc(WalletCanisterMethod.greet)?.call([word]);
-    } catch (e) {
-      rethrow;
-    }
-  }
+ 
 
   Future<String> spawnCreator() async {
     try {
-      var res = await actor?.getFunc(WalletCanisterMethod.spawnCreator)!([]);
+      var res = await actor?.getFunc(CanisterMethod.spawnCreator)!([]);
       if (res != null) {
         return res;
       }
@@ -410,7 +346,7 @@ class WalletCanister {
 
   Future<String> getCaller() async {
     try {
-      var res = await actor?.getFunc(WalletCanisterMethod.getCaller)!([]);
+      var res = await actor?.getFunc(CanisterMethod.getCaller)!([]);
       if (res != null) {
         return res;
       }
@@ -423,7 +359,7 @@ class WalletCanister {
   Future<Principal> getPrincipal(String principalStr) async {
     try {
       Principal principal = await actor
-          ?.getFunc(WalletCanisterMethod.getPrincipal)
+          ?.getFunc(CanisterMethod.getPrincipal)
           ?.call([principalStr]);
       return principal;
     } catch (e) {
@@ -434,7 +370,7 @@ class WalletCanister {
   Future<void> getContractInfo() async{
     try {
       Map response =
-      await actor?.getFunc(WalletCanisterMethod.getContractInfo)!([]);
+      await actor?.getFunc(CanisterMethod.getContractInfo)!([]);
       print("result is: " + response.toString());
     } catch (e) {
       rethrow;
@@ -444,7 +380,7 @@ class WalletCanister {
   Future<int> getCanisterRemainSpace() async {
     try {
       BigInt spacebyte =
-      await actor?.getFunc(WalletCanisterMethod.getRemainSpace)!([]);
+      await actor?.getFunc(CanisterMethod.getRemainSpace)!([]);
       return spacebyte.toInt() ~/ 1024;
     } catch (e) {
       rethrow;
@@ -454,19 +390,51 @@ class WalletCanister {
   Future<void> makeOrder(Principal principal, double price) async {
     try {
       BigInt priceb = BigInt.from(price * 100000000);
-      Map result = await actor?.getFunc(WalletCanisterMethod.makeOrder)?.call(
+      Map result = await actor?.getFunc(CanisterMethod.makeOrder)?.call(
           [principal, priceb]);
     } catch (e) {
       rethrow;
     }
   }
+ Future<Map?> claimMintInvoice(String principalStr,int dataSize) async {
+    try {
+      Principal principal =Principal.fromText(principalStr);
+      BigInt size = BigInt.from(dataSize);
+      Map result = await actor?.getFunc(CanisterMethod.claimMintInvoice)?.call(
+          [size, principal]);
+      print('resp is ' + result.toString());
+      if (result.containsKey('ok')) {
+           Map inv = result.entries.elementAt(0).value.entries.firstWhere((e) => e.key == 'Mint').value;
+           print('invoice is ' + inv.toString());
+           return inv;
+      }
+
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
+  Future<BigInt> getMintPrice(int dataSize) async {
+    try {
+      BigInt size = BigInt.from(dataSize);
+      BigInt price  = await actor?.getFunc(CanisterMethod.getMintPrice)?.call(
+          [size]);
+      return price;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
+
 
   Future<NftData> getNft(String principalStr) async {
     var principal = await getPrincipal(principalStr);
 
     try {
       List records =
-      await actor?.getFunc(WalletCanisterMethod.getNft)?.call([principal]);
+      await actor?.getFunc(CanisterMethod.getNft)?.call([principal]);
       NftData data = NftData.transformData(records[0]);
       // record.containsKey(key)
       print('creater is ' + data.creater.toString());
@@ -482,7 +450,7 @@ class WalletCanister {
   Future<List<NftData>> qureyNfts(int page) async {
     try {
       List records =
-      await actor?.getFunc(WalletCanisterMethod.queryNfts)?.call([page]);
+      await actor?.getFunc(CanisterMethod.queryNfts)?.call([page]);
       List<NftData> nfts =
       records.map((map) => NftData.transformData(map)).toList();
       print("result is $nfts ");
@@ -498,7 +466,7 @@ class WalletCanister {
     String principal =
     ICPAccountUtils.createPrincipal(timeStamp.toU8a()).toString();
     try {
-      Map result = await actor?.getFunc(WalletCanisterMethod.mintNft)?.call([
+      Map result = await actor?.getFunc(CanisterMethod.mint)?.call([
         data,
         author,
         title,
