@@ -97,4 +97,8 @@ class ICPAccountUtils {
     return createPrincipal(TimeUtil.currentTImeMillis().toU8a()).toString();
   }
 
+  static double fromICPBigInt2Amount(BigInt amount){
+    return (amount / BigInt.from(pow(10, 8))).toDouble();
+  }
+
 }

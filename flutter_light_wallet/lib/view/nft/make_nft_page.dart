@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_nft_page_state.dart';
@@ -9,10 +10,13 @@ import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:agent_dart/agent_dart.dart';
 import 'package:flutter_light_wallet/utils/image_util.dart';
 import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
+import 'package:flutter_light_wallet/utils/nft_canister.dart';
 import 'package:flutter_light_wallet/utils/time_util.dart';
 import 'package:flutter_light_wallet/view/nft/nft_page.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+
+import 'invoice_page.dart';
 
 class MakeNftPage extends StatefulWidget {
   const MakeNftPage({Key? key}) : super(key: key);
@@ -34,6 +38,7 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
   BigInt cost =BigInt.zero;
   String price ="0";
   String principalStr ="";
+
 
   @override
   Widget constructView(BuildContext context) {
@@ -265,7 +270,7 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
                   ElevatedButton(
                       onPressed: () {
                        // _mintNft(context);
-                        _getMintInvoice();
+                        _getMintInvoice(context);
                       },
                       child: Text(S.of(context).make_nft)),
                 ],
@@ -315,6 +320,8 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
     if(isCanisterInit&& asset != null ){
       SmartDialog.showLoading();
       File? file =await asset!.file;
+
+
       var size = await file!.length();
       cost = await walletCanister!.getMintPrice(size);
       SmartDialog.dismiss();
@@ -328,42 +335,67 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
    return (cost / BigInt.from(100000000)).toString();
   }
 
-  _getMintInvoice() async{
+  _getMintInvoice(BuildContext context) async{
+
+    if(!_isDataPrepared()){
+      SmartDialog.showToast("Data is not ready...");
+      return;
+    }
     if(isCanisterInit&& asset != null ){
       SmartDialog.showLoading();
       if(principalStr.isEmpty) principalStr =ICPAccountUtils.createTempPrincipalString();
       File? file =await asset!.file;
       var size = await file!.length();
-      await walletCanister!.claimMintInvoice(principalStr, size);
+      Invoice? invoice =   await walletCanister!.claimMintInvoice(principalStr, size);
       SmartDialog.dismiss();
+      if(invoice !=null){
+        BigInt blockHeight= await  Navigator.push(context, SlideRightRoute(page: InvociePage(invoiceData: invoice)));
+        PostNftData nftData = await _prepareNftData(invoice, blockHeight!);
+        await _mintNft(context,nftData);
 
+      }
     }
 
   }
 
-  _mintNft(BuildContext context) async {
+  bool _isDataPrepared(){
+    if(_authorController.text.isEmpty) return false;
+    if(_titleController.text.isEmpty) return false;
+    if(_descController.text.isEmpty) return false;
+    if(asset==null) return false;
+    return true;
+  }
+
+  Future<PostNftData> _prepareNftData(Invoice invoice,BigInt blockHeight) async{
+
+    File? file = await asset!.file;
+    var data = await file!.readAsBytes();
+    var thumbnail = await ImageUtil.getThumbnailData(data);
+    var path = file.path;
+    var name = path.substring(path.lastIndexOf("/") + 1, path.length);
+    var suffix = name.substring(name.lastIndexOf(".") + 1, name.length);
+    Map<String, dynamic> map ={
+      'title': _authorController.text,
+      'thumbnail': thumbnail,
+      'desc': _descController.text,
+      'author': _authorController.text,
+      'isPrivate': false,
+      'mediaType':suffix,
+    };
+
+    return PostNftData(map, data,invoice,blockHeight);
+  }
+
+  _mintNft(BuildContext context, PostNftData nftData) async {
     if (isCanisterInit && asset != null) {
       SmartDialog.showLoading();
-      File? file = await asset!.file;
-      var data = await file!.readAsBytes();
-      var thumbnail = await ImageUtil.getThumbnailData(data);
-      var path = file.path;
-      var name = path.substring(path.lastIndexOf("/") + 1, path.length);
-      var suffix = name.substring(name.lastIndexOf(".") + 1, name.length);
-      String principal = await walletCanister!.mintNft(
-          data,
-          thumbnail,
-          _authorController.text,
-          _titleController.text,
-          _descController.text,
-          suffix,
-          TimeUtil.currentTImeMillis());
-      if (principal.isNotEmpty) {
+      Invoice? invoice = await walletCanister!.mintNft(nftData);
+      if (invoice!= null) {
         Navigator.push(
             context,
             SlideRightRoute(
-                page: NftPage(
-              principal: principal,
+                page: InvociePage(
+              invoiceData: invoice,
             )));
       }
       SmartDialog.dismiss();
@@ -372,4 +404,12 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
 
   @override
   void afterCaniterInted() {}
+}
+
+class PostNftData{
+  Map<String, dynamic>? map;
+  Uint8List? meta;
+  Invoice? invoice;
+  BigInt? blockHeight;
+  PostNftData(this.map, this.meta ,this.invoice, this.blockHeight);
 }

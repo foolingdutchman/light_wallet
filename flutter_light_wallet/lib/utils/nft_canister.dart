@@ -1,7 +1,10 @@
+import 'dart:core';
+import 'dart:core';
 import 'dart:typed_data';
 import 'package:agent_dart/agent_dart.dart';
 import 'package:agent_dart/candid/idl.dart';
 import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
+import 'package:flutter_light_wallet/view/nft/make_nft_page.dart';
 
 class WalletCanisterProperty {
   // property name
@@ -20,17 +23,150 @@ class WalletCanisterProperty {
   static const sellId = 'sellId';
   static const nftData = 'nftData';
   static const price = 'price';
-  static const isPrivate = 'price';
+  static const isPrivate = 'isPrivate';
 }
 
+enum InvoiceType { MINT, PURCHASE, UNCHECK_MINT, UNCHECK_PURCHASE }
+
 class Order {
-  int? id;
-  int? timestamp_nanos;
+  BigInt? id;
+  BigInt? timestamp_nanos;
   Principal? principal;
   Principal? owner;
-  int? price;
+  BigInt? price;
 
+  Order(this.id, this.timestamp_nanos, this.principal, this.owner, this.price);
 
+  static Order makeFromMap(Map map) {
+    return Order(map[WalletCanisterProperty.id], map["timestamp_nanos"],
+        map["principal"], map["owner"], map["price"]);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'timestamp_nanos': timestamp_nanos,
+      'principal': principal,
+      'owner': owner,
+      'price': price,
+    };
+  }
+}
+
+class NftDataWithOrder {
+  NftData? nftData;
+  Order? order;
+
+  NftDataWithOrder(this.nftData, this.order);
+
+  static NftDataWithOrder makeFromMap(Map map) {
+    NftData? nftData = NftData.transformData(
+        map.entries.firstWhere((e) => e.key == 'nftData').value);
+
+    Order? order =
+        map.entries.firstWhere((e) => e.key == 'order').value.length != 0
+            ? Order.makeFromMap(
+                map.entries.firstWhere((e) => e.key == 'order').value[0])
+            : null;
+    return NftDataWithOrder(nftData, order);
+  }
+}
+
+class Invoice {
+  BigInt? id;
+
+  String counterAddress = "";
+  BigInt? timeStamp;
+
+  Principal? issueTo;
+  BigInt? charge;
+  BigInt? amount;
+  String? receiptAddress;
+  Principal? nft_principal;
+  BigInt? checktimeStamp;
+  InvoiceType type;
+
+  Invoice(
+      this.id,
+      this.counterAddress,
+      this.timeStamp,
+      this.issueTo,
+      this.charge,
+      this.amount,
+      this.receiptAddress,
+      this.nft_principal,
+      this.checktimeStamp,
+      this.type);
+
+  double value() {
+    return (((charge == null ? BigInt.zero : charge!) +
+                (amount == null ? BigInt.zero : amount!)) /
+            BigInt.from(100000000))
+        .toDouble();
+  }
+
+  bool isMintInvoice() {
+    return type == InvoiceType.MINT ||
+        type == InvoiceType.UNCHECK_MINT;
+  }
+
+  bool isUncheckInvoice() {
+    return type == InvoiceType.UNCHECK_MINT ||
+        type == InvoiceType.UNCHECK_PURCHASE;
+  }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> map = {
+      'id': id,
+      'counterAddress': counterAddress,
+      'timeStamp': timeStamp,
+      'issueTo': issueTo,
+      'charge': charge,
+      'amount': amount,
+      'receiptAddress': receiptAddress,
+      'nft_principal': nft_principal,
+      'checktimeStamp': checktimeStamp,
+    }..removeWhere(
+        (dynamic key, dynamic value) => key == null || value == null);
+
+    if (type == InvoiceType.UNCHECK_MINT || type == InvoiceType.MINT)
+      return {"Mint": map};
+    else
+      return {"Purchase": map};
+  }
+
+  static Invoice fromMapData(Map map) {
+    if (map.containsKey("Mint")) {
+      Map data = map.entries.firstWhere((e) => e.key == 'Mint').value;
+
+      return Invoice(
+          data["id"],
+          data["counterAddress"],
+          data["timeStamp"],
+          data["issueTo"],
+          data["charge"],
+          data["amount"],
+          data["receiptAddress"],
+          data["nft_principal"],
+          data["checktimeStamp"],
+          data["id"] == null ? InvoiceType.UNCHECK_MINT : InvoiceType.MINT);
+    } else {
+      Map data = map.entries.firstWhere((e) => e.key == 'Purchase').value;
+      return Invoice(
+          data["id"].toInt(),
+          data["counterAddress"],
+          data["timeStamp"],
+          data["issueTo"],
+          data["charge"],
+          data["amount"],
+          data["receiptAddress"],
+          data["nft_principal"],
+          data["checktimeStamp"],
+          data["id"] == null
+              ? InvoiceType.UNCHECK_PURCHASE
+              : InvoiceType.PURCHASE);
+    }
+  }
 }
 
 class NftData {
@@ -44,21 +180,21 @@ class NftData {
   Principal? principal;
   Principal? owner;
   Principal? creater;
-  bool isPrivate= false;
+  bool isPrivate = false;
 
   NftData(
-      int id,
-      int timeStamp,
-      String author,
-      String title,
-      String desc,
-      String mediaType,
-      Uint8List? thumbnail,
-      Principal? principal,
-      Principal? owner,
-      Principal? creater,
-      bool isPrivate,
-      ) {
+    int id,
+    int timeStamp,
+    String author,
+    String title,
+    String desc,
+    String mediaType,
+    Uint8List? thumbnail,
+    Principal? principal,
+    Principal? owner,
+    Principal? creater,
+    bool isPrivate,
+  ) {
     this.principal = principal;
     this.timeStamp = timeStamp;
     this.title = title;
@@ -74,23 +210,22 @@ class NftData {
 
   static NftData transformData(Map map) {
     return NftData(
-        map[WalletCanisterProperty.id].toInt(),
-        map[WalletCanisterProperty.timeStamp].toInt(),
-        map[WalletCanisterProperty.author],
-        map[WalletCanisterProperty.title],
-        map[WalletCanisterProperty.desc],
-        map[WalletCanisterProperty.mediaType],
-        Uint8List.fromList(map[WalletCanisterProperty.thumbnail].cast<int>()),
-        map[WalletCanisterProperty.principal],
-        map[WalletCanisterProperty.owner],
-        map[WalletCanisterProperty.creater],
-        map[WalletCanisterProperty.isPrivate],
-
+      map[WalletCanisterProperty.id].toInt(),
+      map[WalletCanisterProperty.timeStamp].toInt(),
+      map[WalletCanisterProperty.author],
+      map[WalletCanisterProperty.title],
+      map[WalletCanisterProperty.desc],
+      map[WalletCanisterProperty.mediaType],
+      Uint8List.fromList(map[WalletCanisterProperty.thumbnail].cast<int>()),
+      map[WalletCanisterProperty.principal],
+      map[WalletCanisterProperty.owner],
+      map[WalletCanisterProperty.creater],
+      map[WalletCanisterProperty.isPrivate],
     );
   }
 }
 
- class CanisterMethod {
+class CanisterMethod {
   /// use staic const as method name
   static const getCaller = "getCaller";
   static const getNft = 'getNft';
@@ -100,7 +235,7 @@ class NftData {
   static const cancelOrder = 'cancelOrder';
   static const getNftMetaData = 'getNftMetaData';
   static const makeOrder = 'makeOrder';
-  static const queryNfts = 'queryNfts';
+  static const queryNftsWithOrder = 'queryNftsWithOrder';
   static const transferOwner = 'transferOwner';
   static const updateOrder = 'updateOrder';
   static const queryOrders = 'queryOrders';
@@ -111,15 +246,18 @@ class NftData {
   static const getTokenByPrincipalString = 'getTokenByPrincipalString';
   static const getTokenMetaByPrincipalString = 'getTokenMetaByPrincipalString';
   static const getTokenWithOrderByIndex = 'getTokenWithOrderByIndex';
-  static const getTokenWithOrderByPrincipalString = 'getTokenWithOrderByPrincipalString';
+  static const getTokenWithOrderByPrincipalString =
+      'getTokenWithOrderByPrincipalString';
   static const mint = 'mint';
   static const claimMintInvoice = 'claimMintInvoice';
   static const getMintPrice = 'getMintPrice';
+  static const balanceOfWithOrder = 'balanceOfWithOrder';
+  static const invoiceOf = 'invoiceOf';
+  static const isNftCreator = 'isNftCreator';
 }
 
 class ServiceProperties {
-  
-   static final Error = IDL.Variant({
+  static final Error = IDL.Variant({
     'Immutable': IDL.Null,
     'NotFound': IDL.Null,
     'Unauthorized': IDL.Null,
@@ -231,39 +369,47 @@ class ServiceProperties {
     'err': Error,
   });
   static final Result = IDL.Variant({'ok': IDL.Null, 'err': Error});
-
 }
 
 ServiceClass _initService() {
-
- 
   final LWalletNft = IDL.Service({
     'balanceOf': IDL.Func(
       [IDL.Principal],
       [IDL.Vec(IDL.Principal)],
       ['query'],
     ),
+    'balanceOfWithOrder':
+        IDL.Func([], [IDL.Vec(ServiceProperties.NftDatawithOrder)], []),
     'cancelOrder': IDL.Func([IDL.Principal], [ServiceProperties.Result_1], []),
-    'claimMintInvoice': IDL.Func([IDL.Nat, IDL.Principal], [ServiceProperties.Result_7], []),
-    'claimPurchaseInvoice': IDL.Func([ServiceProperties.Order], [ServiceProperties.UncheckInvoice], []),
+    'claimMintInvoice':
+        IDL.Func([IDL.Nat, IDL.Principal], [ServiceProperties.Result_7], []),
+    'claimPurchaseInvoice': IDL.Func(
+        [ServiceProperties.Order], [ServiceProperties.UncheckInvoice], []),
     'confirmOrder': IDL.Func(
-      [IDL.Principal, IDL.Nat64, ServiceProperties.UncheckInvoice],
+      [IDL.Principal, IDL.Vec(IDL.Nat64), ServiceProperties.UncheckInvoice],
       [ServiceProperties.Result_5],
       [],
     ),
     'getCaller': IDL.Func([], [IDL.Text], []),
     'getCallerAddress': IDL.Func([], [IDL.Text], []),
     'getContractInfo': IDL.Func([], [ServiceProperties.ContractInfo], []),
-    'getMetadata': IDL.Func([], [ServiceProperties.ContractMetadata], ['query']),
+    'getMetadata':
+        IDL.Func([], [ServiceProperties.ContractMetadata], ['query']),
     'getMintPrice': IDL.Func([IDL.Nat], [IDL.Nat64], []),
-    'getOwnTransferRecord': IDL.Func([], [IDL.Vec(ServiceProperties.TransferRecord)], []),
+    'getNftOrder' : IDL.Func([IDL.Principal], [IDL.Opt(ServiceProperties.Order)], ['query']),
+    'getOwnTransferRecord':
+        IDL.Func([], [IDL.Vec(ServiceProperties.TransferRecord)], []),
     'getOwner': IDL.Func([], [IDL.Principal], []),
     'getPrincipal': IDL.Func([IDL.Text], [IDL.Principal], []),
     'getRemainSpace': IDL.Func([], [IDL.Nat], []),
-    'getTokenByPrincipalString': IDL.Func([IDL.Text], [ServiceProperties.Result_3], []),
-    'getTokenMetaByPrincipalString': IDL.Func([IDL.Text], [ServiceProperties.Result_2], []),
-    'getTokenWithOrderByIndex': IDL.Func([IDL.Nat], [ServiceProperties.Result_6], []),
-    'getTokenWithOrderByPrincipalString': IDL.Func([IDL.Text], [ServiceProperties.Result_6], []),
+    'getTokenByPrincipalString':
+        IDL.Func([IDL.Text], [ServiceProperties.Result_3], []),
+    'getTokenMetaByPrincipalString':
+        IDL.Func([IDL.Text], [ServiceProperties.Result_2], []),
+    'getTokenWithOrderByIndex':
+        IDL.Func([IDL.Nat], [ServiceProperties.Result_6], []),
+    'getTokenWithOrderByPrincipalString':
+        IDL.Func([IDL.Text], [ServiceProperties.Result_6], []),
     'getTransferRecordByHash': IDL.Func(
       [IDL.Nat],
       [IDL.Vec(ServiceProperties.TransferRecord)],
@@ -274,11 +420,21 @@ ServiceClass _initService() {
       [IDL.Vec(ServiceProperties.TransferRecord)],
       ['query'],
     ),
-    'init': IDL.Func([IDL.Vec(IDL.Principal), ServiceProperties.ContractMetadata], [], []),
-    'makeOrder': IDL.Func([IDL.Principal, IDL.Nat64], [ServiceProperties.Result_1], []),
+    'init': IDL.Func(
+        [IDL.Vec(IDL.Principal), ServiceProperties.ContractMetadata], [], []),
+    'invoiceOf':
+        IDL.Func([], [IDL.Opt(IDL.Vec(ServiceProperties.Invoice))], []),
+    'isNftCreator' : IDL.Func([], [IDL.Bool], []),
+    'makeOrder':
+        IDL.Func([IDL.Principal, IDL.Nat64], [ServiceProperties.Result_1], []),
     'mint': IDL.Func(
       [
-        ServiceProperties.PublicNftData, IDL.Text, IDL.Vec(IDL.Nat8), IDL.Nat64, ServiceProperties.UncheckInvoice],
+        ServiceProperties.PublicNftData,
+        IDL.Text,
+        IDL.Vec(IDL.Nat8),
+        IDL.Nat64,
+        ServiceProperties.UncheckInvoice
+      ],
       [ServiceProperties.Result_5],
       [],
     ),
@@ -287,16 +443,15 @@ ServiceClass _initService() {
     'spawnCreator': IDL.Func([], [IDL.Text], []),
     'tokenByIndex': IDL.Func([IDL.Nat], [ServiceProperties.Result_3], []),
     'tokenMetaByIndex': IDL.Func([IDL.Nat], [ServiceProperties.Result_2], []),
-    'transfer': IDL.Func([IDL.Principal, IDL.Text], [ServiceProperties.Result], []),
-    'updateOrder': IDL.Func([IDL.Principal, IDL.Nat64], [ServiceProperties.Result_1], []),
-    'updateTokenPrivate': IDL.Func([IDL.Principal, IDL.Bool], [ServiceProperties.Result], []),
+    'transfer':
+        IDL.Func([IDL.Principal, IDL.Text], [ServiceProperties.Result], []),
+    'updateOrder':
+        IDL.Func([IDL.Principal, IDL.Nat64], [ServiceProperties.Result_1], []),
+    'updateTokenPrivate':
+        IDL.Func([IDL.Principal, IDL.Bool], [ServiceProperties.Result], []),
     'wallet_receive': IDL.Func([], [], []),
   });
   return LWalletNft;
-
- 
-  
-  
 }
 
 class WalletCanister {
@@ -312,11 +467,12 @@ class WalletCanister {
   WalletCanister({required this.canisterId, required this.url});
 
   // A future method because we need debug mode works for local developement
-  Future<void> setAgent({String? newCanisterId,
-    ServiceClass? newIdl,
-    String? newUrl,
-    Identity? newIdentity,
-    bool? debug}) async {
+  Future<void> setAgent(
+      {String? newCanisterId,
+      ServiceClass? newIdl,
+      String? newUrl,
+      Identity? newIdentity,
+      bool? debug}) async {
     _agentFactory ??= await AgentFactory.createAgent(
         canisterId: newCanisterId ?? canisterId,
         url: newUrl ?? url,
@@ -329,8 +485,6 @@ class WalletCanister {
   /// ```dart
   ///  CanisterActor.getFunc(String)?.call(List<dynamic>) -> Future<dynamic>
   /// ```
-
- 
 
   Future<String> spawnCreator() async {
     try {
@@ -367,10 +521,9 @@ class WalletCanister {
     }
   }
 
-  Future<void> getContractInfo() async{
+  Future<void> getContractInfo() async {
     try {
-      Map response =
-      await actor?.getFunc(CanisterMethod.getContractInfo)!([]);
+      Map response = await actor?.getFunc(CanisterMethod.getContractInfo)!([]);
       print("result is: " + response.toString());
     } catch (e) {
       rethrow;
@@ -380,7 +533,7 @@ class WalletCanister {
   Future<int> getCanisterRemainSpace() async {
     try {
       BigInt spacebyte =
-      await actor?.getFunc(CanisterMethod.getRemainSpace)!([]);
+          await actor?.getFunc(CanisterMethod.getRemainSpace)!([]);
       return spacebyte.toInt() ~/ 1024;
     } catch (e) {
       rethrow;
@@ -390,51 +543,54 @@ class WalletCanister {
   Future<void> makeOrder(Principal principal, double price) async {
     try {
       BigInt priceb = BigInt.from(price * 100000000);
-      Map result = await actor?.getFunc(CanisterMethod.makeOrder)?.call(
-          [principal, priceb]);
+      Map result = await actor
+          ?.getFunc(CanisterMethod.makeOrder)
+          ?.call([principal, priceb]);
     } catch (e) {
       rethrow;
     }
   }
- Future<Map?> claimMintInvoice(String principalStr,int dataSize) async {
+
+  Future<Invoice?> claimMintInvoice(String principalStr, int dataSize) async {
     try {
-      Principal principal =Principal.fromText(principalStr);
+      Principal principal = Principal.fromText(principalStr);
       BigInt size = BigInt.from(dataSize);
-      Map result = await actor?.getFunc(CanisterMethod.claimMintInvoice)?.call(
-          [size, principal]);
+      Map result = await actor
+          ?.getFunc(CanisterMethod.claimMintInvoice)
+          ?.call([size, principal]);
       print('resp is ' + result.toString());
       if (result.containsKey('ok')) {
-           Map inv = result.entries.elementAt(0).value.entries.firstWhere((e) => e.key == 'Mint').value;
-           print('invoice is ' + inv.toString());
-           return inv;
+        Map inv = result.entries
+            .elementAt(0)
+            .value
+            .entries
+            .firstWhere((e) => e.key == 'Mint')
+            .value;
+        print('invoice is ' + inv.toString());
+        return Invoice.fromMapData(result.entries.elementAt(0).value);
       }
-
     } catch (e) {
       rethrow;
     }
   }
-
 
   Future<BigInt> getMintPrice(int dataSize) async {
     try {
       BigInt size = BigInt.from(dataSize);
-      BigInt price  = await actor?.getFunc(CanisterMethod.getMintPrice)?.call(
-          [size]);
+      BigInt price =
+          await actor?.getFunc(CanisterMethod.getMintPrice)?.call([size]);
       return price;
     } catch (e) {
       rethrow;
     }
   }
 
-
-
-
   Future<NftData> getNft(String principalStr) async {
     var principal = await getPrincipal(principalStr);
 
     try {
       List records =
-      await actor?.getFunc(CanisterMethod.getNft)?.call([principal]);
+          await actor?.getFunc(CanisterMethod.getNft)?.call([principal]);
       NftData data = NftData.transformData(records[0]);
       // record.containsKey(key)
       print('creater is ' + data.creater.toString());
@@ -447,43 +603,62 @@ class WalletCanister {
     }
   }
 
-  Future<List<NftData>> qureyNfts(int page) async {
+  Future<List<NftDataWithOrder>?> qureyNfts(int page) async {
     try {
-      List records =
-      await actor?.getFunc(CanisterMethod.queryNfts)?.call([page]);
-      List<NftData> nfts =
-      records.map((map) => NftData.transformData(map)).toList();
-      print("result is $nfts ");
-      return nfts;
+      List<NftDataWithOrder>? list;
+      Map result =
+          await actor?.getFunc(CanisterMethod.queryNftsWithOrder)?.call([page]);
+      if (result.containsKey('ok')) {
+        List records = result.entries.elementAt(0).value;
+        list = records.map((map) => NftDataWithOrder.makeFromMap(map)).toList();
+      }
+
+      print("result is " + result.toString());
+      return list;
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<String> mintNft(Uint8List data, Uint8List thumbnailData, String author,
-      String title, String desc, String mediaType, int timeStamp) async {
-    String principalStr = '';
-    String principal =
-    ICPAccountUtils.createPrincipal(timeStamp.toU8a()).toString();
+  Future<List<NftDataWithOrder>?> balanceOf() async {
+    try {
+      List result =
+          await actor?.getFunc(CanisterMethod.balanceOfWithOrder)?.call([]);
+      print("result is " + result.toString());
+
+      return result.map((map) => NftDataWithOrder.makeFromMap(map)).toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Invoice>?> invoiceOf() async {
+    try {
+      List result = await actor?.getFunc(CanisterMethod.invoiceOf)?.call([]);
+      print("result is " + result.toString());
+      List list = result.length == 0 ? [] : result[0];
+     return list.map((map) => Invoice.fromMapData(map)).toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Invoice?> mintNft(PostNftData nftData) async {
+    Invoice? invoice;
     try {
       Map result = await actor?.getFunc(CanisterMethod.mint)?.call([
-        data,
-        author,
-        title,
-        desc,
-        mediaType,
-        timeStamp,
-        principal,
-        thumbnailData
+        nftData.map,
+        nftData.invoice!.nft_principal!.toString(),
+        nftData.meta,
+        nftData.blockHeight,
+        nftData.invoice!.toJson()
       ]);
       print('result is : ' + result.toString());
       if (result.containsKey('ok')) {
-        principalStr = result.entries
-            .elementAt(0)
-            .value
-            .toString();
+        Map map = result.entries.elementAt(0).value;
+        invoice = Invoice.fromMapData(result.entries.elementAt(0).value);
       }
-      return principalStr;
+      return invoice;
     } catch (e) {
       rethrow;
     }

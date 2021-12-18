@@ -2,15 +2,19 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_nft_page_state.dart';
+import 'package:flutter_light_wallet/base/base_page_state.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
 import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/file_util.dart';
 import 'package:flutter_light_wallet/utils/nft_canister.dart';
+import 'package:flutter_light_wallet/view/nft/invoice_list_view.dart';
 import 'package:flutter_light_wallet/view/nft/nft_creator_page.dart';
 import 'package:flutter_light_wallet/view/nft/nft_page.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+
+import 'nft_list_view.dart';
 
 
 class WorkRoomPage extends StatefulWidget {
@@ -21,11 +25,34 @@ class WorkRoomPage extends StatefulWidget {
       _WorkRoomPageState("work-room-page-detector");
 }
 
-class _WorkRoomPageState extends BaseNftPageState<WorkRoomPage> {
+class _WorkRoomPageState extends BasePageState<WorkRoomPage> with TickerProviderStateMixin{
+
   _WorkRoomPageState(String observerKey) : super(observerKey);
-  int page = 1;
-  List<NftData>? nfts;
-  List<File> thumbnails = [];
+
+  TabController? _tabController ;
+  PageController? _pageController ;
+   static final List<String> _titleList =["NFT","My Nft","My Invoice", "My Transactions"];
+   List<Widget> pages = [NftDataListView(isOwnList: false,),NftDataListView(isOwnList: true,),InvoiceListView(),Text("3")];
+  @override
+   initState(){
+     super.initState();
+     _tabController = TabController(length: _titleList.length, vsync: this);
+     _pageController = PageController();
+   }
+  @override
+   dispose(){
+    _tabController!.dispose();
+    _pageController!.dispose();
+    super.dispose();
+   }
+
+  void _changeTab(int index) {
+    _pageController!.animateToPage(index, duration: Duration(milliseconds: 300), curve: Curves.ease);
+  }
+
+  void _onPageChanged(int index) {
+    _tabController!.animateTo(index, duration: Duration(milliseconds: 300));
+  }
 
   @override
   Widget constructView(BuildContext context) {
@@ -103,71 +130,37 @@ class _WorkRoomPageState extends BaseNftPageState<WorkRoomPage> {
                 ),
               ),
             ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 45,
+              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+              margin: EdgeInsets.only(top: 10,bottom: 10),
+              child: TabBar(
+                labelColor: Colors.black87,//选中的颜色
+                labelStyle: TextStyle(color: Colors.black87, fontSize: 15 ,fontWeight: FontWeight.bold),
+                unselectedLabelColor: Colors.black54,//未选中的颜色
+                unselectedLabelStyle: TextStyle(color: Colors.black54, fontSize: 15),
+                isScrollable: true,
+                //自定义indicator样式
+                indicator: BoxDecoration(
+                    color: Color(0x11000000),
+                    borderRadius: BorderRadius.all(Radius.circular(15))
+                ),
+                controller: _tabController,
+                onTap: _changeTab,
+                tabs: _titleList.map((e) => Tab(text: e)).toList(),
+              ),
+            ),
             Expanded(
-              child: ListView.separated(
-                  itemBuilder: (context, position) => InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              SlideRightRoute(
-                                  page: NftPage(
-                                principal:
-                                    "",nftData: nfts![position],
-                              )));
-                        },
-                        child: Container(
-                          height: 120,
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.all(10),
-                          child: Row(
-                            children: [
-                              thumbnails.length == 0
-                                  ? Container(
-                                      width: 82,
-                                      height: 110,
-                                    )
-                                  : Image.file(
-                                      thumbnails![position],
-                                      width: 82,
-                                      height: 110,
-                                      fit: BoxFit.fitWidth,
-                                    ),
-                              Expanded(
-                                  child: Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 15.0,
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Title",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(nfts![position].title),
-                                    Text(
-                                      "Owner Id",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(nfts![position].owner.toString()),
-                                  ],
-                                ),
-                              ))
-                            ],
-                          ),
-                        ),
-                      ),
-                  separatorBuilder: (context, position) => new Divider(
-                        height: 1,
-                        color: Colors.black26,
-                      ),
-                  itemCount: nfts == null ? 0 : nfts!.length),
+                child: PageView.builder(
+                    physics: BouncingScrollPhysics(),
+                    controller: _pageController,
+                    onPageChanged: _onPageChanged,
+                    itemCount: _titleList.length,
+                    itemBuilder: (context, index) {
+                      return pages[index];
+                    }
+                )
             )
           ],
         ),
@@ -176,113 +169,23 @@ class _WorkRoomPageState extends BaseNftPageState<WorkRoomPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    AssetPicker.registerObserve();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    AssetPicker.unregisterObserve(); // Unregister callback.
-  }
-
-  @override
   void hanldEvent(Event event) {
     // TODO: implement hanldEvent
   }
 
+
+
   @override
-  void afterCaniterInted() {
-
-    walletCanister!.getContractInfo();
-   // _qureyNfts();
+  void onFirstVisible() {
+    // TODO: implement onFirstVisible
   }
 
-  _qureyNfts() async {
-    SmartDialog.showLoading();
-    nfts = await walletCanister!.qureyNfts(page);
-    thumbnails.clear();
-    await Future.forEach(nfts!, (NftData item) async {
-      File image = await FileUtil.writeBytestoFile(
-          item.principal.toString() + "-thumbnail",
-          item!.mediaType,
-          item!.thumbnail!);
-      thumbnails!.add(image);
-    });
-
-    setState(() {});
-    SmartDialog.dismiss();
+  @override
+  void onVisible() {
+    // TODO: implement onVisible
   }
 
 
-   Widget createListView(List<NftData>? nftDatas){
-    return Expanded(
-       child: ListView.separated(
-           itemBuilder: (context, position) => InkWell(
-             onTap: () {
-               Navigator.push(
-                   context,
-                   SlideRightRoute(
-                       page: NftPage(
-                         principal:
-                         "",nftData: nftDatas![position],
-                       )));
-             },
-             child: Container(
-               height: 120,
-               width: MediaQuery.of(context).size.width,
-               padding: EdgeInsets.all(10),
-               child: Row(
-                 children: [
-                   thumbnails.length == 0
-                       ? Container(
-                     width: 82,
-                     height: 110,
-                   )
-                       : Image.file(
-                     thumbnails![position],
-                     width: 82,
-                     height: 110,
-                     fit: BoxFit.fitWidth,
-                   ),
-                   Expanded(
-                       child: Padding(
-                         padding: const EdgeInsets.only(
-                           left: 15.0,
-                           top: 10,
-                           bottom: 10,
-                         ),
-                         child: Column(
-                           crossAxisAlignment: CrossAxisAlignment.start,
-                           children: [
-                             Text(
-                               "Title",
-                               style: TextStyle(
-                                   fontSize: 14,
-                                   fontWeight: FontWeight.bold),
-                             ),
-                             Text(nfts![position].title),
-                             Text(
-                               "Owner Id",
-                               style: TextStyle(
-                                   fontSize: 14,
-                                   fontWeight: FontWeight.bold),
-                             ),
-                             Text(nfts![position].owner.toString()),
-                           ],
-                         ),
-                       ))
-                 ],
-               ),
-             ),
-           ),
-           separatorBuilder: (context, position) => new Divider(
-             height: 1,
-             color: Colors.black26,
-           ),
-           itemCount: nfts == null ? 0 : nfts!.length),
-     );
 
-  }
+
 }
