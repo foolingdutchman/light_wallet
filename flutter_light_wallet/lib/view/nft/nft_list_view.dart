@@ -34,6 +34,7 @@ class _NftDataListViewState extends BaseNftPageState<NftDataListView> {
   void afterCaniterInted() {
     // TODO: implement afterCaniterInted
     _qureyNfts();
+
   }
 
   @override
@@ -51,7 +52,7 @@ class _NftDataListViewState extends BaseNftPageState<NftDataListView> {
                       SlideRightRoute(
                           page: NftPage(
                             principal:
-                            "",nftData: nfts![position].nftData,
+                             nfts![position].nftData!.principal!.toString(),nftData: nfts![position].nftData,order: nfts![position].order,
                           )));
                 },
                 child: Container(
@@ -119,6 +120,7 @@ class _NftDataListViewState extends BaseNftPageState<NftDataListView> {
   _qureyNfts() async {
     SmartDialog.showLoading();
     nfts = isOwnList? await walletCanister!.balanceOf() :await walletCanister!.qureyNfts(page);
+    SmartDialog.dismiss();
     thumbnails.clear();
     await Future.forEach(nfts!, (NftDataWithOrder item) async {
       File image = await FileUtil.writeBytestoFile(
@@ -129,10 +131,8 @@ class _NftDataListViewState extends BaseNftPageState<NftDataListView> {
     });
 
     setState(() {});
-    SmartDialog.dismiss();
+
   }
-
-
 
 
 

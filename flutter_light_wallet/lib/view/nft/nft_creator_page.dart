@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_nft_page_state.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
 import 'package:flutter_light_wallet/generated/l10n.dart';
+import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
 import 'package:flutter_light_wallet/view/nft/make_nft_page.dart';
@@ -21,6 +22,7 @@ class _NftCreatorPageState extends BaseNftPageState<NftCreatorPage> {
 
   String _space = "";
   String _principal = "";
+  bool isCreator = false;
 
   @override
   Widget constructView(BuildContext context) {
@@ -136,6 +138,7 @@ class _NftCreatorPageState extends BaseNftPageState<NftCreatorPage> {
     if (isCanisterInit) {
       SmartDialog.showLoading();
       _principal = await walletCanister!.spawnCreator();
+
       setState(() {});
       SmartDialog.dismiss();
     }
@@ -147,14 +150,24 @@ class _NftCreatorPageState extends BaseNftPageState<NftCreatorPage> {
   @override
   void afterCaniterInted() {
     _getCanisterRemainSpace();
+    _checkCreator();
   }
 
   void _getCanisterRemainSpace() async {
     SmartDialog.showLoading();
     var space = await walletCanister!.getCanisterRemainSpace();
+
     setState(() {
       _space = StringUtil.getNumberFormatStr(space);
+
     });
     SmartDialog.dismiss();
+  }
+
+  void  _checkCreator() async{
+    isCreator = await walletCanister!.isNFTCreator();
+    setState(() {
+      _principal= isCreator? InstanceStore.currentWallet!.principal.toString():"";
+    });
   }
 }

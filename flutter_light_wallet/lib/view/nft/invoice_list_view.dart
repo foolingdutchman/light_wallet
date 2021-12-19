@@ -6,6 +6,7 @@ import 'package:flutter_light_wallet/base/slide_right_route.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/nft_canister.dart';
 import 'package:flutter_light_wallet/view/nft/invoice_page.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 class InvoiceListView extends StatefulWidget {
   const InvoiceListView({Key? key}) : super(key: key);
@@ -109,8 +110,9 @@ class _InvoiceListViewState extends BaseNftPageState<InvoiceListView> {
   }
 
   void _getMyInvoices() async {
-
+    SmartDialog.showLoading();
     List<Invoice>? list = await walletCanister!.invoiceOf();
+    SmartDialog.dismiss();
     if(list!= null && list.length != 0){
       invoices.clear();
       invoices.addAll(list);

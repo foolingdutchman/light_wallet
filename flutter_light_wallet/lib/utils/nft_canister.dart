@@ -106,8 +106,7 @@ class Invoice {
   }
 
   bool isMintInvoice() {
-    return type == InvoiceType.MINT ||
-        type == InvoiceType.UNCHECK_MINT;
+    return type == InvoiceType.MINT || type == InvoiceType.UNCHECK_MINT;
   }
 
   bool isUncheckInvoice() {
@@ -153,7 +152,7 @@ class Invoice {
     } else {
       Map data = map.entries.firstWhere((e) => e.key == 'Purchase').value;
       return Invoice(
-          data["id"].toInt(),
+          data["id"],
           data["counterAddress"],
           data["timeStamp"],
           data["issueTo"],
@@ -225,6 +224,37 @@ class NftData {
   }
 }
 
+class TransferRecord{
+
+   Principal? to;
+   BigInt? transaction_hash;
+   BigInt? timeStamp;
+   Principal? from;
+   Principal? nftPrincipal;
+
+   TransferRecord(this.to, this.transaction_hash, this.timeStamp, this.from,
+      this.nftPrincipal);
+
+   static TransferRecord fromMap(Map map){
+     return TransferRecord(
+         map["to"] ,
+         map["transaction_hash"] ,
+         map["timeStamp"] ,
+         map["from"] ,
+         map["nftPrincipal"]);
+   }
+
+   Map<String, dynamic> toJson(){
+     return {
+       "to":to,
+       "transaction_hash":transaction_hash,
+       "timeStamp":timeStamp,
+       "from":from,
+       "nftPrincipal":nftPrincipal,
+     };
+   }
+}
+
 class CanisterMethod {
   /// use staic const as method name
   static const getCaller = "getCaller";
@@ -254,6 +284,11 @@ class CanisterMethod {
   static const balanceOfWithOrder = 'balanceOfWithOrder';
   static const invoiceOf = 'invoiceOf';
   static const isNftCreator = 'isNftCreator';
+  static const getNftOrder = 'getNftOrder';
+  static const claimPurchaseInvoice = 'claimPurchaseInvoice';
+  static const getTransferRecordByPrincipal = 'getTransferRecordByPrincipal';
+  static const getOwnTransferRecord = 'getOwnTransferRecord';
+
 }
 
 class ServiceProperties {
@@ -396,7 +431,8 @@ ServiceClass _initService() {
     'getMetadata':
         IDL.Func([], [ServiceProperties.ContractMetadata], ['query']),
     'getMintPrice': IDL.Func([IDL.Nat], [IDL.Nat64], []),
-    'getNftOrder' : IDL.Func([IDL.Principal], [IDL.Opt(ServiceProperties.Order)], ['query']),
+    'getNftOrder': IDL.Func(
+        [IDL.Principal], [IDL.Opt(ServiceProperties.Order)], ['query']),
     'getOwnTransferRecord':
         IDL.Func([], [IDL.Vec(ServiceProperties.TransferRecord)], []),
     'getOwner': IDL.Func([], [IDL.Principal], []),
@@ -424,7 +460,7 @@ ServiceClass _initService() {
         [IDL.Vec(IDL.Principal), ServiceProperties.ContractMetadata], [], []),
     'invoiceOf':
         IDL.Func([], [IDL.Opt(IDL.Vec(ServiceProperties.Invoice))], []),
-    'isNftCreator' : IDL.Func([], [IDL.Bool], []),
+    'isNftCreator': IDL.Func([], [IDL.Bool], []),
     'makeOrder':
         IDL.Func([IDL.Principal, IDL.Nat64], [ServiceProperties.Result_1], []),
     'mint': IDL.Func(
@@ -467,12 +503,11 @@ class WalletCanister {
   WalletCanister({required this.canisterId, required this.url});
 
   // A future method because we need debug mode works for local developement
-  Future<void> setAgent(
-      {String? newCanisterId,
-      ServiceClass? newIdl,
-      String? newUrl,
-      Identity? newIdentity,
-      bool? debug}) async {
+  Future<void> setAgent({String? newCanisterId,
+    ServiceClass? newIdl,
+    String? newUrl,
+    Identity? newIdentity,
+    bool? debug}) async {
     _agentFactory ??= await AgentFactory.createAgent(
         canisterId: newCanisterId ?? canisterId,
         url: newUrl ?? url,
@@ -510,12 +545,37 @@ class WalletCanister {
     }
   }
 
+  Future<bool> isNFTCreator() async {
+    try {
+      var res = await actor?.getFunc(CanisterMethod.isNftCreator)!([]);
+      print("result is: " + res.toString());
+      if (res != null) {
+        return res;
+      }
+      throw "Cannot get count but $res";
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<Principal> getPrincipal(String principalStr) async {
     try {
       Principal principal = await actor
           ?.getFunc(CanisterMethod.getPrincipal)
           ?.call([principalStr]);
       return principal;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Order?> getNftorder(Principal principal) async {
+    try {
+      List result =
+      await actor?.getFunc(CanisterMethod.getNftOrder)?.call([principal]);
+      print("result is: " + result.toString());
+      Map map = result[0];
+      return result.length == 0 ? null : Order.makeFromMap(map);
     } catch (e) {
       rethrow;
     }
@@ -533,19 +593,32 @@ class WalletCanister {
   Future<int> getCanisterRemainSpace() async {
     try {
       BigInt spacebyte =
-          await actor?.getFunc(CanisterMethod.getRemainSpace)!([]);
+      await actor?.getFunc(CanisterMethod.getRemainSpace)!([]);
       return spacebyte.toInt() ~/ 1024;
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<void> makeOrder(Principal principal, double price) async {
+  Future<bool> makeOrder(Principal principal, double price) async {
     try {
       BigInt priceb = BigInt.from(price * 100000000);
       Map result = await actor
           ?.getFunc(CanisterMethod.makeOrder)
           ?.call([principal, priceb]);
+      return result.containsKey("ok");
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> updateOrder(Principal principal, double price) async {
+    try {
+      BigInt priceb = BigInt.from(price * 100000000);
+      Map result = await actor
+          ?.getFunc(CanisterMethod.updateOrder)
+          ?.call([principal, priceb]);
+      return result.containsKey("ok");
     } catch (e) {
       rethrow;
     }
@@ -567,8 +640,23 @@ class WalletCanister {
             .firstWhere((e) => e.key == 'Mint')
             .value;
         print('invoice is ' + inv.toString());
-        return Invoice.fromMapData(result.entries.elementAt(0).value);
+        return Invoice.fromMapData(result.entries
+            .elementAt(0)
+            .value);
       }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Invoice?> claimPurchaseInvoice(Order order) async {
+    try {
+      Map result = await actor
+          ?.getFunc(CanisterMethod.claimPurchaseInvoice)
+          ?.call([order.toJson()]);
+      print('resp is ' + result.toString());
+
+      return Invoice.fromMapData(result);
     } catch (e) {
       rethrow;
     }
@@ -578,7 +666,7 @@ class WalletCanister {
     try {
       BigInt size = BigInt.from(dataSize);
       BigInt price =
-          await actor?.getFunc(CanisterMethod.getMintPrice)?.call([size]);
+      await actor?.getFunc(CanisterMethod.getMintPrice)?.call([size]);
       return price;
     } catch (e) {
       rethrow;
@@ -586,11 +674,10 @@ class WalletCanister {
   }
 
   Future<NftData> getNft(String principalStr) async {
-    var principal = await getPrincipal(principalStr);
-
     try {
       List records =
-          await actor?.getFunc(CanisterMethod.getNft)?.call([principal]);
+      await actor?.getFunc(CanisterMethod.getTokenByPrincipalString)?.call(
+          [principalStr]);
       NftData data = NftData.transformData(records[0]);
       // record.containsKey(key)
       print('creater is ' + data.creater.toString());
@@ -607,9 +694,11 @@ class WalletCanister {
     try {
       List<NftDataWithOrder>? list;
       Map result =
-          await actor?.getFunc(CanisterMethod.queryNftsWithOrder)?.call([page]);
+      await actor?.getFunc(CanisterMethod.queryNftsWithOrder)?.call([page]);
       if (result.containsKey('ok')) {
-        List records = result.entries.elementAt(0).value;
+        List records = result.entries
+            .elementAt(0)
+            .value;
         list = records.map((map) => NftDataWithOrder.makeFromMap(map)).toList();
       }
 
@@ -623,7 +712,7 @@ class WalletCanister {
   Future<List<NftDataWithOrder>?> balanceOf() async {
     try {
       List result =
-          await actor?.getFunc(CanisterMethod.balanceOfWithOrder)?.call([]);
+      await actor?.getFunc(CanisterMethod.balanceOfWithOrder)?.call([]);
       print("result is " + result.toString());
 
       return result.map((map) => NftDataWithOrder.makeFromMap(map)).toList();
@@ -637,7 +726,7 @@ class WalletCanister {
       List result = await actor?.getFunc(CanisterMethod.invoiceOf)?.call([]);
       print("result is " + result.toString());
       List list = result.length == 0 ? [] : result[0];
-     return list.map((map) => Invoice.fromMapData(map)).toList();
+      return list.map((map) => Invoice.fromMapData(map)).toList();
     } catch (e) {
       rethrow;
     }
@@ -655,12 +744,66 @@ class WalletCanister {
       ]);
       print('result is : ' + result.toString());
       if (result.containsKey('ok')) {
-        Map map = result.entries.elementAt(0).value;
-        invoice = Invoice.fromMapData(result.entries.elementAt(0).value);
+        Map map = result.entries
+            .elementAt(0)
+            .value;
+        invoice = Invoice.fromMapData(result.entries
+            .elementAt(0)
+            .value);
       }
       return invoice;
     } catch (e) {
       rethrow;
     }
   }
+
+  Future<Invoice?> confirmOrder(Principal principal,
+      Invoice uncheckInvoice,
+      List<BigInt> blockHeights,) async {
+    try {
+      Map result = await actor
+          ?.getFunc(CanisterMethod.confirmOrder)
+          ?.call([principal, blockHeights, uncheckInvoice.toJson()]);
+      print('result is : ' + result.toString());
+      if (result.containsKey('ok')) {
+        Map map = result.entries
+            .elementAt(0)
+            .value;
+        return Invoice.fromMapData(result.entries
+            .elementAt(0)
+            .value);
+      }
+      return null;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<TransferRecord>> getOwnTransferRecord() async{
+    List<TransferRecord> list =[];
+    try{
+      List l = await  actor
+        ?.getFunc(CanisterMethod.getOwnTransferRecord)
+        ?.call([]);
+      print('result is : ' + l.toString());
+      if(l.length != 0) list.addAll(l.map((e) => TransferRecord.fromMap(e)));
+
+    }catch (e) {
+    rethrow;
+    }
+    return list;
+
+  }
+
+
+  cancelOrder(Principal principal){
+    
+
+  }
+
+
+
+
+
+
 }

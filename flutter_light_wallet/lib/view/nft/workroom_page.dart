@@ -11,6 +11,7 @@ import 'package:flutter_light_wallet/utils/nft_canister.dart';
 import 'package:flutter_light_wallet/view/nft/invoice_list_view.dart';
 import 'package:flutter_light_wallet/view/nft/nft_creator_page.dart';
 import 'package:flutter_light_wallet/view/nft/nft_page.dart';
+import 'package:flutter_light_wallet/view/nft/transfer_record_view.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
@@ -32,7 +33,7 @@ class _WorkRoomPageState extends BasePageState<WorkRoomPage> with TickerProvider
   TabController? _tabController ;
   PageController? _pageController ;
    static final List<String> _titleList =["NFT","My Nft","My Invoice", "My Transactions"];
-   List<Widget> pages = [NftDataListView(isOwnList: false,),NftDataListView(isOwnList: true,),InvoiceListView(),Text("3")];
+   List<Widget> pages = [NftDataListView(isOwnList: false,),NftDataListView(isOwnList: true,),InvoiceListView(),TransferRecordView()];
   @override
    initState(){
      super.initState();

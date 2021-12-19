@@ -349,8 +349,8 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
       Invoice? invoice =   await walletCanister!.claimMintInvoice(principalStr, size);
       SmartDialog.dismiss();
       if(invoice !=null){
-        BigInt blockHeight= await  Navigator.push(context, SlideRightRoute(page: InvociePage(invoiceData: invoice)));
-        PostNftData nftData = await _prepareNftData(invoice, blockHeight!);
+        List<BigInt> blockHeight= await  Navigator.push(context, SlideRightRoute(page: InvociePage(invoiceData: invoice)));
+        PostNftData nftData = await _prepareNftData(invoice, blockHeight![0]);
         await _mintNft(context,nftData);
 
       }
@@ -375,7 +375,7 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
     var name = path.substring(path.lastIndexOf("/") + 1, path.length);
     var suffix = name.substring(name.lastIndexOf(".") + 1, name.length);
     Map<String, dynamic> map ={
-      'title': _authorController.text,
+      'title': _titleController.text,
       'thumbnail': thumbnail,
       'desc': _descController.text,
       'author': _authorController.text,

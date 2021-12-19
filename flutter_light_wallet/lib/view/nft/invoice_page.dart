@@ -286,11 +286,23 @@ class _InvociePageState extends BaseNftPageState<InvociePage> {
             ICPAccountUtils.fromICPBigInt2Amount(invoiceData.charge!).toString());
         SmartDialog.dismiss();
         SmartDialog.showToast("Transaction has been made...");
-        Navigator.pop(context, blockHeight);
+        Navigator.pop(context, [blockHeight]);
+      }else{
+        SmartDialog.showLoading();
+        BigInt blockHeight1 = await ICPAccountUtils.transfer(
+            InstanceStore.currentWallet,
+            invoiceData.counterAddress,
+            ICPAccountUtils.fromICPBigInt2Amount(invoiceData.charge!).toString());
+        BigInt blockHeight2 = await ICPAccountUtils.transfer(
+            InstanceStore.currentWallet,
+            invoiceData.receiptAddress!,
+            ICPAccountUtils.fromICPBigInt2Amount(invoiceData.amount!).toString());
+        Navigator.pop(context, [blockHeight1,blockHeight2]);
       }
 
     }else{
       Navigator.push(context, SlideRightRoute(page: NftPage(principal: invoiceData.nft_principal!.toString())));
+
     }
 
   }

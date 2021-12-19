@@ -1,21 +1,28 @@
 import 'dart:io';
 
+import 'package:agent_dart/agent_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_nft_page_state.dart';
+import 'package:flutter_light_wallet/base/slide_right_route.dart';
 import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/canister_util.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/file_util.dart';
+import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
 import 'package:flutter_light_wallet/utils/nft_canister.dart';
+import 'package:flutter_light_wallet/utils/string_util.dart';
 
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+
+import 'invoice_page.dart';
 
 class NftPage extends StatefulWidget {
   final String principal;
   final NftData? nftData;
+  final Order? order;
 
-  const NftPage({Key? key, required this.principal, this.nftData})
+  const NftPage({Key? key, required this.principal, this.nftData, this.order})
       : super(key: key);
 
   @override
@@ -24,9 +31,10 @@ class NftPage extends StatefulWidget {
 }
 
 class _NftPageState extends BaseNftPageState<NftPage> {
-  _NftPageState(String observerKey, this._principal, {this.nftData})
+  _NftPageState(String observerKey, this._principal, {this.nftData, this.order})
       : super(observerKey);
   NftData? nftData;
+  Order? order;
   String _principal;
   double _price = 0;
   File? _file;
@@ -322,7 +330,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
   }
 
   bool isNftSell() {
-    return nftData != null ;
+    return order != null;
   }
 
   bool isOwnerView() {
@@ -351,7 +359,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
     SmartDialog.showLoading();
 
     // get nft data below
-    nftData = (await CanisterUtil.walletCanister!.getNft(_principal)) as NftData? ;
+    nftData = await CanisterUtil.walletCanister!.getNft(_principal);
 
     _file = await FileUtil.writeBytestoFile(
         _principal + 'thumbnail', nftData!.mediaType, (nftData!.thumbnail)!);
@@ -366,15 +374,68 @@ class _NftPageState extends BaseNftPageState<NftPage> {
       _setNftData();
     else
       fetch();
+
+    if (order != null) {
+      setState(() {
+        _price = ICPAccountUtils.fromICPBigInt2Amount(order!.price!);
+      });
+    } else {
+      _fetchOrder();
+    }
   }
 
-  buyNft() {}
-
-  makeOrder() {
+  _fetchOrder() async {
+    SmartDialog.showLoading();
+    order =await walletCanister!.getNftorder(Principal.fromText(_principal));
+    SmartDialog.dismiss();
+    if(order !=null){
+      setState(() {
+        _price = ICPAccountUtils.fromICPBigInt2Amount(order!.price!);
+      });
+    }
 
   }
 
-  updateOrder() {}
+  buyNft() async {
+    SmartDialog.showLoading();
+    Invoice? invoice = await walletCanister!.claimPurchaseInvoice(order!);
+    SmartDialog.dismiss();
+    if(invoice !=null){
+      List<BigInt> blockHeights= await  Navigator.push(context, SlideRightRoute(page: InvociePage(invoiceData: invoice)));
+      SmartDialog.showLoading();
+      var checkInvoice = await walletCanister!.confirmOrder(nftData!.principal!, invoice!, blockHeights);
+      SmartDialog.dismiss();
+      if(checkInvoice !=null){
+        Navigator.push(context, SlideRightRoute(page: InvociePage(invoiceData: checkInvoice)));
+      }
 
-  void cancelOrder() {}
+    }
+  }
+
+  makeOrder() async {
+    SmartDialog.dismiss();
+    SmartDialog.showLoading();
+    var isCreate = await walletCanister!
+        .makeOrder(nftData!.principal!, double.parse(_priceControler.text));
+    SmartDialog.dismiss();
+    if(isCreate){
+      _fetchOrder();
+    }
+  }
+
+  updateOrder() async{
+    SmartDialog.dismiss();
+    SmartDialog.showLoading();
+    var isUpdate = await walletCanister!
+        .updateOrder(nftData!.principal!, double.parse(_priceControler.text));
+    SmartDialog.dismiss();
+    if(isUpdate){
+      _fetchOrder();
+    }
+  }
+
+  void cancelOrder() {
+
+
+  }
 }
