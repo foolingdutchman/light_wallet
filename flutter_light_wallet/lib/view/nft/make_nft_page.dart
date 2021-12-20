@@ -390,15 +390,16 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
     if (isCanisterInit && asset != null) {
       SmartDialog.showLoading();
       Invoice? invoice = await walletCanister!.mintNft(nftData);
+      SmartDialog.dismiss();
       if (invoice!= null) {
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             SlideRightRoute(
                 page: InvociePage(
               invoiceData: invoice,
             )));
       }
-      SmartDialog.dismiss();
+
     }
   }
 

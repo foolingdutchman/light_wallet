@@ -574,8 +574,8 @@ class WalletCanister {
       List result =
       await actor?.getFunc(CanisterMethod.getNftOrder)?.call([principal]);
       print("result is: " + result.toString());
-      Map map = result[0];
-      return result.length == 0 ? null : Order.makeFromMap(map);
+      Map? map = result.length == 0 ? null :result[0];
+      return result.length == 0 ? null : Order.makeFromMap(map!);
     } catch (e) {
       rethrow;
     }
@@ -673,17 +673,18 @@ class WalletCanister {
     }
   }
 
-  Future<NftData> getNft(String principalStr) async {
+  Future<NftData?> getNft(String principalStr) async {
     try {
-      List records =
+      Map result =
       await actor?.getFunc(CanisterMethod.getTokenByPrincipalString)?.call(
           [principalStr]);
-      NftData data = NftData.transformData(records[0]);
+      print('result is :' + result.toString());
       // record.containsKey(key)
-      print('creater is ' + data.creater.toString());
-      print('owner is ' + data.owner.toString());
-      return data;
+      if(result.containsKey("ok")){
+        return NftData.transformData(result.entries.elementAt(0).value);
+      }
 
+      return null;
       // throw "Cannot get count but $res";
     } catch (e) {
       rethrow;
@@ -796,8 +797,19 @@ class WalletCanister {
   }
 
 
-  cancelOrder(Principal principal){
-    
+  Future<bool> cancelOrder(Principal principal) async{
+    try{
+      Map result =await  actor
+          ?.getFunc(CanisterMethod.cancelOrder)
+          ?.call([principal]);
+      print("result is: "+ result.toString());
+      if(result.containsKey("ok")){
+        return true;
+      }
+      return false;
+    }catch(e){
+      rethrow;
+    }
 
   }
 

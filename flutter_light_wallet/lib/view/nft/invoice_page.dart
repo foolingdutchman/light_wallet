@@ -48,7 +48,6 @@ class _InvociePageState extends BaseNftPageState<InvociePage> {
             Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 30),
               child: Container(
-                height: 480,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black12, width: 0.5),
@@ -149,7 +148,7 @@ class _InvociePageState extends BaseNftPageState<InvociePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(bottom: 10.0),
+                                  padding: const EdgeInsets.only(bottom: 10.0, top: 10),
                                   child: Row(
                                     children: [
                                       Text(
