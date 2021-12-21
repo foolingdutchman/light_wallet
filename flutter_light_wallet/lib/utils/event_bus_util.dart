@@ -57,3 +57,9 @@ class TransactionEvent extends Event {
 class ClearWalletEvent extends Event {
   
 }
+
+class MintNftEvent extends Event{}
+
+class TransferNftEvent extends Event{}
+
+class BurnNftEvent extends Event{}

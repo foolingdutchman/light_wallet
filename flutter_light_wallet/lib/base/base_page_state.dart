@@ -5,6 +5,7 @@ import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 abstract class BasePageState<T extends StatefulWidget> extends State<T>

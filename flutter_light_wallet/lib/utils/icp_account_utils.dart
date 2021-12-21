@@ -92,13 +92,21 @@ class ICPAccountUtils {
     return Principal(u8a);
   }
 
-  static String  createTempPrincipalString(){
-
+  static String createTempPrincipalString() {
     return createPrincipal(TimeUtil.currentTImeMillis().toU8a()).toString();
   }
 
-  static double fromICPBigInt2Amount(BigInt amount){
+  static double fromICPBigInt2Amount(BigInt amount) {
     return (amount / BigInt.from(pow(10, 8))).toDouble();
   }
 
+  static Principal? checkValidPrincipal(String text) {
+    try {
+      Principal p = Principal.fromText(text);
+      if (p.toText() != text) return null;
+      return p;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

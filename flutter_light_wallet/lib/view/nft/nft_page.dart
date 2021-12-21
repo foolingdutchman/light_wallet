@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:agent_dart/agent_dart.dart';
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_nft_page_state.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
@@ -12,6 +13,8 @@ import 'package:flutter_light_wallet/utils/file_util.dart';
 import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
 import 'package:flutter_light_wallet/utils/nft_canister.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
+import 'package:flutter_light_wallet/utils/verification_util.dart';
+import 'package:flutter_light_wallet/view/nft/nft_transfer_page.dart';
 
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
@@ -67,11 +70,13 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                         child: Row(
                           children: [
                             Text(
-                              "Token Id: #"+(nftData == null ? "" : nftData!.id.toString()),
+                              "Token Id: #" +
+                                  (nftData == null
+                                      ? ""
+                                      : nftData!.id.toString()),
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
-
                           ],
                         ),
                       ),
@@ -177,40 +182,54 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                                 ? ""
                                 : nftData!.creater.toString())),
                       ),
-                      isOwnerView()?Container(
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15),
-                              child: ElevatedButton(
-                                style: ButtonStyle(
-                                    fixedSize: MaterialStateProperty.all(
-                                        Size(MediaQuery.of(context).size.width - 50, 50)),
-                                    backgroundColor:
-                                    MaterialStateProperty.all(Color(0xff39267e))),
-                                onPressed: () {
-                                  onTransferPressed(context);
-                                },
-                                child: Text("Transfer"),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15),
-                              child: ElevatedButton(
-                                style: ButtonStyle(
-                                    fixedSize: MaterialStateProperty.all(
-                                        Size(MediaQuery.of(context).size.width - 50, 50)),
-                                    backgroundColor:
-                                    MaterialStateProperty.all(Color(0xfff3ab39))),
-                                onPressed: () {
-                                  onBurnPressed(context);
-                                },
-                                child: Text( "Burn"),
+                      isOwnerView()
+                          ? Container(
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15),
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                          fixedSize: MaterialStateProperty.all(
+                                              Size(
+                                                  MediaQuery.of(context)
+                                                          .size
+                                                          .width -
+                                                      50,
+                                                  50)),
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  Color(0xff39267e))),
+                                      onPressed: () {
+                                        onTransferPressed(context);
+                                      },
+                                      child: Text("Transfer"),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15),
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                          fixedSize: MaterialStateProperty.all(
+                                              Size(
+                                                  MediaQuery.of(context)
+                                                          .size
+                                                          .width -
+                                                      50,
+                                                  50)),
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  Color(0xfff3ab39))),
+                                      onPressed: () {
+                                        onBurnPressed(context);
+                                      },
+                                      child: Text("Burn"),
+                                    ),
+                                  )
+                                ],
                               ),
                             )
-                          ],
-                        ),
-                      ):Container(),
+                          : Container(),
                       Container(
                         height: 50,
                       )
@@ -346,21 +365,20 @@ class _NftPageState extends BaseNftPageState<NftPage> {
       child: Center(
         child: Column(
           children: [
-             Padding(
-               padding: const EdgeInsets.only(bottom: 15),
-               child: ElevatedButton(
-                  onPressed: () {
-                    SmartDialog.dismiss();
-                    SmartDialog.show(widget: createOrderView(context, false));
-                  },
-                  child: Text(S.of(context).change_price),
-                  style: ButtonStyle(
-                    fixedSize: MaterialStateProperty.all(
-                        Size(MediaQuery.of(context).size.width - 60,50)),
-                  ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 15),
+              child: ElevatedButton(
+                onPressed: () {
+                  SmartDialog.dismiss();
+                  SmartDialog.show(widget: createOrderView(context, false));
+                },
+                child: Text(S.of(context).change_price),
+                style: ButtonStyle(
+                  fixedSize: MaterialStateProperty.all(
+                      Size(MediaQuery.of(context).size.width - 60, 50)),
                 ),
-             ),
-
+              ),
+            ),
             ElevatedButton(
               onPressed: () {
                 cancelOrder();
@@ -368,7 +386,57 @@ class _NftPageState extends BaseNftPageState<NftPage> {
               child: Text(S.of(context).cancel_sell),
               style: ButtonStyle(
                 fixedSize: MaterialStateProperty.all(
-                    Size(MediaQuery.of(context).size.width - 60,50)),
+                    Size(MediaQuery.of(context).size.width - 60, 50)),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget burnTokenView(BuildContext context) {
+    return Container(
+      height: 200,
+      width: MediaQuery.of(context).size.width - 50,
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.black12, width: 0.5),
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          boxShadow: [
+            BoxShadow(
+                offset: Offset(5, 5), blurRadius: 10, color: Colors.black12),
+          ]),
+      child: Center(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Icon(
+                Icons.warning_rounded,
+                color: Colors.red,
+                size: 48,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+              child: Text(
+                "Burnt Token will be destory forever! ",
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _burnToken(context);
+              },
+              child: Text(S.of(context).confirm),
+              style: ButtonStyle(
+                fixedSize: MaterialStateProperty.all(
+                    Size(MediaQuery.of(context).size.width - 60, 50)),
               ),
             )
           ],
@@ -389,7 +457,12 @@ class _NftPageState extends BaseNftPageState<NftPage> {
 
   @override
   void hanldEvent(Event event) {
-    // TODO: implement hanldEvent
+    if (event is TransferNftEvent || event is BurnNftEvent) {
+      print("event listened!...");
+      final current = ModalRoute.of(context);
+      Navigator.removeRoute(context, current!);
+
+    }
   }
 
   _setNftData() async {
@@ -434,29 +507,31 @@ class _NftPageState extends BaseNftPageState<NftPage> {
 
   _fetchOrder() async {
     SmartDialog.showLoading();
-    order =await walletCanister!.getNftorder(Principal.fromText(_principal));
+    order = await walletCanister!.getNftorder(Principal.fromText(_principal));
     SmartDialog.dismiss();
-    if(order !=null){
+    if (order != null) {
       setState(() {
         _price = ICPAccountUtils.fromICPBigInt2Amount(order!.price!);
       });
     }
-
   }
 
   buyNft() async {
     SmartDialog.showLoading();
     Invoice? invoice = await walletCanister!.claimPurchaseInvoice(order!);
     SmartDialog.dismiss();
-    if(invoice !=null){
-      List<BigInt> blockHeights= await  Navigator.push(context, SlideRightRoute(page: InvociePage(invoiceData: invoice)));
+    if (invoice != null) {
+      List<BigInt> blockHeights = await Navigator.push(
+          context, SlideRightRoute(page: InvoicePage(invoiceData: invoice)));
       SmartDialog.showLoading();
-      var checkInvoice = await walletCanister!.confirmOrder(nftData!.principal!, invoice!, blockHeights);
-      SmartDialog.dismiss();
-      if(checkInvoice !=null){
-        Navigator.pushReplacement(context, SlideRightRoute(page: InvociePage(invoiceData: checkInvoice)));
+      var checkInvoice = await walletCanister!
+          .confirmOrder(nftData!.principal!, invoice!, blockHeights);
+      await SmartDialog.dismiss();
+      if (checkInvoice != null) {
+        EventBusUtil.fire(TransactionEvent());
+        Navigator.pushReplacement(context,
+            SlideRightRoute(page: InvoicePage(invoiceData: checkInvoice)));
       }
-
     }
   }
 
@@ -466,42 +541,72 @@ class _NftPageState extends BaseNftPageState<NftPage> {
     var isCreate = await walletCanister!
         .makeOrder(nftData!.principal!, double.parse(_priceControler.text));
     SmartDialog.dismiss();
-    if(isCreate){
+    if (isCreate) {
       _fetchOrder();
     }
   }
 
-  updateOrder() async{
+  updateOrder() async {
     SmartDialog.dismiss();
     SmartDialog.showLoading();
     var isUpdate = await walletCanister!
         .updateOrder(nftData!.principal!, double.parse(_priceControler.text));
     SmartDialog.dismiss();
-    if(isUpdate){
+    if (isUpdate) {
       _fetchOrder();
     }
   }
 
-  void cancelOrder() async{
+  void cancelOrder() async {
     SmartDialog.showLoading();
     var isCancel = await walletCanister!.cancelOrder(nftData!.principal!);
     SmartDialog.dismiss();
-    if(isCancel){
-
+    if (isCancel) {
       setState(() {
         order = null;
       });
+    }
+  }
+
+  void onTransferPressed(BuildContext context) async {
+    Navigator.push(
+        context,
+        SlideRightRoute(
+            page: NftTransferPage(
+          nftData: nftData,
+        )));
+  }
+
+  void onBurnPressed(BuildContext context) async {
+    SmartDialog.show(widget: burnTokenView(context));
+  }
+
+  void _burnToken(BuildContext context) async {
+    SmartDialog.dismiss();
+
+    SmartDialog.showLoading();
+    Invoice? inv = await walletCanister!.claimBurnInvoice(nftData!.principal!);
+    SmartDialog.dismiss();
+    if (inv != null) {
+      List<BigInt> blocks = await Navigator.push(
+          context,
+          SlideRightRoute(
+              page: InvoicePage(
+            invoiceData: inv!,
+          )));
+      SmartDialog.showLoading();
+      Invoice? checkInv =
+          await walletCanister!.burnToken(nftData!.principal!, inv, blocks[0]);
+      await SmartDialog.dismiss();
+      if (checkInv != null) {
+        Navigator.pushReplacement(
+            context,
+            SlideRightRoute(
+                page: InvoicePage(
+              invoiceData: checkInv!,
+            )));
+      }
 
     }
-
-
-  }
-
-  void onTransferPressed(BuildContext context) async{
-
-  }
-
-  void onBurnPressed(BuildContext context) async{
-
   }
 }

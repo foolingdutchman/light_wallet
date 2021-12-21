@@ -38,7 +38,7 @@ class _InvoiceListViewState extends BaseNftPageState<InvoiceListView> {
                  Navigator.push(
                      context,
                      SlideRightRoute(
-                         page: InvociePage(
+                         page: InvoicePage(
                            invoiceData:
                            invoices![position],
                          )));
@@ -53,7 +53,7 @@ class _InvoiceListViewState extends BaseNftPageState<InvoiceListView> {
                        mainAxisAlignment: MainAxisAlignment.center,
                        crossAxisAlignment: CrossAxisAlignment.start,
                        children: [
-                         Text(invoices![position].isMintInvoice() ? "#Mint" : "#Purchase",
+                         Text(invoices![position].getTypeString(),
                            style: TextStyle(
                                fontSize: 16, fontWeight: FontWeight.bold),),
                          Text(invoices![position].value().toString() +" ICP",style: TextStyle(
@@ -107,6 +107,9 @@ class _InvoiceListViewState extends BaseNftPageState<InvoiceListView> {
   @override
   void hanldEvent(Event event) {
     // TODO: implement hanldEvent
+    if(event is TransferNftEvent || event is MintNftEvent || event is BurnNftEvent){
+      _getMyInvoices();
+    }
   }
 
   void _getMyInvoices() async {

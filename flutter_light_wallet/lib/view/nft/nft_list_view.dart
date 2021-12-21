@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:agent_dart/protobuf/ic_ledger/pb/v1/types.pb.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_nft_page_state.dart';
@@ -48,6 +49,7 @@ class _NftDataListViewState extends BaseNftPageState<NftDataListView> {
                       Navigator.push(
                           context,
                           SlideRightRoute(
+
                               page: NftPage(
                             principal:
                                 nfts![position].nftData!.principal!.toString(),
@@ -143,6 +145,10 @@ class _NftDataListViewState extends BaseNftPageState<NftDataListView> {
   @override
   void hanldEvent(Event event) {
     // TODO: implement hanldEvent
+
+    if(event is TransferNftEvent || event is MintNftEvent || event is BurnNftEvent){
+      _qureyNfts();
+    }
   }
 
   _qureyNfts() async {

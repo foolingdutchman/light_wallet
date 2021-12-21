@@ -26,7 +26,7 @@ class WalletCanisterProperty {
   static const isPrivate = 'isPrivate';
 }
 
-enum InvoiceType { MINT, PURCHASE, UNCHECK_MINT, UNCHECK_PURCHASE }
+enum InvoiceType { MINT, PURCHASE, BURN, TRANSFER }
 
 class Order {
   BigInt? id;
@@ -105,13 +105,23 @@ class Invoice {
         .toDouble();
   }
 
-  bool isMintInvoice() {
-    return type == InvoiceType.MINT || type == InvoiceType.UNCHECK_MINT;
-  }
+
 
   bool isUncheckInvoice() {
-    return type == InvoiceType.UNCHECK_MINT ||
-        type == InvoiceType.UNCHECK_PURCHASE;
+    return id ==null;
+  }
+
+  String getTypeString(){
+    switch(type){
+      case InvoiceType.MINT:
+        return "#Mint";
+       case InvoiceType.PURCHASE:
+        return "#Purchase";
+       case InvoiceType.TRANSFER:
+        return "#Transfer";
+       case InvoiceType.BURN:
+        return "#Burn";
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -127,11 +137,17 @@ class Invoice {
       'checktimeStamp': checktimeStamp,
     }..removeWhere(
         (dynamic key, dynamic value) => key == null || value == null);
+    switch(type){
+      case InvoiceType.MINT:
+           return {"Mint": map};
+      case InvoiceType.PURCHASE:
+        return {"Purchase": map};
+      case InvoiceType.BURN:
+        return {"Burn": map};
+      case InvoiceType.TRANSFER:
+        return {"Transfer": map};
+    }
 
-    if (type == InvoiceType.UNCHECK_MINT || type == InvoiceType.MINT)
-      return {"Mint": map};
-    else
-      return {"Purchase": map};
   }
 
   static Invoice fromMapData(Map map) {
@@ -148,8 +164,34 @@ class Invoice {
           data["receiptAddress"],
           data["nft_principal"],
           data["checktimeStamp"],
-          data["id"] == null ? InvoiceType.UNCHECK_MINT : InvoiceType.MINT);
-    } else {
+          InvoiceType.MINT);
+    } else if (map.containsKey("Burn")) {
+      Map data = map.entries.firstWhere((e) => e.key == 'Burn').value;
+      return Invoice(
+          data["id"],
+          data["counterAddress"],
+          data["timeStamp"],
+          data["issueTo"],
+          data["charge"],
+          data["amount"],
+          data["receiptAddress"],
+          data["nft_principal"],
+          data["checktimeStamp"],
+          InvoiceType.BURN);
+    }else  if (map.containsKey("Transfer")) {
+      Map data = map.entries.firstWhere((e) => e.key == 'Transfer').value;
+      return Invoice(
+          data["id"],
+          data["counterAddress"],
+          data["timeStamp"],
+          data["issueTo"],
+          data["charge"],
+          data["amount"],
+          data["receiptAddress"],
+          data["nft_principal"],
+          data["checktimeStamp"],
+          InvoiceType.TRANSFER);
+    }else{
       Map data = map.entries.firstWhere((e) => e.key == 'Purchase').value;
       return Invoice(
           data["id"],
@@ -161,9 +203,8 @@ class Invoice {
           data["receiptAddress"],
           data["nft_principal"],
           data["checktimeStamp"],
-          data["id"] == null
-              ? InvoiceType.UNCHECK_PURCHASE
-              : InvoiceType.PURCHASE);
+          InvoiceType.PURCHASE);
+
     }
   }
 }
@@ -237,7 +278,7 @@ class TransferRecord{
 
    static TransferRecord fromMap(Map map){
      return TransferRecord(
-         map["to"] ,
+         map["to"].length==0?null:  map["to"][0],
          map["transaction_hash"] ,
          map["timeStamp"] ,
          map["from"] ,
@@ -246,7 +287,7 @@ class TransferRecord{
 
    Map<String, dynamic> toJson(){
      return {
-       "to":to,
+       "to":[to],
        "transaction_hash":transaction_hash,
        "timeStamp":timeStamp,
        "from":from,
@@ -266,7 +307,7 @@ class CanisterMethod {
   static const getNftMetaData = 'getNftMetaData';
   static const makeOrder = 'makeOrder';
   static const queryNftsWithOrder = 'queryNftsWithOrder';
-  static const transferOwner = 'transferOwner';
+  static const transfer = 'transfer';
   static const updateOrder = 'updateOrder';
   static const queryOrders = 'queryOrders';
   static const getRemainSpace = 'getRemainSpace';
@@ -288,89 +329,21 @@ class CanisterMethod {
   static const claimPurchaseInvoice = 'claimPurchaseInvoice';
   static const getTransferRecordByPrincipal = 'getTransferRecordByPrincipal';
   static const getOwnTransferRecord = 'getOwnTransferRecord';
+  static const claimTransferInvoice = 'claimTransferInvoice';
+  static const claimBurnInvoice = 'claimBurnInvoice';
+  static const burn = 'burn';
 
 }
 
 class ServiceProperties {
-  static final Error = IDL.Variant({
-    'Immutable': IDL.Null,
-    'NotFound': IDL.Null,
-    'Unauthorized': IDL.Null,
-    'InvalidRequest': IDL.Null,
-    'AuthorizedPrincipalLimitReached': IDL.Nat,
-    'FailedToWrite': IDL.Text,
-  });
-  static final Result_1 = IDL.Variant({'ok': IDL.Principal, 'err': Error});
-  static final UncheckInvoice = IDL.Variant({
-    'Mint': IDL.Record({
-      'counterAddress': IDL.Text,
-      'timeStamp': IDL.Nat64,
-      'issueTo': IDL.Principal,
-      'charge': IDL.Nat64,
-      'nft_principal': IDL.Principal,
-    }),
-    'Purchase': IDL.Record({
-      'counterAddress': IDL.Text,
-      'timeStamp': IDL.Nat64,
-      'issueTo': IDL.Principal,
-      'charge': IDL.Nat64,
-      'amount': IDL.Nat64,
-      'receiptAddress': IDL.Text,
-      'nft_principal': IDL.Principal,
-    }),
-  });
-  static final Result_7 = IDL.Variant({'ok': UncheckInvoice, 'err': Error});
-  static final Order = IDL.Record({
+ static final Order = IDL.Record({
     'id': IDL.Nat,
     'timestamp_nanos': IDL.Nat64,
     'principal': IDL.Principal,
     'owner': IDL.Principal,
     'price': IDL.Nat64,
   });
-  static final Invoice = IDL.Variant({
-    'Mint': IDL.Record({
-      'id': IDL.Nat,
-      'counterAddress': IDL.Text,
-      'timeStamp': IDL.Nat64,
-      'issueTo': IDL.Principal,
-      'charge': IDL.Nat64,
-      'nft_principal': IDL.Principal,
-      'checktimeStamp': IDL.Nat64,
-    }),
-    'Purchase': IDL.Record({
-      'id': IDL.Nat,
-      'counterAddress': IDL.Text,
-      'timeStamp': IDL.Nat64,
-      'issueTo': IDL.Principal,
-      'charge': IDL.Nat64,
-      'amount': IDL.Nat64,
-      'receiptAddress': IDL.Text,
-      'nft_principal': IDL.Principal,
-      'checktimeStamp': IDL.Nat64,
-    }),
-  });
-  static final Result_5 = IDL.Variant({'ok': Invoice, 'err': Error});
-  static final ContractInfo = IDL.Record({
-    'nft_payload_size': IDL.Nat,
-    'memory_size': IDL.Nat,
-    'max_live_size': IDL.Nat,
-    'cycles': IDL.Nat,
-    'total_minted': IDL.Nat,
-    'heap_size': IDL.Nat,
-    'authorized_users': IDL.Vec(IDL.Principal),
-  });
-  static final ContractMetadata = IDL.Record({
-    'name': IDL.Text,
-    'symbol': IDL.Text,
-  });
   static final Time = IDL.Int;
-  static final TransferRecord = IDL.Record({
-    'to': IDL.Principal,
-    'transaction_hash': IDL.Nat,
-    'timeStamp': Time,
-    'from': IDL.Principal,
-    'nftPrincipal': IDL.Principal,
-  });
   static final NftData = IDL.Record({
     'id': IDL.Nat,
     'title': IDL.Text,
@@ -384,12 +357,118 @@ class ServiceProperties {
     'isPrivate': IDL.Bool,
     'mediaType': IDL.Text,
   });
-  static final Result_3 = IDL.Variant({'ok': NftData, 'err': Error});
-  static final Result_2 = IDL.Variant({'ok': IDL.Vec(IDL.Nat8), 'err': Error});
   static final NftDatawithOrder = IDL.Record({
     'order': IDL.Opt(Order),
     'nftData': NftData,
   });
+  static final UncheckInvoice = IDL.Variant({
+    'Burn': IDL.Record({
+      'counterAddress': IDL.Text,
+      'timeStamp': IDL.Nat64,
+      'issueTo': IDL.Principal,
+      'charge': IDL.Nat64,
+      'nft_principal': IDL.Principal,
+    }),
+    'Mint': IDL.Record({
+      'counterAddress': IDL.Text,
+      'timeStamp': IDL.Nat64,
+      'issueTo': IDL.Principal,
+      'charge': IDL.Nat64,
+      'nft_principal': IDL.Principal,
+    }),
+    'Transfer': IDL.Record({
+      'counterAddress': IDL.Text,
+      'timeStamp': IDL.Nat64,
+      'issueTo': IDL.Principal,
+      'charge': IDL.Nat64,
+      'nft_principal': IDL.Principal,
+    }),
+    'Purchase': IDL.Record({
+      'counterAddress': IDL.Text,
+      'timeStamp': IDL.Nat64,
+      'issueTo': IDL.Principal,
+      'charge': IDL.Nat64,
+      'amount': IDL.Nat64,
+      'receiptAddress': IDL.Text,
+      'nft_principal': IDL.Principal,
+    }),
+  });
+  static final Invoice = IDL.Variant({
+    'Burn': IDL.Record({
+      'id': IDL.Nat,
+      'counterAddress': IDL.Text,
+      'timeStamp': IDL.Nat64,
+      'issueTo': IDL.Principal,
+      'charge': IDL.Nat64,
+      'nft_principal': IDL.Principal,
+      'checktimeStamp': IDL.Nat64,
+    }),
+    'Mint': IDL.Record({
+      'id': IDL.Nat,
+      'counterAddress': IDL.Text,
+      'timeStamp': IDL.Nat64,
+      'issueTo': IDL.Principal,
+      'charge': IDL.Nat64,
+      'nft_principal': IDL.Principal,
+      'checktimeStamp': IDL.Nat64,
+    }),
+    'Transfer': IDL.Record({
+      'id': IDL.Nat,
+      'counterAddress': IDL.Text,
+      'timeStamp': IDL.Nat64,
+      'issueTo': IDL.Principal,
+      'charge': IDL.Nat64,
+      'nft_principal': IDL.Principal,
+      'checktimeStamp': IDL.Nat64,
+    }),
+    'Purchase': IDL.Record({
+      'id': IDL.Nat,
+      'counterAddress': IDL.Text,
+      'timeStamp': IDL.Nat64,
+      'issueTo': IDL.Principal,
+      'charge': IDL.Nat64,
+      'amount': IDL.Nat64,
+      'receiptAddress': IDL.Text,
+      'nft_principal': IDL.Principal,
+      'checktimeStamp': IDL.Nat64,
+    }),
+  });
+  static final Error = IDL.Variant({
+    'Immutable': IDL.Null,
+    'NotFound': IDL.Null,
+    'Unauthorized': IDL.Null,
+    'InvalidRequest': IDL.Null,
+    'AuthorizedPrincipalLimitReached': IDL.Nat,
+    'FailedToWrite': IDL.Text,
+  });
+  static final Result_2 = IDL.Variant({'ok': Invoice, 'err': Error});
+  static final Result_1 = IDL.Variant({'ok': IDL.Principal, 'err': Error});
+  static final Result_7 = IDL.Variant({'ok': UncheckInvoice, 'err': Error});
+  static final ContractInfo = IDL.Record({
+    'nft_payload_size': IDL.Nat,
+    'memory_size': IDL.Nat,
+    'max_live_size': IDL.Nat,
+    'orderCount': IDL.Nat,
+    'cycles': IDL.Nat,
+    'total_minted': IDL.Nat,
+    'tokenCount': IDL.Nat,
+    'heap_size': IDL.Nat,
+    'invocieCount': IDL.Nat,
+    'authorized_users': IDL.Vec(IDL.Principal),
+  });
+  static final ContractMetadata = IDL.Record({
+    'name': IDL.Text,
+    'symbol': IDL.Text,
+  });
+  static final TransferRecord = IDL.Record({
+    'to': IDL.Opt(IDL.Principal),
+    'transaction_hash': IDL.Nat,
+    'timeStamp': Time,
+    'from': IDL.Principal,
+    'nftPrincipal': IDL.Principal,
+  });
+  static final Result_4 = IDL.Variant({'ok': NftData, 'err': Error});
+  static final Result_3 = IDL.Variant({'ok': IDL.Vec(IDL.Nat8), 'err': Error});
   static final Result_6 = IDL.Variant({'ok': NftDatawithOrder, 'err': Error});
   static final PublicNftData = IDL.Record({
     'title': IDL.Text,
@@ -399,7 +478,7 @@ class ServiceProperties {
     'isPrivate': IDL.Bool,
     'mediaType': IDL.Text,
   });
-  static final Result_4 = IDL.Variant({
+  static final Result_5 = IDL.Variant({
     'ok': IDL.Vec(NftDatawithOrder),
     'err': Error,
   });
@@ -413,39 +492,39 @@ ServiceClass _initService() {
       [IDL.Vec(IDL.Principal)],
       ['query'],
     ),
-    'balanceOfWithOrder':
-        IDL.Func([], [IDL.Vec(ServiceProperties.NftDatawithOrder)], []),
+    'balanceOfWithOrder': IDL.Func([], [IDL.Vec(ServiceProperties.NftDatawithOrder)], []),
+    'burn': IDL.Func(
+      [IDL.Principal, IDL.Nat64, ServiceProperties.UncheckInvoice],
+      [ServiceProperties.Result_2],
+      [],
+    ),
     'cancelOrder': IDL.Func([IDL.Principal], [ServiceProperties.Result_1], []),
-    'claimMintInvoice':
-        IDL.Func([IDL.Nat, IDL.Principal], [ServiceProperties.Result_7], []),
-    'claimPurchaseInvoice': IDL.Func(
-        [ServiceProperties.Order], [ServiceProperties.UncheckInvoice], []),
+    'claimBurnInvoice': IDL.Func([IDL.Principal], [ServiceProperties.Result_7], []),
+    'claimMintInvoice': IDL.Func([IDL.Nat, IDL.Principal], [ServiceProperties.Result_7], []),
+    'claimPurchaseInvoice': IDL.Func([ServiceProperties.Order], [ServiceProperties.UncheckInvoice], []),
+    'claimTransferInvoice': IDL.Func([IDL.Principal], [ServiceProperties.Result_7], []),
     'confirmOrder': IDL.Func(
       [IDL.Principal, IDL.Vec(IDL.Nat64), ServiceProperties.UncheckInvoice],
-      [ServiceProperties.Result_5],
+      [ServiceProperties.Result_2],
       [],
     ),
     'getCaller': IDL.Func([], [IDL.Text], []),
     'getCallerAddress': IDL.Func([], [IDL.Text], []),
     'getContractInfo': IDL.Func([], [ServiceProperties.ContractInfo], []),
-    'getMetadata':
-        IDL.Func([], [ServiceProperties.ContractMetadata], ['query']),
+    
+    'getLastTokenId': IDL.Func([], [IDL.Nat], []),
+    'getMetadata': IDL.Func([], [ServiceProperties.ContractMetadata], ['query']),
     'getMintPrice': IDL.Func([IDL.Nat], [IDL.Nat64], []),
-    'getNftOrder': IDL.Func(
-        [IDL.Principal], [IDL.Opt(ServiceProperties.Order)], ['query']),
-    'getOwnTransferRecord':
-        IDL.Func([], [IDL.Vec(ServiceProperties.TransferRecord)], []),
+    'getNftOrder': IDL.Func([IDL.Principal], [IDL.Opt(ServiceProperties.Order)], ['query']),
+   
+    'getOwnTransferRecord': IDL.Func([], [IDL.Vec(ServiceProperties.TransferRecord)], []),
     'getOwner': IDL.Func([], [IDL.Principal], []),
     'getPrincipal': IDL.Func([IDL.Text], [IDL.Principal], []),
     'getRemainSpace': IDL.Func([], [IDL.Nat], []),
-    'getTokenByPrincipalString':
-        IDL.Func([IDL.Text], [ServiceProperties.Result_3], []),
-    'getTokenMetaByPrincipalString':
-        IDL.Func([IDL.Text], [ServiceProperties.Result_2], []),
-    'getTokenWithOrderByIndex':
-        IDL.Func([IDL.Nat], [ServiceProperties.Result_6], []),
-    'getTokenWithOrderByPrincipalString':
-        IDL.Func([IDL.Text], [ServiceProperties.Result_6], []),
+    'getTokenByPrincipalString': IDL.Func([IDL.Text], [ServiceProperties.Result_4], []),
+    'getTokenMetaByPrincipalString': IDL.Func([IDL.Text], [ServiceProperties.Result_3], []),
+    'getTokenWithOrderByIndex': IDL.Func([IDL.Nat], [ServiceProperties.Result_6], []),
+    'getTokenWithOrderByPrincipalString': IDL.Func([IDL.Text], [ServiceProperties.Result_6], []),
     'getTransferRecordByHash': IDL.Func(
       [IDL.Nat],
       [IDL.Vec(ServiceProperties.TransferRecord)],
@@ -456,35 +535,29 @@ ServiceClass _initService() {
       [IDL.Vec(ServiceProperties.TransferRecord)],
       ['query'],
     ),
-    'init': IDL.Func(
-        [IDL.Vec(IDL.Principal), ServiceProperties.ContractMetadata], [], []),
-    'invoiceOf':
-        IDL.Func([], [IDL.Opt(IDL.Vec(ServiceProperties.Invoice))], []),
+    'init': IDL.Func([IDL.Vec(IDL.Principal), ServiceProperties.ContractMetadata], [], []),
+    'invoiceOf': IDL.Func([], [IDL.Opt(IDL.Vec(ServiceProperties.Invoice))], []),
     'isNftCreator': IDL.Func([], [IDL.Bool], []),
-    'makeOrder':
-        IDL.Func([IDL.Principal, IDL.Nat64], [ServiceProperties.Result_1], []),
+    'makeOrder': IDL.Func([IDL.Principal, IDL.Nat64], [ServiceProperties.Result_1], []),
     'mint': IDL.Func(
       [
-        ServiceProperties.PublicNftData,
-        IDL.Text,
-        IDL.Vec(IDL.Nat8),
-        IDL.Nat64,
-        ServiceProperties.UncheckInvoice
-      ],
-      [ServiceProperties.Result_5],
+        ServiceProperties.PublicNftData, IDL.Text, IDL.Vec(IDL.Nat8), IDL.Nat64, ServiceProperties.UncheckInvoice],
+      [ServiceProperties.Result_2],
       [],
     ),
     'ownerOf': IDL.Func([IDL.Text], [ServiceProperties.Result_1], ['query']),
-    'queryNftsWithOrder': IDL.Func([IDL.Nat], [ServiceProperties.Result_4], []),
+    'queryNftsWithOrder': IDL.Func([IDL.Nat], [ServiceProperties.Result_5], []),
     'spawnCreator': IDL.Func([], [IDL.Text], []),
-    'tokenByIndex': IDL.Func([IDL.Nat], [ServiceProperties.Result_3], []),
-    'tokenMetaByIndex': IDL.Func([IDL.Nat], [ServiceProperties.Result_2], []),
-    'transfer':
-        IDL.Func([IDL.Principal, IDL.Text], [ServiceProperties.Result], []),
-    'updateOrder':
-        IDL.Func([IDL.Principal, IDL.Nat64], [ServiceProperties.Result_1], []),
-    'updateTokenPrivate':
-        IDL.Func([IDL.Principal, IDL.Bool], [ServiceProperties.Result], []),
+    'tokenByIndex': IDL.Func([IDL.Nat], [ServiceProperties.Result_4], []),
+    'tokenMetaByIndex': IDL.Func([IDL.Nat], [ServiceProperties.Result_3], []),
+    'transfer': IDL.Func(
+      [IDL.Principal, IDL.Principal, IDL.Nat64, ServiceProperties.UncheckInvoice],
+      [ServiceProperties.Result_2],
+      [],
+    ),
+    'updateContractOwners': IDL.Func([IDL.Principal, IDL.Bool], [ServiceProperties.Result], []),
+    'updateOrder': IDL.Func([IDL.Principal, IDL.Nat64], [ServiceProperties.Result_1], []),
+    'updateTokenPrivate': IDL.Func([IDL.Principal, IDL.Bool], [ServiceProperties.Result], []),
     'wallet_receive': IDL.Func([], [], []),
   });
   return LWalletNft;
@@ -649,6 +722,54 @@ class WalletCanister {
     }
   }
 
+  Future<Invoice?> claimTransferInvoice(Principal principal) async {
+    try {
+
+      Map result = await actor
+          ?.getFunc(CanisterMethod.claimTransferInvoice)
+          ?.call([ principal]);
+      print('resp is ' + result.toString());
+      if (result.containsKey('ok')) {
+        Map inv = result.entries
+            .elementAt(0)
+            .value
+            .entries
+            .firstWhere((e) => e.key == 'Transfer')
+            .value;
+        print('invoice is ' + inv.toString());
+        return Invoice.fromMapData(result.entries
+            .elementAt(0)
+            .value);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Invoice?> claimBurnInvoice(Principal principal) async {
+    try {
+
+      Map result = await actor
+          ?.getFunc(CanisterMethod.claimBurnInvoice)
+          ?.call([ principal]);
+      print('resp is ' + result.toString());
+      if (result.containsKey('ok')) {
+        Map inv = result.entries
+            .elementAt(0)
+            .value
+            .entries
+            .firstWhere((e) => e.key == 'Burn')
+            .value;
+        print('invoice is ' + inv.toString());
+        return Invoice.fromMapData(result.entries
+            .elementAt(0)
+            .value);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<Invoice?> claimPurchaseInvoice(Order order) async {
     try {
       Map result = await actor
@@ -779,6 +900,52 @@ class WalletCanister {
       rethrow;
     }
   }
+
+  Future<Invoice?> transferToken(Principal to,Principal principal,
+      Invoice uncheckInvoice,
+      BigInt blockHeight,) async {
+    try {
+      Map result = await actor
+          ?.getFunc(CanisterMethod.transfer)
+          ?.call([to,principal, blockHeight, uncheckInvoice.toJson()]);
+      print('result is : ' + result.toString());
+      if (result.containsKey('ok')) {
+        Map map = result.entries
+            .elementAt(0)
+            .value;
+        return Invoice.fromMapData(result.entries
+            .elementAt(0)
+            .value);
+      }
+      return null;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Invoice?> burnToken(Principal principal,
+      Invoice uncheckInvoice,
+      BigInt blockHeight,) async {
+    try {
+      Map result = await actor
+          ?.getFunc(CanisterMethod.burn)
+          ?.call([principal, blockHeight, uncheckInvoice.toJson()]);
+      print('result is : ' + result.toString());
+      if (result.containsKey('ok')) {
+        Map map = result.entries
+            .elementAt(0)
+            .value;
+        return Invoice.fromMapData(result.entries
+            .elementAt(0)
+            .value);
+      }
+      return null;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
 
   Future<List<TransferRecord>> getOwnTransferRecord() async{
     List<TransferRecord> list =[];

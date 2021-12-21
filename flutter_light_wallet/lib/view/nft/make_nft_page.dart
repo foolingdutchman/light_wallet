@@ -300,7 +300,11 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
   }
 
   @override
-  void hanldEvent(Event event) {}
+  void hanldEvent(Event event) {
+    if( event is MintNftEvent){
+      Navigator.pop(context);
+    }
+  }
 
   _createPrincipal(context) {
     Principal principal =
@@ -349,7 +353,7 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
       Invoice? invoice =   await walletCanister!.claimMintInvoice(principalStr, size);
       SmartDialog.dismiss();
       if(invoice !=null){
-        List<BigInt> blockHeight= await  Navigator.push(context, SlideRightRoute(page: InvociePage(invoiceData: invoice)));
+        List<BigInt> blockHeight= await  Navigator.push(context, SlideRightRoute(page: InvoicePage(invoiceData: invoice)));
         PostNftData nftData = await _prepareNftData(invoice, blockHeight![0]);
         await _mintNft(context,nftData);
 
@@ -395,7 +399,7 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
         Navigator.pushReplacement(
             context,
             SlideRightRoute(
-                page: InvociePage(
+                page: InvoicePage(
               invoiceData: invoice,
             )));
       }

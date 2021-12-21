@@ -93,7 +93,7 @@ class _TransferRecordViewState extends BaseNftPageState<TransferRecordView> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(records[position].from!.toString() == InstanceStore.currentWallet!.principal?
-                                records[position].to!.toString():
+                                records[position].to==null?"Burn":records[position].to!.toString():
                                 records[position].from!.toString()
                                   ,maxLines: 1,
                                   overflow: TextOverflow.ellipsis,),
@@ -115,6 +115,9 @@ class _TransferRecordViewState extends BaseNftPageState<TransferRecordView> {
 
   @override
   void hanldEvent(Event event) {
+    if(event is TransferNftEvent || event is MintNftEvent || event is BurnNftEvent){
+      _getRecords();
+    }
 
   }
 }
