@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:agent_dart/agent_dart.dart';
-import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_nft_page_state.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
@@ -12,8 +11,6 @@ import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/file_util.dart';
 import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
 import 'package:flutter_light_wallet/utils/nft_canister.dart';
-import 'package:flutter_light_wallet/utils/string_util.dart';
-import 'package:flutter_light_wallet/utils/verification_util.dart';
 import 'package:flutter_light_wallet/view/nft/nft_transfer_page.dart';
 
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -70,7 +67,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                         child: Row(
                           children: [
                             Text(
-                              "Token Id: #" +
+                              S.of(context).token_index+": #" +
                                   (nftData == null
                                       ? ""
                                       : nftData!.id.toString()),
@@ -83,7 +80,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 10, bottom: 5),
                         child: Text(
-                          "Token Principal",
+                          S.of(context).token_id,
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
@@ -127,7 +124,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                           Text(
                               nftData == null
                                   ? ""
-                                  : "Author : " + nftData!.author + ".",
+                                  : S.of(context).author+" : " + nftData!.author + ".",
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold)),
                         ],
@@ -143,7 +140,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 10, bottom: 5),
                         child: Text(
-                          "Owner Id",
+                          S.of(context).owner_id ,
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
@@ -164,7 +161,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 10, bottom: 5),
                         child: Text(
-                          "Creator Id",
+                          S.of(context).creator_principal,
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
@@ -203,7 +200,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                                       onPressed: () {
                                         onTransferPressed(context);
                                       },
-                                      child: Text("Transfer"),
+                                      child: Text( S.of(context).transfer),
                                     ),
                                   ),
                                   Padding(
@@ -223,7 +220,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                                       onPressed: () {
                                         onBurnPressed(context);
                                       },
-                                      child: Text("Burn"),
+                                      child: Text( S.of(context).burn),
                                     ),
                                   )
                                 ],
@@ -278,7 +275,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                             : S.of(context).sell)
                         : (isNftSell()
                             ? S.of(context).buy
-                            : S.of(context).not_for_sell)),
+                            : S.of(context).not_sell)),
                     style: ButtonStyle(
                       backgroundColor: !isOwnerView() && !isNftSell()
                           ? MaterialStateProperty.all(Color(0x11000000))
@@ -422,7 +419,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
             Padding(
               padding: const EdgeInsets.only(top: 10.0, bottom: 10),
               child: Text(
-                "Burnt Token will be destory forever! ",
+                S.of(context).hint_burn_token,
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

@@ -32,7 +32,7 @@ class _WorkRoomPageState extends BasePageState<WorkRoomPage> with TickerProvider
 
   TabController? _tabController ;
   PageController? _pageController ;
-   static final List<String> _titleList =["NFT","My Nft","My Invoice", "My Transactions"];
+   static final List<String> _titleList =[S.current.nft,S.current.my_nft,S.current.my_invoice,S.current.my_transactions];
    List<Widget> pages = [NftDataListView(isOwnList: false,),NftDataListView(isOwnList: true,),InvoiceListView(),TransferRecordView()];
   @override
    initState(){
@@ -98,7 +98,7 @@ class _WorkRoomPageState extends BasePageState<WorkRoomPage> with TickerProvider
                     Padding(
                       padding: const EdgeInsets.only(top: 20),
                       child: Text(
-                        "Make Your Own NFT Art",
+                        S.of(context).make_your_nft,
                         style: TextStyle(
                             color: Color(0xffe4542a),
                             fontWeight: FontWeight.bold,

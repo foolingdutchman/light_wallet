@@ -40,7 +40,7 @@ class _InvoicePageState extends BaseNftPageState<InvoicePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Invoice",
+                S.of(context).invoice,
                 style: TextStyle(
                   fontSize: 30,
                   color: Colors.black87,
@@ -81,7 +81,7 @@ class _InvoicePageState extends BaseNftPageState<InvoicePage> {
                                         child: Row(
                                           children: [
                                             Text(
-                                              "Invoice No:",
+                                              S.of(context).invoice_no + ":",
                                               style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold),
@@ -100,7 +100,7 @@ class _InvoicePageState extends BaseNftPageState<InvoicePage> {
                                   child: Row(
                                     children: [
                                       Text(
-                                        "Invoice Type:",
+                                        S.of(context).invoice_type + ":",
                                         style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold),
@@ -123,7 +123,7 @@ class _InvoicePageState extends BaseNftPageState<InvoicePage> {
                                   child: Row(
                                     children: [
                                       Text(
-                                        "Fee:",
+                                        S.of(context).fee + " :",
                                         style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold),
@@ -143,7 +143,7 @@ class _InvoicePageState extends BaseNftPageState<InvoicePage> {
                                   padding:
                                       const EdgeInsets.only(top: 10, bottom: 5),
                                   child: Text(
-                                    "Token Principal",
+                                    S.of(context).token_id,
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold),
@@ -169,7 +169,7 @@ class _InvoicePageState extends BaseNftPageState<InvoicePage> {
                                   padding:
                                       const EdgeInsets.only(top: 10, bottom: 5),
                                   child: Text(
-                                    "Counter Address",
+                                    S.of(context).counter_address + ":",
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold),
@@ -200,7 +200,8 @@ class _InvoicePageState extends BaseNftPageState<InvoicePage> {
                                             child: Row(
                                               children: [
                                                 Text(
-                                                  "Purchase Price:",
+                                                  S.of(context).purchase_price +
+                                                      ":",
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       fontWeight:
@@ -223,7 +224,8 @@ class _InvoicePageState extends BaseNftPageState<InvoicePage> {
                                             padding: const EdgeInsets.only(
                                                 top: 10, bottom: 5),
                                             child: Text(
-                                              "Seller Address",
+                                              S.of(context).seller_address +
+                                                  ":",
                                               style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold),
@@ -253,7 +255,7 @@ class _InvoicePageState extends BaseNftPageState<InvoicePage> {
                                   child: Row(
                                     children: [
                                       Text(
-                                        "Issue Date:",
+                                        S.of(context).issue_date + ":",
                                         style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold),
@@ -281,7 +283,7 @@ class _InvoicePageState extends BaseNftPageState<InvoicePage> {
                                   child: Row(
                                     children: [
                                       Text(
-                                        "Total Amount:",
+                                        S.of(context).total_amount + ":",
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
@@ -310,16 +312,18 @@ class _InvoicePageState extends BaseNftPageState<InvoicePage> {
                             ),
                           ),
                         ),
-                        invoiceData.isUncheckInvoice()? Container(): Align(
-                          alignment: Alignment.topRight,
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 80.0),
-                              child: Image(
-                                width: 150,
-                                  height: 150,
-                                  image:
-                                      AssetImage('assets/images/approved.png')),
-                            )),
+                        invoiceData.isUncheckInvoice()
+                            ? Container()
+                            : Align(
+                                alignment: Alignment.topRight,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 80.0),
+                                  child: Image(
+                                      width: 150,
+                                      height: 150,
+                                      image: AssetImage(
+                                          'assets/images/approved.png')),
+                                )),
                       ],
                     ),
                   ),
@@ -333,8 +337,8 @@ class _InvoicePageState extends BaseNftPageState<InvoicePage> {
                       onButtonPressed(context);
                     },
                     child: Text(invoiceData.isUncheckInvoice()
-                        ? "Pay for the Bill"
-                        : "Nft Detail"),
+                        ? S.of(context).pay_the_bill
+                        : S.of(context).nft_detail),
                   ),
                   SizedBox(
                     height: 80,
@@ -353,8 +357,19 @@ class _InvoicePageState extends BaseNftPageState<InvoicePage> {
     // TODO: implement hanldEvent
   }
 
+  bool checkBlanceValid() {
+    return InstanceStore.currentWallet!.getICPBalance() >=
+        ICPAccountUtils.fromICPBigInt2Amount(invoiceData.totalAmount()) +
+            0.0001;
+  }
+
   void onButtonPressed(BuildContext context) async {
     if (invoiceData.isUncheckInvoice()) {
+      if (!checkBlanceValid()) {
+        SmartDialog.showToast(S.current.hint_icp_not_enough);
+        return;
+      }
+
       String result = await VerificationUtils.verifyProcess(context);
       SmartDialog.showLoading();
       if (result == "OK") {

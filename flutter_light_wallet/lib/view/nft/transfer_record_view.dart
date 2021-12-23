@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_nft_page_state.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
+import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/nft_canister.dart';
@@ -79,21 +80,20 @@ class _TransferRecordViewState extends BaseNftPageState<TransferRecordView> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Principal Id",
-
+                                 S.of(context).token_id,
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(records![position].nftPrincipal.toString(),maxLines: 2, overflow: TextOverflow.ellipsis,),
                                 Text(
-                                  records![position].from!.toString() == InstanceStore.currentWallet!.principal ? "To:":"From:",
+                                  records![position].from!.toString() == InstanceStore.currentWallet!.principal ? S.of(context).to: S.of(context).from,
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(records[position].from!.toString() == InstanceStore.currentWallet!.principal?
-                                records[position].to==null?"Burn":records[position].to!.toString():
+                                records[position].to==null?S.of(context).burn:records[position].to!.toString():
                                 records[position].from!.toString()
                                   ,maxLines: 1,
                                   overflow: TextOverflow.ellipsis,),

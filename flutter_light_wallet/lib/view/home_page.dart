@@ -8,6 +8,7 @@ import 'package:flutter_light_wallet/utils/Instance_store.dart';
 
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/rosetta_utils.dart';
+import 'package:flutter_light_wallet/view/nft/nft_data_store.dart';
 
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
@@ -78,6 +79,8 @@ class _HomePageState extends BasePageState<HomePage>
       // if (!CanisterUtil.isCanisterInit) {
       //   await CanisterUtil.initWalletCanister();
       // }
+
+      NftDataStore.init();
       SmartDialog.dismiss();
       // go to home page
       Navigator.pushReplacement(

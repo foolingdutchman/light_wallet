@@ -38,6 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "back": MessageLookupByLibrary.simpleMessage("返回"),
         "balance": MessageLookupByLibrary.simpleMessage("余额"),
         "block_height": MessageLookupByLibrary.simpleMessage("区块高度"),
+        "burn": MessageLookupByLibrary.simpleMessage("销毁"),
         "buy": MessageLookupByLibrary.simpleMessage("购买"),
         "cancel_sell": MessageLookupByLibrary.simpleMessage("取消出售"),
         "change_price": MessageLookupByLibrary.simpleMessage("更改价格"),
@@ -51,13 +52,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "copy_mnemonic": MessageLookupByLibrary.simpleMessage("复制助记词"),
         "copyright_declearation": MessageLookupByLibrary.simpleMessage(
             "请确保你创作的NFT作品内容为原创作品，由此作品产生的任何版权相关纠纷均与平台无关。"),
+        "counter_address": MessageLookupByLibrary.simpleMessage("收银台地址"),
         "create_wallet": MessageLookupByLibrary.simpleMessage("创建钱包"),
-        "creator_id": MessageLookupByLibrary.simpleMessage("创作人Id"),
+        "creator_id": MessageLookupByLibrary.simpleMessage("创作人 Principal"),
         "creator_principal":
             MessageLookupByLibrary.simpleMessage("创作人 Principal"),
         "current_address": MessageLookupByLibrary.simpleMessage("当前钱包地址"),
         "current_remaining_canister_space":
             MessageLookupByLibrary.simpleMessage("当前容器剩余空间"),
+        "data_not_ready": MessageLookupByLibrary.simpleMessage("数据未准备好..."),
         "delete_wallet": MessageLookupByLibrary.simpleMessage("删除钱包"),
         "desc": MessageLookupByLibrary.simpleMessage("描述"),
         "emport_mnemonic": MessageLookupByLibrary.simpleMessage("导出助记词"),
@@ -70,6 +73,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("手势密码已设置"),
         "has_copy_to_clipboard":
             MessageLookupByLibrary.simpleMessage("已复制到剪切板"),
+        "hint_burn_token":
+            MessageLookupByLibrary.simpleMessage("Token永久销毁不可找回!"),
+        "hint_icp_not_enough":
+            MessageLookupByLibrary.simpleMessage("你的ICP余额不足!"),
         "hint_save_code_failded": MessageLookupByLibrary.simpleMessage("保存失败"),
         "hint_save_code_success":
             MessageLookupByLibrary.simpleMessage("二维码已保存至相册"),
@@ -92,31 +99,50 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("请输入有效ICP地址"),
         "invalid_amount_hint":
             MessageLookupByLibrary.simpleMessage("请输入有效ICP数量"),
+        "invalid_principal":
+            MessageLookupByLibrary.simpleMessage("无效principal..."),
+        "invoice": MessageLookupByLibrary.simpleMessage("发票"),
+        "invoice_no": MessageLookupByLibrary.simpleMessage("发票号"),
+        "invoice_type": MessageLookupByLibrary.simpleMessage("发票类型"),
+        "issue_date": MessageLookupByLibrary.simpleMessage("生成日期"),
         "local_auth": MessageLookupByLibrary.simpleMessage("生物验证"),
         "make_nft": MessageLookupByLibrary.simpleMessage("制作NFT"),
+        "make_your_nft": MessageLookupByLibrary.simpleMessage("制作你自己的NFT作品！"),
         "manage": MessageLookupByLibrary.simpleMessage("管理"),
         "max_amount": MessageLookupByLibrary.simpleMessage("最大数量"),
         "mine": MessageLookupByLibrary.simpleMessage("我的"),
+        "mint": MessageLookupByLibrary.simpleMessage("铸造"),
+        "mint_cost": MessageLookupByLibrary.simpleMessage("铸造费用"),
         "mnemonic_format_incorrect":
             MessageLookupByLibrary.simpleMessage("助记词格式不正确"),
         "modify_guesture_password":
             MessageLookupByLibrary.simpleMessage("修改手势密码"),
         "modify_password": MessageLookupByLibrary.simpleMessage("修改密码"),
+        "my_invoice": MessageLookupByLibrary.simpleMessage("我的发票"),
+        "my_nft": MessageLookupByLibrary.simpleMessage("我的Nft"),
+        "my_transactions": MessageLookupByLibrary.simpleMessage("我的转账"),
         "new_guesture_password":
             MessageLookupByLibrary.simpleMessage("输入新手势密码"),
+        "nft": MessageLookupByLibrary.simpleMessage("NFT"),
+        "nft_detail": MessageLookupByLibrary.simpleMessage("NFT展示"),
         "no_more_data": MessageLookupByLibrary.simpleMessage("没有更多数据了"),
-        "not_for_sell": MessageLookupByLibrary.simpleMessage("未出售"),
+        "not_sell": MessageLookupByLibrary.simpleMessage("未出售"),
         "os_determine_auth":
             MessageLookupByLibrary.simpleMessage("让设备系统选择识别方式"),
-        "owner_id": MessageLookupByLibrary.simpleMessage("持有人Id"),
+        "owner_id": MessageLookupByLibrary.simpleMessage("持有人 Principal"),
         "password_input_hint": MessageLookupByLibrary.simpleMessage("请输入密码"),
         "password_insist_hint": MessageLookupByLibrary.simpleMessage("密码输入不一致"),
         "password_modified_hint": MessageLookupByLibrary.simpleMessage("密码已修改"),
         "password_verified": MessageLookupByLibrary.simpleMessage("密码已验证!"),
         "password_wrong_hint": MessageLookupByLibrary.simpleMessage("密码错误"),
+        "pay_the_bill": MessageLookupByLibrary.simpleMessage("支付账单"),
         "price": MessageLookupByLibrary.simpleMessage("价格"),
         "pricinpal_id": MessageLookupByLibrary.simpleMessage("Pricinpal ID"),
+        "purchase": MessageLookupByLibrary.simpleMessage("购买"),
+        "purchase_price": MessageLookupByLibrary.simpleMessage("购买价格"),
         "receipt_address": MessageLookupByLibrary.simpleMessage("收款地址"),
+        "receipt_principal":
+            MessageLookupByLibrary.simpleMessage("收款人Principal"),
         "record": MessageLookupByLibrary.simpleMessage("记录"),
         "repeat_guesture_password":
             MessageLookupByLibrary.simpleMessage("再次输入手势密码"),
@@ -127,14 +153,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "select_default_wallet_hint":
             MessageLookupByLibrary.simpleMessage("已设置为默认钱包"),
         "select_mnemonic_words": MessageLookupByLibrary.simpleMessage("选择助记词"),
+        "select_your_art": MessageLookupByLibrary.simpleMessage("选择你的作品！"),
         "sell": MessageLookupByLibrary.simpleMessage("出售"),
+        "seller_address": MessageLookupByLibrary.simpleMessage("卖家地址"),
         "set_guesture_password": MessageLookupByLibrary.simpleMessage("设置手势密码"),
         "set_price": MessageLookupByLibrary.simpleMessage("设置价格"),
         "settings": MessageLookupByLibrary.simpleMessage("设置"),
         "spawnCreator": MessageLookupByLibrary.simpleMessage("生成创作者"),
         "title": MessageLookupByLibrary.simpleMessage("标题"),
         "to": MessageLookupByLibrary.simpleMessage("至"),
-        "token_id": MessageLookupByLibrary.simpleMessage("Token Id"),
+        "token_id": MessageLookupByLibrary.simpleMessage("Token Principal"),
+        "token_index": MessageLookupByLibrary.simpleMessage("Token Id"),
+        "total_amount": MessageLookupByLibrary.simpleMessage("总金额"),
         "transaction_record": MessageLookupByLibrary.simpleMessage("转账记录"),
         "transfer": MessageLookupByLibrary.simpleMessage("转账"),
         "transfer_amount": MessageLookupByLibrary.simpleMessage("转账数量"),

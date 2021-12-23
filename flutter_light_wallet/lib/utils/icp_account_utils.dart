@@ -1,10 +1,14 @@
+import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:agent_dart/identity/secp256k1.dart';
 import 'package:agent_dart/wallet/ledger.dart';
 
 import 'package:agent_dart/agent_dart.dart';
 import 'package:agent_dart/wallet/keysmith.dart' as keysmith;
+
 import 'package:flutter_light_wallet/model/token.dart';
 import 'package:flutter_light_wallet/model/wallet.dart';
 import 'package:flutter_light_wallet/utils/constans.dart';
@@ -42,6 +46,38 @@ class ICPAccountUtils {
     return wallet;
   }
 
+  static void importPemWallet(String path) async{
+    File? pem = File(path);
+    if(pem.existsSync()){
+      var path = pem.path;
+      var name = path.substring(path.lastIndexOf("/") + 1, path.length);
+      var suffix = name.substring(name.lastIndexOf(".") + 1, name.length);
+      if(suffix.toUpperCase()=='PEM'){
+        String privateKey =await pem.readAsString();
+        print("privatekey is : "+ privateKey);
+        List<String> pieces = privateKey.split("\n");
+        String d ="";
+        for(String  p in pieces){
+          if (p.isNotEmpty && !p.startsWith("-----")) {
+           d= d+p.trim();
+          }
+        }
+        print("privatekey is : "+ d);
+
+        Uint8List raw=  Uint8List.fromList(base64Decode(d));
+
+        var ecIdentity= Secp256k1KeyIdentity.fromSecretKey(raw);
+        var principal = ecIdentity.getPrincipal();
+        var account =
+        crc32Add(ecIdentity.getAccountId()).toHex();
+        print("principal is : "+ principal.toString());
+        print("account is : "+ account);
+      }
+    }else{
+      print("file doesnt exist!");
+    }
+  }
+
   static Future<BigInt> transfer(
       Wallet? wallet, String toAddress, String amount,
       {String? memoString}) async {
@@ -72,9 +108,9 @@ class ICPAccountUtils {
   static Future<AgentFactory> prepareAgent(Wallet? wallet) async {
     ICPSigner signer = ICPSigner.fromPhrase(wallet?.mnomenic ?? '');
     return await AgentFactory.createAgent(
-        canisterId: Constants.LOCAL_LEDGER_CANISTER_ID,
+        canisterId: Constants.LEDGER_CANISTER_ID,
         // local ledger canister id, should change accourdingly
-        url: Constants.LOCAL_NETWORK_VIRTUAL_DEVICE_ADDRESS,
+        url: Constants.ICP_NETWORK_ADDRESS,
         // For Android emulator, please use 10.0.2.2 as endpoint
         idl: ledgerIdl,
         identity: signer.account.ecIdentity,

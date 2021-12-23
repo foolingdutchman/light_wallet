@@ -195,7 +195,7 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
                                           color: Colors.black26,
                                         ),
                                         Text(
-                                          "Select your Art!",
+                                          S.of(context).select_your_art,
                                           style: TextStyle(
                                             fontSize: 16,
                                             color: Colors.black26,
@@ -227,7 +227,7 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 30, right: 30, top: 15 ),
                       child: Text(
-                        " Mint Cost is $price ICP" ,
+                        S.of(context).mint_cost+ ": $price ICP" ,
                         style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
@@ -342,9 +342,15 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
   _getMintInvoice(BuildContext context) async{
 
     if(!_isDataPrepared()){
-      SmartDialog.showToast("Data is not ready...");
+      SmartDialog.showToast(S.of(context).data_not_ready);
       return;
     }
+
+    if(!checkBlanceValid()){
+      SmartDialog.showToast(S.of(context).hint_icp_not_enough);
+      return;
+    }
+
     if(isCanisterInit&& asset != null ){
       SmartDialog.showLoading();
       if(principalStr.isEmpty) principalStr =ICPAccountUtils.createTempPrincipalString();
@@ -359,13 +365,17 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
 
       }
     }
+  }
 
+  bool checkBlanceValid(){
+    return InstanceStore.currentWallet!.getICPBalance()>=  ICPAccountUtils.fromICPBigInt2Amount(cost)+ 0.0001;
   }
 
   bool _isDataPrepared(){
     if(_authorController.text.isEmpty) return false;
     if(_titleController.text.isEmpty) return false;
     if(_descController.text.isEmpty) return false;
+    if(cost == BigInt.zero) return false;
     if(asset==null) return false;
     return true;
   }

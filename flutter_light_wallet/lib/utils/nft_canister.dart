@@ -207,6 +207,12 @@ class Invoice {
 
     }
   }
+
+  BigInt totalAmount() {
+    return charge??BigInt.zero + (amount??BigInt.zero);
+  }
+
+
 }
 
 class NftData {
@@ -561,6 +567,14 @@ ServiceClass _initService() {
     'wallet_receive': IDL.Func([], [], []),
   });
   return LWalletNft;
+}
+
+class Result<T> {
+
+  bool isSuccess =false;
+  T? t;
+
+  Result(this.isSuccess, this.t);
 }
 
 class WalletCanister {

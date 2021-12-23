@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_nft_page_state.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
+import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/nft_canister.dart';
 import 'package:flutter_light_wallet/view/nft/invoice_page.dart';
@@ -74,15 +75,14 @@ class _InvoiceListViewState extends BaseNftPageState<InvoiceListView> {
                              crossAxisAlignment: CrossAxisAlignment.start,
                              children: [
                                Text(
-                                 "CounterAddress",
-
+                                 S.of(context).counter_address,
                                  style: TextStyle(
                                      fontSize: 14,
                                      fontWeight: FontWeight.bold),
                                ),
                                Text(invoices![position].counterAddress,maxLines: 1, overflow: TextOverflow.ellipsis,),
                                Text(
-                                 "Token Principal",
+                                 S.of(context).token_id,
                                  style: TextStyle(
                                      fontSize: 14,
                                      fontWeight: FontWeight.bold),

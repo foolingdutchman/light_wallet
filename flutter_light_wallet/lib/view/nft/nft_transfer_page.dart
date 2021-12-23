@@ -68,7 +68,7 @@ class _NftTransferPageState extends BaseNftPageState<NftTransferPage> {
                 height: 30,
               ),
               Text(
-               "Token Principal",
+                S.of(context).token_id,
                 style: TextStyle(
                   fontSize: 15,
                   color: Colors.black87,
@@ -91,7 +91,7 @@ class _NftTransferPageState extends BaseNftPageState<NftTransferPage> {
 
 
               Text(
-               "Receipt Principal",
+               S.of(context).receipt_principal,
                 style: TextStyle(
                   fontSize: 15,
                   color: Colors.black87,
@@ -195,7 +195,7 @@ class _NftTransferPageState extends BaseNftPageState<NftTransferPage> {
       }
 
     }else{
-      SmartDialog.showToast("Invalid principal...");
+      SmartDialog.showToast(S.current.invalid_principal);
     }
   }
 }

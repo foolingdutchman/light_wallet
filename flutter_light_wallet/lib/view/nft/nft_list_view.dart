@@ -4,10 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_nft_page_state.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
+import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/file_util.dart';
 import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
 import 'package:flutter_light_wallet/utils/nft_canister.dart';
+import 'package:flutter_light_wallet/view/nft/nft_data_store.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'nft_page.dart';
 
@@ -33,6 +35,9 @@ class _NftDataListViewState extends BaseNftPageState<NftDataListView> {
   @override
   void afterCaniterInted() {
     // TODO: implement afterCaniterInted
+
+    nfts =isOwnList? NftDataStore.myNftData: NftDataStore.nftData;
+
     _qureyNfts();
   }
 
@@ -49,7 +54,6 @@ class _NftDataListViewState extends BaseNftPageState<NftDataListView> {
                       Navigator.push(
                           context,
                           SlideRightRoute(
-
                               page: NftPage(
                             principal:
                                 nfts![position].nftData!.principal!.toString(),
@@ -90,7 +94,7 @@ class _NftDataListViewState extends BaseNftPageState<NftDataListView> {
                                       child: Column(
                                         children: [
                                           Text(
-                                            "Title",
+                                            S.of(context).title,
                                             style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold),
@@ -106,7 +110,7 @@ class _NftDataListViewState extends BaseNftPageState<NftDataListView> {
                                     ),
                                     Text(
                                       nfts![position].order == null
-                                          ? "Not Sell"
+                                          ? S.of(context).not_sell
                                           : ICPAccountUtils
                                                       .fromICPBigInt2Amount(
                                                           nfts![position]
@@ -114,19 +118,26 @@ class _NftDataListViewState extends BaseNftPageState<NftDataListView> {
                                                               .price!)
                                                   .toString() +
                                               " ICP",
-                                      style: TextStyle( fontSize: 18,
+                                      style: TextStyle(
+                                          fontSize: 18,
                                           fontWeight: FontWeight.bold,
-                                      color: nfts![position].order == null? Colors.grey:Colors.black87),
+                                          color: nfts![position].order == null
+                                              ? Colors.grey
+                                              : Colors.black87),
                                     )
                                   ],
                                 ),
                                 Text(
-                                  "Owner Id",
+                                  S.of(context).owner_id,
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                Text(nfts![position].nftData!.owner.toString()),
+                                Text(
+                                  nfts![position].nftData!.owner.toString(),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ],
                             ),
                           ))
@@ -146,17 +157,20 @@ class _NftDataListViewState extends BaseNftPageState<NftDataListView> {
   void hanldEvent(Event event) {
     // TODO: implement hanldEvent
 
-    if(event is TransferNftEvent || event is MintNftEvent || event is BurnNftEvent){
+    if (event is TransferNftEvent ||
+        event is MintNftEvent ||
+        event is BurnNftEvent) {
       _qureyNfts();
     }
   }
 
   _qureyNfts() async {
     SmartDialog.showLoading();
-    nfts = isOwnList
+    List<NftDataWithOrder>? list = isOwnList
         ? await walletCanister!.balanceOf()
         : await walletCanister!.qureyNfts(page);
     SmartDialog.dismiss();
+
     thumbnails.clear();
     await Future.forEach(nfts!, (NftDataWithOrder item) async {
       File image = await FileUtil.writeBytestoFile(
@@ -168,4 +182,8 @@ class _NftDataListViewState extends BaseNftPageState<NftDataListView> {
 
     setState(() {});
   }
+
+
+
+
 }
