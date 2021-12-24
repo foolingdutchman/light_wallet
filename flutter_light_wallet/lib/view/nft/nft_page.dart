@@ -67,7 +67,8 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                         child: Row(
                           children: [
                             Text(
-                              S.of(context).token_index+": #" +
+                              S.of(context).token_index +
+                                  ": #" +
                                   (nftData == null
                                       ? ""
                                       : nftData!.id.toString()),
@@ -124,7 +125,10 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                           Text(
                               nftData == null
                                   ? ""
-                                  : S.of(context).author+" : " + nftData!.author + ".",
+                                  : S.of(context).author +
+                                      " : " +
+                                      nftData!.author +
+                                      ".",
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold)),
                         ],
@@ -140,7 +144,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 10, bottom: 5),
                         child: Text(
-                          S.of(context).owner_id ,
+                          S.of(context).owner_id,
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
@@ -200,7 +204,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                                       onPressed: () {
                                         onTransferPressed(context);
                                       },
-                                      child: Text( S.of(context).transfer),
+                                      child: Text(S.of(context).transfer),
                                     ),
                                   ),
                                   Padding(
@@ -220,7 +224,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                                       onPressed: () {
                                         onBurnPressed(context);
                                       },
-                                      child: Text( S.of(context).burn),
+                                      child: Text(S.of(context).burn),
                                     ),
                                   )
                                 ],
@@ -458,7 +462,6 @@ class _NftPageState extends BaseNftPageState<NftPage> {
       print("event listened!...");
       final current = ModalRoute.of(context);
       Navigator.removeRoute(context, current!);
-
     }
   }
 
@@ -506,7 +509,9 @@ class _NftPageState extends BaseNftPageState<NftPage> {
     SmartDialog.showLoading();
     order = await walletCanister!.getNftorder(Principal.fromText(_principal));
     SmartDialog.dismiss();
+
     if (order != null) {
+      EventBusUtil.fire(OrderNftEvent(order!));
       setState(() {
         _price = ICPAccountUtils.fromICPBigInt2Amount(order!.price!);
       });
@@ -522,10 +527,10 @@ class _NftPageState extends BaseNftPageState<NftPage> {
           context, SlideRightRoute(page: InvoicePage(invoiceData: invoice)));
       SmartDialog.showLoading();
       var checkInvoice = await walletCanister!
-          .confirmOrder(nftData!.principal!, invoice!, blockHeights);
+          .confirmOrder(nftData!.principal!, invoice, blockHeights);
       await SmartDialog.dismiss();
       if (checkInvoice != null) {
-        EventBusUtil.fire(TransactionEvent());
+        EventBusUtil.fire(TransferNftEvent(checkInvoice));
         Navigator.pushReplacement(context,
             SlideRightRoute(page: InvoicePage(invoiceData: checkInvoice)));
       }
@@ -559,6 +564,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
     var isCancel = await walletCanister!.cancelOrder(nftData!.principal!);
     SmartDialog.dismiss();
     if (isCancel) {
+      EventBusUtil.fire(CancelOrderEvent(nftData!.principal!));
       setState(() {
         order = null;
       });
@@ -589,21 +595,21 @@ class _NftPageState extends BaseNftPageState<NftPage> {
           context,
           SlideRightRoute(
               page: InvoicePage(
-            invoiceData: inv!,
+            invoiceData: inv,
           )));
       SmartDialog.showLoading();
       Invoice? checkInv =
           await walletCanister!.burnToken(nftData!.principal!, inv, blocks[0]);
       await SmartDialog.dismiss();
       if (checkInv != null) {
+        EventBusUtil.fire(BurnNftEvent(checkInv));
         Navigator.pushReplacement(
             context,
             SlideRightRoute(
                 page: InvoicePage(
-              invoiceData: checkInv!,
+              invoiceData: checkInv,
             )));
       }
-
     }
   }
 }

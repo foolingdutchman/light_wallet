@@ -16,8 +16,8 @@ class CanisterUtil{
       // initialize counter, change canister id here
 
       walletCanister = WalletCanister(
-          canisterId: Constants.IC_NFT_CANISTER_ID,
-          url: Constants.ICP_NETWORK_ADDRESS);
+          canisterId: Constants.LOCAL_NFT_CANISTER_ID,
+          url: Constants.LOCAL_NETWORK_VIRTUAL_DEVICE_ADDRESS);
       // set agent when other paramater comes in like new Identity
       await walletCanister?.setAgent(
           newIdentity:

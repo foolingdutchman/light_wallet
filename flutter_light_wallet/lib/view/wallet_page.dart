@@ -351,7 +351,8 @@ class _WalletPageState extends BasePageState<WalletPage> {
   void hanldEvent(Event event) {
     if (event is SwitchWalletEvent ||
         event is DeleteWalletEvent ||
-        event is TransactionEvent) {
+        event is TransactionEvent||
+        event is NftInvoiceEvent ) {
       InstanceStore.needRefreshData();
       setState(() {
         wallet = InstanceStore.currentWallet;

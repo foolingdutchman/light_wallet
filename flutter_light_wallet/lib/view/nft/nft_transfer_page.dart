@@ -186,12 +186,12 @@ class _NftTransferPageState extends BaseNftPageState<NftTransferPage> {
       Invoice? invoice = await walletCanister!.claimTransferInvoice(nftData!.principal!);
        var blockHeight=await  Navigator.push(context, SlideRightRoute(page: InvoicePage(invoiceData: invoice!,)));
        SmartDialog.showLoading();
-      Invoice? cheInv = await walletCanister!.transferToken(p, nftData!.principal!, invoice!, blockHeight[0]);
+      Invoice? cheInv = await walletCanister!.transferToken(p, nftData!.principal!, invoice, blockHeight[0]);
       await SmartDialog.dismiss();
       if(cheInv !=null){
         print(" go to Invoice page...");
-        Navigator.pushReplacement(context, SlideRightRoute(page: InvoicePage(invoiceData: cheInv!,)));
-        EventBusUtil.fire(TransferNftEvent());
+        Navigator.pushReplacement(context, SlideRightRoute(page: InvoicePage(invoiceData: cheInv,)));
+        EventBusUtil.fire(TransferNftEvent(cheInv));
       }
 
     }else{

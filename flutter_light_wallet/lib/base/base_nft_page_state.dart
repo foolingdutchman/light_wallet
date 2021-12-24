@@ -5,6 +5,7 @@ import 'package:flutter_light_wallet/utils/canister_util.dart';
 import 'package:flutter_light_wallet/utils/constans.dart';
 import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
 import 'package:flutter_light_wallet/utils/nft_canister.dart';
+import 'package:flutter_light_wallet/view/nft/nft_data_store.dart';
 
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
@@ -21,13 +22,13 @@ abstract class BaseNftPageState<T extends StatefulWidget>
   void initState() {
     // TODO: implement initState
     super.initState();
-    walletCanister = CanisterUtil.walletCanister;
-    isCanisterInit = CanisterUtil.isCanisterInit;
+    walletCanister = NftDataStore.walletCanister;
+    isCanisterInit = NftDataStore.isCanisterInit;
   }
 
   _initCanister() async{
-    walletCanister = await CanisterUtil.initWalletCanister();
-    isCanisterInit =true;
+   // walletCanister = await CanisterUtil.initWalletCanister();
+   // isCanisterInit =true;
     afterCaniterInted();
   }
 
