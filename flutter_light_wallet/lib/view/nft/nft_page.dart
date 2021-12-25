@@ -16,6 +16,7 @@ import 'package:flutter_light_wallet/view/nft/nft_transfer_page.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 import 'invoice_page.dart';
+import 'nft_meta_page.dart';
 
 class NftPage extends StatefulWidget {
   final String principal;
@@ -135,12 +136,17 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                       ),
                       _file == null
                           ? Container()
-                          : Image.file(
-                              _file!,
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.width * 4 / 3,
-                              fit: BoxFit.fitWidth,
-                            ),
+                          : InkWell(
+                            onTap: (){
+                              Navigator.push(context,SlideRightRoute(page: NftMetaPage(nft: nftData!,)));
+                            },
+                            child: Image.file(
+                                _file!,
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.width * 4 / 3,
+                                fit: BoxFit.fitWidth,
+                              ),
+                          ),
                       Padding(
                         padding: const EdgeInsets.only(top: 10, bottom: 5),
                         child: Text(

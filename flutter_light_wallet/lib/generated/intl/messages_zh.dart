@@ -42,6 +42,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "buy": MessageLookupByLibrary.simpleMessage("购买"),
         "cancel_sell": MessageLookupByLibrary.simpleMessage("取消出售"),
         "change_price": MessageLookupByLibrary.simpleMessage("更改价格"),
+        "click_to_load_more": MessageLookupByLibrary.simpleMessage("点击加载更多..."),
         "collect": MessageLookupByLibrary.simpleMessage("收款"),
         "comfirm_mnemonic_backup":
             MessageLookupByLibrary.simpleMessage("确定助记词已备份"),
@@ -105,6 +106,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "invoice_no": MessageLookupByLibrary.simpleMessage("发票号"),
         "invoice_type": MessageLookupByLibrary.simpleMessage("发票类型"),
         "issue_date": MessageLookupByLibrary.simpleMessage("生成日期"),
+        "loading_data": MessageLookupByLibrary.simpleMessage("数据正在加载..."),
         "local_auth": MessageLookupByLibrary.simpleMessage("生物验证"),
         "make_nft": MessageLookupByLibrary.simpleMessage("制作NFT"),
         "make_your_nft": MessageLookupByLibrary.simpleMessage("制作你自己的NFT作品！"),

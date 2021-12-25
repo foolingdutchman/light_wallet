@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:agent_dart/protobuf/ic_ledger/pb/v1/types.pb.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_nft_page_state.dart';
@@ -29,7 +30,7 @@ class _NftDataListViewState extends BaseNftPageState<NftDataListView> {
   List<NftDataWithOrder>? nfts;
   List<File> thumbnails = [];
   bool isOwnList;
-  String hintText="正在加载...";
+  String hintText=S.current.loading_data;
 
   _NftDataListViewState(String observerKey, this.isOwnList)
       : super(observerKey);
@@ -67,7 +68,7 @@ class _NftDataListViewState extends BaseNftPageState<NftDataListView> {
                       onTap: () {
                         if(NftDataStore.isAllNftFetched){
                           setState(() {
-                            hintText ="No more data";
+                            hintText =S.of(context).no_more_data;
                           });
                         }else{
                           _attachData();
@@ -94,18 +95,19 @@ class _NftDataListViewState extends BaseNftPageState<NftDataListView> {
                                 )));
                           },
                           child: Container(
-                            height: 120,
+                            height: 140,
                             width: MediaQuery.of(context).size.width,
                             padding: EdgeInsets.all(10),
                             child: Row(
                               children: [
                                 thumbnails.length != 0 &&
                                         position < thumbnails.length
-                                    ? Image.file(
+                                    ?
+                                Image.file(
                                         thumbnails[position],
                                         width: 82,
                                         height: 110,
-                                        fit: BoxFit.fitWidth,
+                                        fit: BoxFit.cover,
                                       )
                                     : Container(
                                         width: 82,
@@ -236,7 +238,7 @@ class _NftDataListViewState extends BaseNftPageState<NftDataListView> {
     await _updateImages();
     setState(() {
       nfts = isOwnList ? NftDataStore.myNftData : NftDataStore.nftData;
-      hintText ="点击加载更多...";
+      hintText = S.current.click_to_load_more;
     });
   }
 
@@ -253,7 +255,7 @@ class _NftDataListViewState extends BaseNftPageState<NftDataListView> {
     await _updateImages();
     setState(() {
       nfts = isOwnList ? NftDataStore.myNftData : NftDataStore.nftData;
-      hintText ="点击加载更多...";
+      hintText = S.current.click_to_load_more;
     });
   }
 

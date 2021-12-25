@@ -44,6 +44,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "buy": MessageLookupByLibrary.simpleMessage("Buy"),
         "cancel_sell": MessageLookupByLibrary.simpleMessage("Cancel Sell"),
         "change_price": MessageLookupByLibrary.simpleMessage("Change Price"),
+        "click_to_load_more":
+            MessageLookupByLibrary.simpleMessage("Click to load More..."),
         "collect": MessageLookupByLibrary.simpleMessage("Collect"),
         "comfirm_mnemonic_backup": MessageLookupByLibrary.simpleMessage(
             "Confirm Mnemonic Been Backup"),
@@ -122,6 +124,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "invoice_no": MessageLookupByLibrary.simpleMessage("Invoice No"),
         "invoice_type": MessageLookupByLibrary.simpleMessage("Invoice Type"),
         "issue_date": MessageLookupByLibrary.simpleMessage("Issue Date"),
+        "loading_data": MessageLookupByLibrary.simpleMessage("Loading data..."),
         "local_auth":
             MessageLookupByLibrary.simpleMessage("Biometric Authentication"),
         "make_nft": MessageLookupByLibrary.simpleMessage("Make NFT"),

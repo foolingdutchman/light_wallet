@@ -1310,6 +1310,26 @@ class S {
     );
   }
 
+  /// `Click to load More...`
+  String get click_to_load_more {
+    return Intl.message(
+      'Click to load More...',
+      name: 'click_to_load_more',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loading data...`
+  String get loading_data {
+    return Intl.message(
+      'Loading data...',
+      name: 'loading_data',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Please make sure that the content of the NFT work you create is an original work, and any copyright-related disputes arising from this work have nothing to do with the platform.`
   String get copyright_declearation {
     return Intl.message(

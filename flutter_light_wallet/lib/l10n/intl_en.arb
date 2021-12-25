@@ -127,6 +127,8 @@
   "issue_date":"Issue Date",
   "token_index":"Token Id",
   "hint_icp_not_enough":"Your ICP blance is not enough!",
+  "click_to_load_more":"Click to load More...",
+  "loading_data":"Loading data...",
   "copyright_declearation":"Please make sure that the content of the NFT work you create is an original work, and any copyright-related disputes arising from this work have nothing to do with the platform.",
   "wallet_manage" : "Wallet Management"
   

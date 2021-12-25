@@ -338,7 +338,6 @@ class CanisterMethod {
   static const spawnCreator = 'spawnCreator';
   static const getPrincipal = 'getPrincipal';
   static const cancelOrder = 'cancelOrder';
-  static const getNftMetaData = 'getNftMetaData';
   static const makeOrder = 'makeOrder';
   static const queryNftsWithOrder = 'queryNftsWithOrder';
   static const transfer = 'transfer';
@@ -866,6 +865,21 @@ class WalletCanister {
 
       return null;
       // throw "Cannot get count but $res";
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Uint8List?> getNftMeta(String principal) async{
+    try {
+      List<int>? list;
+      Map result =
+      await actor?.getFunc(CanisterMethod.getTokenMetaByPrincipalString)?.call([principal]);
+      print("result is " + result.toString());
+      if (result.containsKey('ok')) {
+        List records = result.entries.elementAt(0).value;
+        return  Uint8List.fromList(records.cast<int>());
+      }
     } catch (e) {
       rethrow;
     }

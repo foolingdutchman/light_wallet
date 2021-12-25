@@ -226,7 +226,7 @@ packages:
     source: hosted
     version: "2.0.0"
   extended_image:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: extended_image
       url: "https://pub.dartlang.org"

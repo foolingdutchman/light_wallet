@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:agent_dart/agent_dart.dart';
+import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/utils/canister_util.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/nft_canister.dart';
@@ -151,7 +152,7 @@ class NftDataStore {
       List<NftDataWithOrder>? list =
           await walletCanister!.qureyNfts(nftDataPage);
       if (list == null || list.length == 0) {
-        SmartDialog.showToast("No more data...");
+        SmartDialog.showToast(S.current.no_more_data);
         isAllNftFetched = true;
       }
       attachNftData(list);
@@ -160,7 +161,7 @@ class NftDataStore {
       List<NftDataWithOrder>? list =
           await walletCanister!.qureyNfts(nftDataPage);
       if (list == null || list.length == 0) {
-        SmartDialog.showToast("No more data...");
+        SmartDialog.showToast(S.current.no_more_data);
         isAllNftFetched = true;
       }
       attachNftData(list);

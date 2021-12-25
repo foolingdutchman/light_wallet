@@ -37,6 +37,15 @@ class FileUtil {
     return file;
   }
 
+  static Future<File?> getFileByName(String name,
+      String filetype) async{
+    String _localPath = await getApplicationDocumentsDir();
+    File file = File(_localPath + '/' + name + "." + filetype);
+    bool isFileExist = await file.exists();
+    if(isFileExist) return file;
+
+  }
+
   static Future<String> getApplicationDocumentsDir() async {
     Directory appDocDir = await getApplicationDocumentsDirectory();
     String appDocPath = appDocDir.path;

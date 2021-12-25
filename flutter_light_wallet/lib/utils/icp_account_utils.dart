@@ -108,9 +108,9 @@ class ICPAccountUtils {
   static Future<AgentFactory> prepareAgent(Wallet? wallet) async {
     ICPSigner signer = ICPSigner.fromPhrase(wallet?.mnomenic ?? '');
     return await AgentFactory.createAgent(
-        canisterId: Constants.LOCAL_LEDGER_CANISTER_ID,
+        canisterId: Constants.LEDGER_CANISTER_ID,
         // local ledger canister id, should change accourdingly
-        url: Constants.LOCAL_NETWORK_VIRTUAL_DEVICE_ADDRESS,
+        url: Constants.ICP_NETWORK_ADDRESS,
         // For Android emulator, please use 10.0.2.2 as endpoint
         idl: ledgerIdl,
         identity: signer.account.ecIdentity,

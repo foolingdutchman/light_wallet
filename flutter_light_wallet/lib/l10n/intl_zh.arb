@@ -127,6 +127,8 @@
   "issue_date":"生成日期",
   "token_index":"Token Id",
   "hint_icp_not_enough":"你的ICP余额不足!",
+  "click_to_load_more":"点击加载更多...",
+  "loading_data":"数据正在加载...",
   "copyright_declearation":"请确保你创作的NFT作品内容为原创作品，由此作品产生的任何版权相关纠纷均与平台无关。",
   "wallet_manage" : "钱包管理"
    

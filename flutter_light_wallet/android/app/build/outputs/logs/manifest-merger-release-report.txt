@@ -4,6 +4,7 @@ ADDED from /Users/hehao/light_wallet/flutter_light_wallet/android/app/src/main/A
 INJECTED from /Users/hehao/light_wallet/flutter_light_wallet/android/app/src/main/AndroidManifest.xml:1:1-68:12
 INJECTED from /Users/hehao/light_wallet/flutter_light_wallet/android/app/src/main/AndroidManifest.xml:1:1-68:12
 INJECTED from /Users/hehao/light_wallet/flutter_light_wallet/android/app/src/main/AndroidManifest.xml:1:1-68:12
+MERGED from [:file_picker] /Users/hehao/light_wallet/flutter_light_wallet/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:2:1-17:12
 MERGED from [:video_player] /Users/hehao/light_wallet/flutter_light_wallet/build/video_player/intermediates/library_manifest/release/AndroidManifest.xml:2:1-7:12
 MERGED from [:flutter_image_compress] /Users/hehao/light_wallet/flutter_light_wallet/build/flutter_image_compress/intermediates/library_manifest/release/AndroidManifest.xml:2:1-11:12
 MERGED from [:package_info] /Users/hehao/light_wallet/flutter_light_wallet/build/package_info/intermediates/library_manifest/release/AndroidManifest.xml:2:1-7:12
@@ -16,31 +17,31 @@ MERGED from [:shared_preferences] /Users/hehao/light_wallet/flutter_light_wallet
 MERGED from [:image_gallery_saver] /Users/hehao/light_wallet/flutter_light_wallet/build/image_gallery_saver/intermediates/library_manifest/release/AndroidManifest.xml:2:1-7:12
 MERGED from [:scan] /Users/hehao/light_wallet/flutter_light_wallet/build/scan/intermediates/library_manifest/release/AndroidManifest.xml:2:1-13:12
 MERGED from [androidx.multidex:multidex:2.0.1] /Users/hehao/.gradle/caches/transforms-3/c7b33622087a7fafb96459f9d93bb3f9/transformed/multidex-2.0.1/AndroidManifest.xml:17:1-22:12
-MERGED from [com.google.android.exoplayer:exoplayer-hls:2.14.1] /Users/hehao/.gradle/caches/transforms-3/3c4e954f5e88f35fe44757376e8640ea/transformed/jetified-exoplayer-hls-2.14.1/AndroidManifest.xml:17:1-24:12
-MERGED from [com.google.android.exoplayer:exoplayer-dash:2.14.1] /Users/hehao/.gradle/caches/transforms-3/04f8e310e2af102484c055cd6377f487/transformed/jetified-exoplayer-dash-2.14.1/AndroidManifest.xml:17:1-24:12
-MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.14.1] /Users/hehao/.gradle/caches/transforms-3/6c0cd8177c617e3177e4afd42b1bd9c4/transformed/jetified-exoplayer-smoothstreaming-2.14.1/AndroidManifest.xml:17:1-24:12
-MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.1] /Users/hehao/.gradle/caches/transforms-3/62a047a81139f7f3cfe4eb0cab33d273/transformed/jetified-exoplayer-core-2.14.1/AndroidManifest.xml:17:1-26:12
-MERGED from [com.github.bumptech.glide:glide:4.11.0] /Users/hehao/.gradle/caches/transforms-3/c9115688569025f9127bd43dc672952a/transformed/jetified-glide-4.11.0/AndroidManifest.xml:2:1-12:12
-MERGED from [androidx.exifinterface:exifinterface:1.3.2] /Users/hehao/.gradle/caches/transforms-3/dc87d19110cff190278ac08cf5b46e0a/transformed/exifinterface-1.3.2/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.heifwriter:heifwriter:1.0.0] /Users/hehao/.gradle/caches/transforms-3/cec835caf55cd2e7d90b2d37c301067a/transformed/heifwriter-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.biometric:biometric:1.1.0] /Users/hehao/.gradle/caches/transforms-3/89736ff65111cd882251fbeb36300faf/transformed/biometric-1.1.0/AndroidManifest.xml:17:1-29:12
 MERGED from [androidx.appcompat:appcompat:1.3.0] /Users/hehao/.gradle/caches/transforms-3/9438560a0925ae59cf015e44441dadf2/transformed/appcompat-1.3.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.core:core-ktx:1.6.0] /Users/hehao/.gradle/caches/transforms-3/5429157f33c146cfbe6be361991e2126/transformed/jetified-core-ktx-1.6.0/AndroidManifest.xml:2:1-9:12
-MERGED from [com.google.android.exoplayer:exoplayer-extractor:2.14.1] /Users/hehao/.gradle/caches/transforms-3/a02f0046ed1a1218f658c5508ad6fcad/transformed/jetified-exoplayer-extractor-2.14.1/AndroidManifest.xml:17:1-24:12
-MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.1] /Users/hehao/.gradle/caches/transforms-3/659072517b151fc330769affa5ff002e/transformed/jetified-exoplayer-common-2.14.1/AndroidManifest.xml:17:1-26:12
+MERGED from [com.github.bumptech.glide:glide:4.11.0] /Users/hehao/.gradle/caches/transforms-3/c9115688569025f9127bd43dc672952a/transformed/jetified-glide-4.11.0/AndroidManifest.xml:2:1-12:12
 MERGED from [androidx.fragment:fragment:1.3.4] /Users/hehao/.gradle/caches/transforms-3/346735cf1b7b0f9c233596259d5365d8/transformed/fragment-1.3.4/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.activity:activity:1.2.3] /Users/hehao/.gradle/caches/transforms-3/87afecbf131093548f792af0fa22e8dc/transformed/jetified-activity-1.2.3/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] /Users/hehao/.gradle/caches/transforms-3/9cc62e40d99a8701f496b0b328a95ccd/transformed/jetified-lifecycle-viewmodel-savedstate-2.3.1/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.loader:loader:1.0.0] /Users/hehao/.gradle/caches/transforms-3/eaf7fd05de63a7a2627ceb0c8fcbb6c4/transformed/loader-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] /Users/hehao/.gradle/caches/transforms-3/ba744be64a0227134c598f48b622c000/transformed/lifecycle-viewmodel-2.3.1/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.savedstate:savedstate:1.1.0] /Users/hehao/.gradle/caches/transforms-3/f53858e8865aa1c24fce0fbf854193ac/transformed/jetified-savedstate-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.appcompat:appcompat-resources:1.3.0] /Users/hehao/.gradle/caches/transforms-3/b7d0f56f2f52e95acc72c067346918f0/transformed/jetified-appcompat-resources-1.3.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /Users/hehao/.gradle/caches/transforms-3/ad2fe17554fd52b834da329346744c16/transformed/drawerlayout-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/hehao/.gradle/caches/transforms-3/9ee498fb77362e1ab4598d1cbffb36a3/transformed/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] /Users/hehao/.gradle/caches/transforms-3/eaf7fd05de63a7a2627ceb0c8fcbb6c4/transformed/loader-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/hehao/.gradle/caches/transforms-3/0c529438a087cfccd06ce4cfd18ddb62/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/hehao/.gradle/caches/transforms-3/10593f735cc1276406c874bc4c540676/transformed/vectordrawable-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.customview:customview:1.0.0] /Users/hehao/.gradle/caches/transforms-3/4985c17cfe873621706ed4e62f6e2f06/transformed/customview-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.core:core:1.6.0] /Users/hehao/.gradle/caches/transforms-3/f6423270255905883576524a9a99118c/transformed/core-1.6.0/AndroidManifest.xml:17:1-26:12
+MERGED from [com.google.android.exoplayer:exoplayer-hls:2.14.1] /Users/hehao/.gradle/caches/transforms-3/3c4e954f5e88f35fe44757376e8640ea/transformed/jetified-exoplayer-hls-2.14.1/AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-dash:2.14.1] /Users/hehao/.gradle/caches/transforms-3/04f8e310e2af102484c055cd6377f487/transformed/jetified-exoplayer-dash-2.14.1/AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.14.1] /Users/hehao/.gradle/caches/transforms-3/6c0cd8177c617e3177e4afd42b1bd9c4/transformed/jetified-exoplayer-smoothstreaming-2.14.1/AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.1] /Users/hehao/.gradle/caches/transforms-3/62a047a81139f7f3cfe4eb0cab33d273/transformed/jetified-exoplayer-core-2.14.1/AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.heifwriter:heifwriter:1.0.0] /Users/hehao/.gradle/caches/transforms-3/cec835caf55cd2e7d90b2d37c301067a/transformed/heifwriter-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.exifinterface:exifinterface:1.3.2] /Users/hehao/.gradle/caches/transforms-3/dc87d19110cff190278ac08cf5b46e0a/transformed/exifinterface-1.3.2/AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-extractor:2.14.1] /Users/hehao/.gradle/caches/transforms-3/a02f0046ed1a1218f658c5508ad6fcad/transformed/jetified-exoplayer-extractor-2.14.1/AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.1] /Users/hehao/.gradle/caches/transforms-3/659072517b151fc330769affa5ff002e/transformed/jetified-exoplayer-common-2.14.1/AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] /Users/hehao/.gradle/caches/transforms-3/9cc62e40d99a8701f496b0b328a95ccd/transformed/jetified-lifecycle-viewmodel-savedstate-2.3.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] /Users/hehao/.gradle/caches/transforms-3/ba744be64a0227134c598f48b622c000/transformed/lifecycle-viewmodel-2.3.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.savedstate:savedstate:1.1.0] /Users/hehao/.gradle/caches/transforms-3/f53858e8865aa1c24fce0fbf854193ac/transformed/jetified-savedstate-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.3.1] /Users/hehao/.gradle/caches/transforms-3/b3cb6f0483d9a3257c100fa4e71959d7/transformed/lifecycle-runtime-2.3.1/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/hehao/.gradle/caches/transforms-3/aec826c4687bd2e6b79b26e46f23b5b7/transformed/cursoradapter-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [com.github.bumptech.glide:gifdecoder:4.11.0] /Users/hehao/.gradle/caches/transforms-3/58e39969fbfd0cf52b68516d8227ee93/transformed/jetified-gifdecoder-4.11.0/AndroidManifest.xml:2:1-11:12
@@ -130,6 +131,8 @@ MERGED from [:photo_manager] /Users/hehao/light_wallet/flutter_light_wallet/buil
 		ADDED from /Users/hehao/light_wallet/flutter_light_wallet/android/app/src/main/AndroidManifest.xml:13:22-78
 uses-permission#android.permission.READ_EXTERNAL_STORAGE
 ADDED from /Users/hehao/light_wallet/flutter_light_wallet/android/app/src/main/AndroidManifest.xml:14:5-79
+MERGED from [:file_picker] /Users/hehao/light_wallet/flutter_light_wallet/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:7:5-80
+MERGED from [:file_picker] /Users/hehao/light_wallet/flutter_light_wallet/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:7:5-80
 MERGED from [:photo_manager] /Users/hehao/light_wallet/flutter_light_wallet/build/photo_manager/intermediates/library_manifest/release/AndroidManifest.xml:8:5-80
 MERGED from [:photo_manager] /Users/hehao/light_wallet/flutter_light_wallet/build/photo_manager/intermediates/library_manifest/release/AndroidManifest.xml:8:5-80
 	android:name
@@ -244,6 +247,8 @@ uses-sdk
 INJECTED from /Users/hehao/light_wallet/flutter_light_wallet/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Users/hehao/light_wallet/flutter_light_wallet/android/app/src/main/AndroidManifest.xml
 INJECTED from /Users/hehao/light_wallet/flutter_light_wallet/android/app/src/main/AndroidManifest.xml
+MERGED from [:file_picker] /Users/hehao/light_wallet/flutter_light_wallet/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:file_picker] /Users/hehao/light_wallet/flutter_light_wallet/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
 MERGED from [:video_player] /Users/hehao/light_wallet/flutter_light_wallet/build/video_player/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
 MERGED from [:video_player] /Users/hehao/light_wallet/flutter_light_wallet/build/video_player/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
 MERGED from [:flutter_image_compress] /Users/hehao/light_wallet/flutter_light_wallet/build/flutter_image_compress/intermediates/library_manifest/release/AndroidManifest.xml:6:5-9:55
@@ -268,48 +273,26 @@ MERGED from [:scan] /Users/hehao/light_wallet/flutter_light_wallet/build/scan/in
 MERGED from [:scan] /Users/hehao/light_wallet/flutter_light_wallet/build/scan/intermediates/library_manifest/release/AndroidManifest.xml:6:5-8:67
 MERGED from [androidx.multidex:multidex:2.0.1] /Users/hehao/.gradle/caches/transforms-3/c7b33622087a7fafb96459f9d93bb3f9/transformed/multidex-2.0.1/AndroidManifest.xml:20:5-43
 MERGED from [androidx.multidex:multidex:2.0.1] /Users/hehao/.gradle/caches/transforms-3/c7b33622087a7fafb96459f9d93bb3f9/transformed/multidex-2.0.1/AndroidManifest.xml:20:5-43
-MERGED from [com.google.android.exoplayer:exoplayer-hls:2.14.1] /Users/hehao/.gradle/caches/transforms-3/3c4e954f5e88f35fe44757376e8640ea/transformed/jetified-exoplayer-hls-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.android.exoplayer:exoplayer-hls:2.14.1] /Users/hehao/.gradle/caches/transforms-3/3c4e954f5e88f35fe44757376e8640ea/transformed/jetified-exoplayer-hls-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.android.exoplayer:exoplayer-dash:2.14.1] /Users/hehao/.gradle/caches/transforms-3/04f8e310e2af102484c055cd6377f487/transformed/jetified-exoplayer-dash-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.android.exoplayer:exoplayer-dash:2.14.1] /Users/hehao/.gradle/caches/transforms-3/04f8e310e2af102484c055cd6377f487/transformed/jetified-exoplayer-dash-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.14.1] /Users/hehao/.gradle/caches/transforms-3/6c0cd8177c617e3177e4afd42b1bd9c4/transformed/jetified-exoplayer-smoothstreaming-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.14.1] /Users/hehao/.gradle/caches/transforms-3/6c0cd8177c617e3177e4afd42b1bd9c4/transformed/jetified-exoplayer-smoothstreaming-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.1] /Users/hehao/.gradle/caches/transforms-3/62a047a81139f7f3cfe4eb0cab33d273/transformed/jetified-exoplayer-core-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.1] /Users/hehao/.gradle/caches/transforms-3/62a047a81139f7f3cfe4eb0cab33d273/transformed/jetified-exoplayer-core-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.github.bumptech.glide:glide:4.11.0] /Users/hehao/.gradle/caches/transforms-3/c9115688569025f9127bd43dc672952a/transformed/jetified-glide-4.11.0/AndroidManifest.xml:6:5-8:41
-MERGED from [com.github.bumptech.glide:glide:4.11.0] /Users/hehao/.gradle/caches/transforms-3/c9115688569025f9127bd43dc672952a/transformed/jetified-glide-4.11.0/AndroidManifest.xml:6:5-8:41
-MERGED from [androidx.exifinterface:exifinterface:1.3.2] /Users/hehao/.gradle/caches/transforms-3/dc87d19110cff190278ac08cf5b46e0a/transformed/exifinterface-1.3.2/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.exifinterface:exifinterface:1.3.2] /Users/hehao/.gradle/caches/transforms-3/dc87d19110cff190278ac08cf5b46e0a/transformed/exifinterface-1.3.2/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.heifwriter:heifwriter:1.0.0] /Users/hehao/.gradle/caches/transforms-3/cec835caf55cd2e7d90b2d37c301067a/transformed/heifwriter-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.heifwriter:heifwriter:1.0.0] /Users/hehao/.gradle/caches/transforms-3/cec835caf55cd2e7d90b2d37c301067a/transformed/heifwriter-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.biometric:biometric:1.1.0] /Users/hehao/.gradle/caches/transforms-3/89736ff65111cd882251fbeb36300faf/transformed/biometric-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.biometric:biometric:1.1.0] /Users/hehao/.gradle/caches/transforms-3/89736ff65111cd882251fbeb36300faf/transformed/biometric-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.appcompat:appcompat:1.3.0] /Users/hehao/.gradle/caches/transforms-3/9438560a0925ae59cf015e44441dadf2/transformed/appcompat-1.3.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.appcompat:appcompat:1.3.0] /Users/hehao/.gradle/caches/transforms-3/9438560a0925ae59cf015e44441dadf2/transformed/appcompat-1.3.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.core:core-ktx:1.6.0] /Users/hehao/.gradle/caches/transforms-3/5429157f33c146cfbe6be361991e2126/transformed/jetified-core-ktx-1.6.0/AndroidManifest.xml:5:5-7:41
 MERGED from [androidx.core:core-ktx:1.6.0] /Users/hehao/.gradle/caches/transforms-3/5429157f33c146cfbe6be361991e2126/transformed/jetified-core-ktx-1.6.0/AndroidManifest.xml:5:5-7:41
-MERGED from [com.google.android.exoplayer:exoplayer-extractor:2.14.1] /Users/hehao/.gradle/caches/transforms-3/a02f0046ed1a1218f658c5508ad6fcad/transformed/jetified-exoplayer-extractor-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.android.exoplayer:exoplayer-extractor:2.14.1] /Users/hehao/.gradle/caches/transforms-3/a02f0046ed1a1218f658c5508ad6fcad/transformed/jetified-exoplayer-extractor-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.1] /Users/hehao/.gradle/caches/transforms-3/659072517b151fc330769affa5ff002e/transformed/jetified-exoplayer-common-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.1] /Users/hehao/.gradle/caches/transforms-3/659072517b151fc330769affa5ff002e/transformed/jetified-exoplayer-common-2.14.1/AndroidManifest.xml:20:5-22:41
+MERGED from [com.github.bumptech.glide:glide:4.11.0] /Users/hehao/.gradle/caches/transforms-3/c9115688569025f9127bd43dc672952a/transformed/jetified-glide-4.11.0/AndroidManifest.xml:6:5-8:41
+MERGED from [com.github.bumptech.glide:glide:4.11.0] /Users/hehao/.gradle/caches/transforms-3/c9115688569025f9127bd43dc672952a/transformed/jetified-glide-4.11.0/AndroidManifest.xml:6:5-8:41
 MERGED from [androidx.fragment:fragment:1.3.4] /Users/hehao/.gradle/caches/transforms-3/346735cf1b7b0f9c233596259d5365d8/transformed/fragment-1.3.4/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.fragment:fragment:1.3.4] /Users/hehao/.gradle/caches/transforms-3/346735cf1b7b0f9c233596259d5365d8/transformed/fragment-1.3.4/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.activity:activity:1.2.3] /Users/hehao/.gradle/caches/transforms-3/87afecbf131093548f792af0fa22e8dc/transformed/jetified-activity-1.2.3/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.activity:activity:1.2.3] /Users/hehao/.gradle/caches/transforms-3/87afecbf131093548f792af0fa22e8dc/transformed/jetified-activity-1.2.3/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] /Users/hehao/.gradle/caches/transforms-3/9cc62e40d99a8701f496b0b328a95ccd/transformed/jetified-lifecycle-viewmodel-savedstate-2.3.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] /Users/hehao/.gradle/caches/transforms-3/9cc62e40d99a8701f496b0b328a95ccd/transformed/jetified-lifecycle-viewmodel-savedstate-2.3.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.loader:loader:1.0.0] /Users/hehao/.gradle/caches/transforms-3/eaf7fd05de63a7a2627ceb0c8fcbb6c4/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.loader:loader:1.0.0] /Users/hehao/.gradle/caches/transforms-3/eaf7fd05de63a7a2627ceb0c8fcbb6c4/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] /Users/hehao/.gradle/caches/transforms-3/ba744be64a0227134c598f48b622c000/transformed/lifecycle-viewmodel-2.3.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] /Users/hehao/.gradle/caches/transforms-3/ba744be64a0227134c598f48b622c000/transformed/lifecycle-viewmodel-2.3.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.savedstate:savedstate:1.1.0] /Users/hehao/.gradle/caches/transforms-3/f53858e8865aa1c24fce0fbf854193ac/transformed/jetified-savedstate-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.savedstate:savedstate:1.1.0] /Users/hehao/.gradle/caches/transforms-3/f53858e8865aa1c24fce0fbf854193ac/transformed/jetified-savedstate-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.appcompat:appcompat-resources:1.3.0] /Users/hehao/.gradle/caches/transforms-3/b7d0f56f2f52e95acc72c067346918f0/transformed/jetified-appcompat-resources-1.3.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.appcompat:appcompat-resources:1.3.0] /Users/hehao/.gradle/caches/transforms-3/b7d0f56f2f52e95acc72c067346918f0/transformed/jetified-appcompat-resources-1.3.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /Users/hehao/.gradle/caches/transforms-3/ad2fe17554fd52b834da329346744c16/transformed/drawerlayout-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /Users/hehao/.gradle/caches/transforms-3/ad2fe17554fd52b834da329346744c16/transformed/drawerlayout-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/hehao/.gradle/caches/transforms-3/9ee498fb77362e1ab4598d1cbffb36a3/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/hehao/.gradle/caches/transforms-3/9ee498fb77362e1ab4598d1cbffb36a3/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /Users/hehao/.gradle/caches/transforms-3/eaf7fd05de63a7a2627ceb0c8fcbb6c4/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /Users/hehao/.gradle/caches/transforms-3/eaf7fd05de63a7a2627ceb0c8fcbb6c4/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/hehao/.gradle/caches/transforms-3/0c529438a087cfccd06ce4cfd18ddb62/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/hehao/.gradle/caches/transforms-3/0c529438a087cfccd06ce4cfd18ddb62/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/hehao/.gradle/caches/transforms-3/10593f735cc1276406c874bc4c540676/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
@@ -318,6 +301,28 @@ MERGED from [androidx.customview:customview:1.0.0] /Users/hehao/.gradle/caches/t
 MERGED from [androidx.customview:customview:1.0.0] /Users/hehao/.gradle/caches/transforms-3/4985c17cfe873621706ed4e62f6e2f06/transformed/customview-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.core:core:1.6.0] /Users/hehao/.gradle/caches/transforms-3/f6423270255905883576524a9a99118c/transformed/core-1.6.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.core:core:1.6.0] /Users/hehao/.gradle/caches/transforms-3/f6423270255905883576524a9a99118c/transformed/core-1.6.0/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-hls:2.14.1] /Users/hehao/.gradle/caches/transforms-3/3c4e954f5e88f35fe44757376e8640ea/transformed/jetified-exoplayer-hls-2.14.1/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-hls:2.14.1] /Users/hehao/.gradle/caches/transforms-3/3c4e954f5e88f35fe44757376e8640ea/transformed/jetified-exoplayer-hls-2.14.1/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-dash:2.14.1] /Users/hehao/.gradle/caches/transforms-3/04f8e310e2af102484c055cd6377f487/transformed/jetified-exoplayer-dash-2.14.1/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-dash:2.14.1] /Users/hehao/.gradle/caches/transforms-3/04f8e310e2af102484c055cd6377f487/transformed/jetified-exoplayer-dash-2.14.1/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.14.1] /Users/hehao/.gradle/caches/transforms-3/6c0cd8177c617e3177e4afd42b1bd9c4/transformed/jetified-exoplayer-smoothstreaming-2.14.1/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.14.1] /Users/hehao/.gradle/caches/transforms-3/6c0cd8177c617e3177e4afd42b1bd9c4/transformed/jetified-exoplayer-smoothstreaming-2.14.1/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.1] /Users/hehao/.gradle/caches/transforms-3/62a047a81139f7f3cfe4eb0cab33d273/transformed/jetified-exoplayer-core-2.14.1/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.1] /Users/hehao/.gradle/caches/transforms-3/62a047a81139f7f3cfe4eb0cab33d273/transformed/jetified-exoplayer-core-2.14.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.heifwriter:heifwriter:1.0.0] /Users/hehao/.gradle/caches/transforms-3/cec835caf55cd2e7d90b2d37c301067a/transformed/heifwriter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.heifwriter:heifwriter:1.0.0] /Users/hehao/.gradle/caches/transforms-3/cec835caf55cd2e7d90b2d37c301067a/transformed/heifwriter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.exifinterface:exifinterface:1.3.2] /Users/hehao/.gradle/caches/transforms-3/dc87d19110cff190278ac08cf5b46e0a/transformed/exifinterface-1.3.2/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.exifinterface:exifinterface:1.3.2] /Users/hehao/.gradle/caches/transforms-3/dc87d19110cff190278ac08cf5b46e0a/transformed/exifinterface-1.3.2/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-extractor:2.14.1] /Users/hehao/.gradle/caches/transforms-3/a02f0046ed1a1218f658c5508ad6fcad/transformed/jetified-exoplayer-extractor-2.14.1/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-extractor:2.14.1] /Users/hehao/.gradle/caches/transforms-3/a02f0046ed1a1218f658c5508ad6fcad/transformed/jetified-exoplayer-extractor-2.14.1/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.1] /Users/hehao/.gradle/caches/transforms-3/659072517b151fc330769affa5ff002e/transformed/jetified-exoplayer-common-2.14.1/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.1] /Users/hehao/.gradle/caches/transforms-3/659072517b151fc330769affa5ff002e/transformed/jetified-exoplayer-common-2.14.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] /Users/hehao/.gradle/caches/transforms-3/9cc62e40d99a8701f496b0b328a95ccd/transformed/jetified-lifecycle-viewmodel-savedstate-2.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] /Users/hehao/.gradle/caches/transforms-3/9cc62e40d99a8701f496b0b328a95ccd/transformed/jetified-lifecycle-viewmodel-savedstate-2.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] /Users/hehao/.gradle/caches/transforms-3/ba744be64a0227134c598f48b622c000/transformed/lifecycle-viewmodel-2.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] /Users/hehao/.gradle/caches/transforms-3/ba744be64a0227134c598f48b622c000/transformed/lifecycle-viewmodel-2.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.1.0] /Users/hehao/.gradle/caches/transforms-3/f53858e8865aa1c24fce0fbf854193ac/transformed/jetified-savedstate-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.1.0] /Users/hehao/.gradle/caches/transforms-3/f53858e8865aa1c24fce0fbf854193ac/transformed/jetified-savedstate-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.3.1] /Users/hehao/.gradle/caches/transforms-3/b3cb6f0483d9a3257c100fa4e71959d7/transformed/lifecycle-runtime-2.3.1/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.3.1] /Users/hehao/.gradle/caches/transforms-3/b3cb6f0483d9a3257c100fa4e71959d7/transformed/lifecycle-runtime-2.3.1/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/hehao/.gradle/caches/transforms-3/aec826c4687bd2e6b79b26e46f23b5b7/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
@@ -374,6 +379,18 @@ INJECTED from /Users/hehao/light_wallet/flutter_light_wallet/android/app/src/mai
 		INJECTED from /Users/hehao/light_wallet/flutter_light_wallet/android/app/src/main/AndroidManifest.xml
 		ADDED from /Users/hehao/light_wallet/flutter_light_wallet/android/app/src/main/AndroidManifest.xml
 		INJECTED from /Users/hehao/light_wallet/flutter_light_wallet/android/app/src/main/AndroidManifest.xml
+queries
+ADDED from [:file_picker] /Users/hehao/light_wallet/flutter_light_wallet/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:9:5-15:15
+intent#action:name:android.intent.action.GET_CONTENT+data:mimeType:*/*
+ADDED from [:file_picker] /Users/hehao/light_wallet/flutter_light_wallet/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:10:9-14:18
+action#android.intent.action.GET_CONTENT
+ADDED from [:file_picker] /Users/hehao/light_wallet/flutter_light_wallet/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:11:13-72
+	android:name
+		ADDED from [:file_picker] /Users/hehao/light_wallet/flutter_light_wallet/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:11:21-69
+data
+ADDED from [:file_picker] /Users/hehao/light_wallet/flutter_light_wallet/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:13:13-44
+	android:mimeType
+		ADDED from [:file_picker] /Users/hehao/light_wallet/flutter_light_wallet/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:13:19-41
 uses-permission#android.permission.USE_BIOMETRIC
 ADDED from [androidx.biometric:biometric:1.1.0] /Users/hehao/.gradle/caches/transforms-3/89736ff65111cd882251fbeb36300faf/transformed/biometric-1.1.0/AndroidManifest.xml:24:5-72
 	android:name
