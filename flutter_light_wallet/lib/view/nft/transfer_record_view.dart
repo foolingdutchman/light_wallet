@@ -42,94 +42,95 @@ class _TransferRecordViewState extends BaseNftPageState<TransferRecordView> {
   @override
   Widget constructView(BuildContext context) {
     return Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: Expanded(
-          child: Container(
-            child: LiquidPullToRefresh(
-              height: 50,
-              color: Colors.transparent,
-              showChildOpacityTransition: false,
-              animSpeedFactor: 2,
-              onRefresh: () {
-                return _refreshData();
-              },
-              child: MediaQuery.removePadding(
-                context: context,
-                removeTop: true,
-                child: ListView.separated(
-                    itemBuilder: (context, position) => InkWell(
-                          onTap: () {
-                            // Navigator.push(
-                            //     context,
-                            //     SlideRightRoute(
-                            //         page: InvociePage(
-                            //           invoiceData:
-                            //           invoices![position],
-                            //         )));
-                          },
-                          child: Container(
-                            height: 120,
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.all(10),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                    child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 15.0,
-                                    top: 10,
-                                    bottom: 10,
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: Container(
+        child: LiquidPullToRefresh(
+          height: 50,
+          color: Colors.transparent,
+          showChildOpacityTransition: false,
+          animSpeedFactor: 2,
+          onRefresh: () {
+            return _refreshData();
+          },
+          child: MediaQuery.removePadding(
+            context: context,
+            removeTop: true,
+            child: ListView.separated(
+                itemBuilder: (context, position) => InkWell(
+                      onTap: () {
+                        // Navigator.push(
+                        //     context,
+                        //     SlideRightRoute(
+                        //         page: InvociePage(
+                        //           invoiceData:
+                        //           invoices![position],
+                        //         )));
+                      },
+                      child: Container(
+                        height: 120,
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 15.0,
+                                top: 10,
+                                bottom: 10,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    S.of(context).token_id,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        S.of(context).token_id,
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        records[position].nftPrincipal.toString(),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      Text(
-                                        records[position].from!.toString() ==
-                                                InstanceStore.currentWallet!.principal
-                                            ? S.of(context).to
-                                            : S.of(context).from,
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        records[position].from!.toString() ==
-                                                InstanceStore.currentWallet!.principal
-                                            ? records[position].to == null
-                                                ? S.of(context).burn
-                                                : records[position].to!.toString()
-                                            : records[position].from!.toString(),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ],
+                                  Text(
+                                    records[position].nftPrincipal.toString(),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                ))
-                              ],
-                            ),
-                          ),
+                                  Text(
+                                    records[position].from!.toString() ==
+                                            InstanceStore
+                                                .currentWallet!.principal
+                                        ? S.of(context).to
+                                        : S.of(context).from,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    records[position].from!.toString() ==
+                                            InstanceStore
+                                                .currentWallet!.principal
+                                        ? records[position].to == null
+                                            ? S.of(context).burn
+                                            : records[position].to!.toString()
+                                        : records[position].from!.toString(),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ))
+                          ],
                         ),
-                    separatorBuilder: (context, position) => new Divider(
-                          height: 1,
-                          color: Colors.black26,
-                        ),
-                    itemCount: records.length),
-              ),
-            ),
+                      ),
+                    ),
+                separatorBuilder: (context, position) => new Divider(
+                      height: 1,
+                      color: Colors.black26,
+                    ),
+                itemCount: records.length),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   @override
@@ -141,7 +142,7 @@ class _TransferRecordViewState extends BaseNftPageState<TransferRecordView> {
     }
   }
 
-  Future<void> _refreshData()async {
-   await _getRecords();
+  Future<void> _refreshData() async {
+    await _getRecords();
   }
 }

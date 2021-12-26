@@ -32,7 +32,6 @@ class _InvoiceListViewState extends BaseNftPageState<InvoiceListView> {
     return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: Expanded(
           child: Container(
             child: LiquidPullToRefresh(
               height: 50,
@@ -130,7 +129,7 @@ class _InvoiceListViewState extends BaseNftPageState<InvoiceListView> {
               ),
             ),
           ),
-        ));
+        );
   }
 
   @override

@@ -56,7 +56,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'NFT展示',
+                       S.of(context).nft_detail,
                         style: TextStyle(
                           fontSize: 30,
                           color: Colors.black87,
