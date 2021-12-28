@@ -10,7 +10,6 @@ import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
 import 'package:flutter_light_wallet/utils/rosetta_utils.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
 import 'package:flutter_light_wallet/view/collect_page.dart';
-import 'package:flutter_light_wallet/view/scan_page.dart';
 import 'package:flutter_light_wallet/view/transfer_page.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -66,8 +65,8 @@ class _WalletPageState extends BasePageState<WalletPage> {
     if (!InstanceStore.isBlanceUpdated) {
       print('refresh********* is update wallet balance called!');
       SmartDialog.showLoading();
-      await RosettaUtils.getWalletBalance(wallet!);
-      // await ICPAccountUtils.getIcpBalance(wallet!);
+    //  await RosettaUtils.getWalletBalance(wallet!);
+       await ICPAccountUtils.getIcpBalance(wallet!);
 
       print('refresh********** network call finished!');
       InstanceStore.isBlanceUpdated = true;
@@ -155,6 +154,54 @@ class _WalletPageState extends BasePageState<WalletPage> {
                       itemCount: wallet!.tokenList.length),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 50.0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 30.0, right: 15),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(context,
+                                  SlideRightRoute(page: CollectPage()));
+                            },
+                            child: Text(
+                              S.of(context).collect,
+                            ),
+                            style: ButtonStyle(
+                              fixedSize: MaterialStateProperty.all(
+                                  Size.fromHeight(50)),
+                              backgroundColor:
+                              MaterialStateProperty.all(Color(0xffe4542a)),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15, right: 30),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(context,
+                                  SlideRightRoute(page: TransferPage()));
+                            },
+                            child: Text(S.of(context).transfer),
+                            style: ButtonStyle(
+                              fixedSize: MaterialStateProperty.all(
+                                  Size.fromHeight(50)),
+                              backgroundColor:
+                              MaterialStateProperty.all(Color(0xff39267e)),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -304,7 +351,8 @@ class _WalletPageState extends BasePageState<WalletPage> {
   void hanldEvent(Event event) {
     if (event is SwitchWalletEvent ||
         event is DeleteWalletEvent ||
-        event is TransactionEvent) {
+        event is TransactionEvent||
+        event is NftInvoiceEvent ) {
       InstanceStore.needRefreshData();
       setState(() {
         wallet = InstanceStore.currentWallet;

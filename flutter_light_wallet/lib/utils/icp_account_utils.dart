@@ -1,13 +1,18 @@
+import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:agent_dart/identity/secp256k1.dart';
 import 'package:agent_dart/wallet/ledger.dart';
 
 import 'package:agent_dart/agent_dart.dart';
 import 'package:agent_dart/wallet/keysmith.dart' as keysmith;
+
 import 'package:flutter_light_wallet/model/token.dart';
 import 'package:flutter_light_wallet/model/wallet.dart';
 import 'package:flutter_light_wallet/utils/constans.dart';
+import 'package:flutter_light_wallet/utils/time_util.dart';
 
 class ICPAccountUtils {
   static String generateBip39Mnemonic() {
@@ -39,6 +44,38 @@ class ICPAccountUtils {
       password: password,
     );
     return wallet;
+  }
+
+  static void importPemWallet(String path) async{
+    File? pem = File(path);
+    if(pem.existsSync()){
+      var path = pem.path;
+      var name = path.substring(path.lastIndexOf("/") + 1, path.length);
+      var suffix = name.substring(name.lastIndexOf(".") + 1, name.length);
+      if(suffix.toUpperCase()=='PEM'){
+        String privateKey =await pem.readAsString();
+        print("privatekey is : "+ privateKey);
+        List<String> pieces = privateKey.split("\n");
+        String d ="";
+        for(String  p in pieces){
+          if (p.isNotEmpty && !p.startsWith("-----")) {
+           d= d+p.trim();
+          }
+        }
+        print("privatekey is : "+ d);
+
+        Uint8List raw=  Uint8List.fromList(base64Decode(d));
+
+        var ecIdentity= Secp256k1KeyIdentity.fromSecretKey(raw);
+        var principal = ecIdentity.getPrincipal();
+        var account =
+        crc32Add(ecIdentity.getAccountId()).toHex();
+        print("principal is : "+ principal.toString());
+        print("account is : "+ account);
+      }
+    }else{
+      print("file doesnt exist!");
+    }
   }
 
   static Future<BigInt> transfer(
@@ -89,5 +126,23 @@ class ICPAccountUtils {
     var sha = sha224Hash(bytes.buffer);
     var u8a = Uint8List.fromList([...sha, SELF_AUTHENTICATING_SUFFIX]);
     return Principal(u8a);
+  }
+
+  static String createTempPrincipalString() {
+    return createPrincipal(TimeUtil.currentTImeMillis().toU8a()).toString();
+  }
+
+  static double fromICPBigInt2Amount(BigInt amount) {
+    return (amount / BigInt.from(pow(10, 8))).toDouble();
+  }
+
+  static Principal? checkValidPrincipal(String text) {
+    try {
+      Principal p = Principal.fromText(text);
+      if (p.toText() != text) return null;
+      return p;
+    } catch (e) {
+      rethrow;
+    }
   }
 }

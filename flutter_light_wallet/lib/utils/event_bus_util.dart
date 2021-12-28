@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:agent_dart/agent_dart.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter_light_wallet/model/wallet.dart';
+import 'package:flutter_light_wallet/utils/nft_canister.dart';
 
 class EventBusUtil {
   static EventBus? _eventBus;
@@ -56,4 +58,36 @@ class TransactionEvent extends Event {
 
 class ClearWalletEvent extends Event {
   
+}
+
+class MintNftEvent extends NftInvoiceEvent{
+  MintNftEvent(Invoice invoice) : super(invoice);
+}
+
+class TransferNftEvent extends NftInvoiceEvent{
+  TransferNftEvent(Invoice invoice) : super(invoice);
+}
+
+class BurnNftEvent extends NftInvoiceEvent{
+  BurnNftEvent(Invoice invoice) : super(invoice);
+}
+
+class OrderNftEvent extends Event{
+  Order order;
+
+  OrderNftEvent(this.order);
+}
+
+class CancelOrderEvent extends Event{
+  Principal principal;
+
+  CancelOrderEvent(this.principal);
+}
+
+class NftDataStoreUpdateEvent extends Event{}
+
+class NftInvoiceEvent extends Event{
+  Invoice invoice;
+
+  NftInvoiceEvent(this.invoice);
 }

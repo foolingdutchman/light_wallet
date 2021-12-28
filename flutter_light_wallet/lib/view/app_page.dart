@@ -4,6 +4,7 @@ import 'package:flutter_light_wallet/base/slide_right_route.dart';
 import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/view/home_page.dart';
+import 'package:flutter_light_wallet/view/nft/workroom_page.dart';
 import 'package:flutter_light_wallet/view/wallet_page.dart';
 
 import 'me_page.dart';
@@ -20,10 +21,10 @@ class AppPage extends StatefulWidget {
 }
 
 class _AppPageState extends BasePageState<AppPage> {
-  final pages = [WalletPage(), TransferPage(), RecordPage(), MePage()];
+  final pages = [WalletPage(), WorkRoomPage(), RecordPage(), MePage()];
   final titles = [
     S.current.wallet,
-    S.current.transfer,
+    S.current.work_room,
     S.current.record,
     S.current.mine
   ];
@@ -35,8 +36,8 @@ class _AppPageState extends BasePageState<AppPage> {
         label: S.current.wallet),
     BottomNavigationBarItem(
         backgroundColor: Colors.blue,
-        icon: Icon(Icons.transform),
-        label: S.current.transfer),
+        icon: Icon(Icons.store),
+        label: S.current.work_room),
     BottomNavigationBarItem(
         backgroundColor: Colors.blue,
         icon: Icon(Icons.history),

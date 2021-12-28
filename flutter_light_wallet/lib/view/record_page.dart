@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_light_wallet/base/base_page_state.dart';
@@ -24,6 +23,7 @@ class _RecordPageState extends BasePageState<RecordPage> {
   String _helpText = '';
   bool isFirstVisible = true;
   List<rosettaUtils.RosettaTransactionRecord> _transactions = [];
+
   @override
   Widget constructView(BuildContext context) {
     return Scaffold(
@@ -34,7 +34,9 @@ class _RecordPageState extends BasePageState<RecordPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              S.of(context).transaction_record,
+              S
+                  .of(context)
+                  .transaction_record,
               style: TextStyle(
                 fontSize: 30,
                 color: Colors.black87,
@@ -44,119 +46,127 @@ class _RecordPageState extends BasePageState<RecordPage> {
             _transactions.length == 0
                 ? Container(height: 0)
                 : Expanded(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: LiquidPullToRefresh(
-                        height: 50,
-                        color: Colors.transparent,
-                        showChildOpacityTransition: false,
-                        animSpeedFactor: 2,
-                        onRefresh: () {
-                          return _refreshData();
-                        },
-                        child: ListView.separated(
-                          itemCount: _transactions.length,
-                          itemBuilder: (context, i) {
-                            return Container(
-                                padding: EdgeInsets.only(top: 10, bottom: 10),
-                                height: 80,
-                                child: Row(
+              child: Container(
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                child: LiquidPullToRefresh(
+                  height: 50,
+                  color: Colors.transparent,
+                  showChildOpacityTransition: false,
+                  animSpeedFactor: 2,
+                  onRefresh: () {
+                    return _refreshData();
+                  },
+                  child: ListView.separated(
+                    itemCount: _transactions.length,
+                    itemBuilder: (context, i) {
+                      return Container(
+                          padding: EdgeInsets.only(top: 10, bottom: 10),
+                          height: 80,
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding:
+                                const EdgeInsets.only(right: 8.0),
+                                child: Icon(
+                                  _transactions[i].isWalletReceive(wallet)
+                                      ? Icons.arrow_downward
+                                      : Icons.arrow_upward,
+                                  color: _transactions[i]
+                                      .isWalletReceive(wallet)
+                                      ? Colors.lightBlue
+                                      : Colors.redAccent,
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
                                   children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 8.0),
-                                      child: Icon(
-                                        _transactions[i].isWalletReceive(wallet)
-                                            ? Icons.arrow_downward
-                                            : Icons.arrow_upward,
-                                        color: _transactions[i]
-                                                .isWalletReceive(wallet)
-                                            ? Colors.lightBlue
-                                            : Colors.redAccent,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                _transactions[i]
-                                                        .isWalletReceive(wallet)
-                                                    ?S.of(context).from+":"
-                                                    :S.of(context).to+":",
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              Expanded(child: Container())
-                                            ],
-                                          ),
-                                          Expanded(child: Container()),
-                                          Text(
-                                            _transactions[i]
-                                                    .isWalletReceive(wallet)
-                                                ? _transactions[i].from
-                                                : _transactions[i].to,
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
+                                    Row(
                                       children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 8.0),
-                                          child: Text(
-                                            (_transactions[i]
-                                                        .isWalletReceive(wallet)
-                                                    ? '+'
-                                                    : '-') +
-                                                _transactions[i]
-                                                    .amount
-                                                    .toString(),
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                color: _transactions[i]
-                                                        .isWalletReceive(wallet)
-                                                    ? Colors.lightBlue
-                                                    : Colors.redAccent,
-                                                fontWeight: FontWeight.bold),
-                                          ),
+                                        Text(
+                                          _transactions[i]
+                                              .isWalletReceive(wallet)
+                                              ? S
+                                              .of(context)
+                                              .from + ":"
+                                              : S
+                                              .of(context)
+                                              .to + ":",
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight:
+                                              FontWeight.bold),
                                         ),
-                                        Expanded(child: Container()),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 10.0),
-                                          child: Text(
-                                            StringUtil
-                                                .longTimeStampToDateString(
-                                                    _transactions[i].timeStamp),
-                                            style: TextStyle(
-                                                fontSize: 10,
-                                                color: Colors.black45),
-                                          ),
-                                        ),
+                                        Expanded(child: Container())
                                       ],
-                                    )
+                                    ),
+                                    Expanded(child: Container()),
+                                    Text(
+                                      _transactions[i]
+                                          .isWalletReceive(wallet)
+                                          ? _transactions[i].from
+                                          : _transactions[i].to,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ],
-                                ));
-                          },
-                          separatorBuilder: (context, i) => new Divider(
-                            height: 1,
-                            color: Colors.black26,
-                          ),
-                        ),
-                      ),
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.end,
+                                children: [
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets.only(top: 8.0),
+                                    child: Text(
+                                      (_transactions[i]
+                                          .isWalletReceive(wallet)
+                                          ? '+'
+                                          : '-') +
+                                          _transactions[i]
+                                              .amount
+                                              .toString(),
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          color: _transactions[i]
+                                              .isWalletReceive(wallet)
+                                              ? Colors.lightBlue
+                                              : Colors.redAccent,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Expanded(child: Container()),
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets.only(left: 10.0),
+                                    child: Text(
+                                      StringUtil
+                                          .longTimeStampToDateString(
+                                          _transactions[i].timeStamp),
+                                      style: TextStyle(
+                                          fontSize: 10,
+                                          color: Colors.black45),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ));
+                    },
+                    separatorBuilder: (context, i) =>
+                    new Divider(
+                      height: 1,
+                      color: Colors.black26,
                     ),
                   ),
+                ),
+              ),
+            ),
             Center(
               child: Container(
                 padding: EdgeInsets.all(20),
@@ -179,14 +189,14 @@ class _RecordPageState extends BasePageState<RecordPage> {
   @override
   void hanldEvent(Event event) {
     if (event is SwitchWalletEvent || event is DeleteWalletEvent ||
-        event is TransactionEvent) {
+        event is TransactionEvent||event is NftInvoiceEvent) {
       InstanceStore.needRefreshData();
       setState(() {
         wallet = InstanceStore.currentWallet;
         _transactions = [];
       });
     } else if (event is ClearWalletEvent) {
-     // Navigator.pop(context);
+      // Navigator.pop(context);
     }
   }
 
@@ -207,7 +217,7 @@ class _RecordPageState extends BasePageState<RecordPage> {
     if (!InstanceStore.isRecordUpdated) {
       SmartDialog.showLoading();
       List<rosettaUtils.RosettaTransactionRecord> list =
-          await rosettaUtils.RosettaUtils.getWalletTransactions(wallet!);
+      await rosettaUtils.RosettaUtils.getWalletTransactions(wallet!);
       SmartDialog.dismiss();
       if (list.isNotEmpty) {
         InstanceStore.transactions.clear();

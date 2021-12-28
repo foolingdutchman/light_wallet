@@ -8,6 +8,7 @@ import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
 import 'package:flutter_light_wallet/utils/local_auth_util.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
+import 'package:flutter_light_wallet/utils/verification_util.dart';
 import 'package:flutter_light_wallet/view/scan_page.dart';
 import 'package:flutter_light_wallet/view/transfer_complete_page.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -72,23 +73,7 @@ class _TransferPageState extends BasePageState<TransferPage> {
   }
 
   void _verifyPasswordForTransaction() async {
-    String result = '';
-    if (InstanceStore.deviceInfo!.isFigerPrintPasswordActive) {
-      bool _localAuth = await _verifyFingerprintPassword();
-      if (_localAuth) result = 'OK';
-    } else if (InstanceStore.deviceInfo!.isGuesturePrintPasswordActive &&
-        InstanceStore.currentWallet!.guesturePassword != '') {
-      result = await Navigator.push(
-          context,
-          SlideRightRoute(
-              page: GuesturePasswordPage(
-            type: 'verify_password',
-            wallet: InstanceStore.currentWallet,
-          )));
-    } else {
-      result = await Navigator.push(context,
-          SlideRightRoute(page: PasswordPage(type: 'verify_password')));
-    }
+    String result = await VerificationUtils.verifyProcess(context);
 
     if (result == 'OK') {
       StringUtil.showToast(S.current.password_verified);
@@ -96,15 +81,6 @@ class _TransferPageState extends BasePageState<TransferPage> {
     }
   }
 
-  Future<bool> _verifyFingerprintPassword() async {
-    bool _isAuth = false;
-    if (InstanceStore.deviceInfo!.isFigerPrintPasswordActive) {
-      _isAuth = await LocalAuthUtil().authenticate();
-    }
-    StringUtil.showToast(_isAuth ? "Auth success!" : " Auth failed!");
-
-    return _isAuth;
-  }
 
   void _proceedTransaction(String amount, String address) async {
     SmartDialog.showLoading();

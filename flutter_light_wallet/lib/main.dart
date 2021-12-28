@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/color_util.dart';
+import 'package:flutter_light_wallet/view/nft/nft_data_store.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'generated/l10n.dart';
@@ -55,6 +56,7 @@ class _MyAppState extends State<MyApp> {
     if (InstanceStore.isStoreInit) {
       InstanceStore.updateDBandClose();
     }
+    NftDataStore.release();
     super.dispose();
   }
 }

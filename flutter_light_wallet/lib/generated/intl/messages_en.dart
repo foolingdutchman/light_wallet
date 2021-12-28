@@ -40,9 +40,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "back": MessageLookupByLibrary.simpleMessage("Back"),
         "balance": MessageLookupByLibrary.simpleMessage("Balance"),
         "block_height": MessageLookupByLibrary.simpleMessage("Block Height"),
+        "burn": MessageLookupByLibrary.simpleMessage("Burn"),
         "buy": MessageLookupByLibrary.simpleMessage("Buy"),
         "cancel_sell": MessageLookupByLibrary.simpleMessage("Cancel Sell"),
         "change_price": MessageLookupByLibrary.simpleMessage("Change Price"),
+        "click_to_load_more":
+            MessageLookupByLibrary.simpleMessage("Click to load More..."),
         "collect": MessageLookupByLibrary.simpleMessage("Collect"),
         "comfirm_mnemonic_backup": MessageLookupByLibrary.simpleMessage(
             "Confirm Mnemonic Been Backup"),
@@ -54,8 +57,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "copy_mnemonic": MessageLookupByLibrary.simpleMessage("Copy Mnemonic"),
         "copyright_declearation": MessageLookupByLibrary.simpleMessage(
             "Please make sure that the content of the NFT work you create is an original work, and any copyright-related disputes arising from this work have nothing to do with the platform."),
+        "counter_address":
+            MessageLookupByLibrary.simpleMessage("Counter Address"),
         "create_wallet": MessageLookupByLibrary.simpleMessage("Create Wallet"),
-        "creator_id": MessageLookupByLibrary.simpleMessage("Creator Id"),
+        "creator_id": MessageLookupByLibrary.simpleMessage("Creator Principal"),
         "creator_principal":
             MessageLookupByLibrary.simpleMessage("Creator Principal"),
         "current_address":
@@ -63,6 +68,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "current_remaining_canister_space":
             MessageLookupByLibrary.simpleMessage(
                 "Current Canister Remaining Space"),
+        "data_not_ready":
+            MessageLookupByLibrary.simpleMessage("Data is not ready..."),
         "delete_wallet": MessageLookupByLibrary.simpleMessage("Delete Wallet"),
         "desc": MessageLookupByLibrary.simpleMessage("Description"),
         "emport_mnemonic":
@@ -79,6 +86,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "Gesture Password has been set"),
         "has_copy_to_clipboard": MessageLookupByLibrary.simpleMessage(
             "content has copied to clipboard"),
+        "hint_burn_token": MessageLookupByLibrary.simpleMessage(
+            "Burnt Token will be destoried forever!"),
+        "hint_icp_not_enough": MessageLookupByLibrary.simpleMessage(
+            "Your ICP blance is not enough!"),
         "hint_save_code_failded":
             MessageLookupByLibrary.simpleMessage("Save faild"),
         "hint_save_code_success": MessageLookupByLibrary.simpleMessage(
@@ -107,25 +118,42 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please input valid ICP address"),
         "invalid_amount_hint": MessageLookupByLibrary.simpleMessage(
             "Please input valid ICP amount"),
+        "invalid_principal":
+            MessageLookupByLibrary.simpleMessage("Invalid principal..."),
+        "invoice": MessageLookupByLibrary.simpleMessage("Invoice"),
+        "invoice_no": MessageLookupByLibrary.simpleMessage("Invoice No"),
+        "invoice_type": MessageLookupByLibrary.simpleMessage("Invoice Type"),
+        "issue_date": MessageLookupByLibrary.simpleMessage("Issue Date"),
+        "loading_data": MessageLookupByLibrary.simpleMessage("Loading data..."),
         "local_auth":
             MessageLookupByLibrary.simpleMessage("Biometric Authentication"),
         "make_nft": MessageLookupByLibrary.simpleMessage("Make NFT"),
+        "make_your_nft":
+            MessageLookupByLibrary.simpleMessage("Make Your Own NFT Art"),
         "manage": MessageLookupByLibrary.simpleMessage("Manage"),
         "max_amount": MessageLookupByLibrary.simpleMessage("Max Amount"),
         "mine": MessageLookupByLibrary.simpleMessage("Mine"),
+        "mint": MessageLookupByLibrary.simpleMessage("Mint"),
+        "mint_cost": MessageLookupByLibrary.simpleMessage("Mint Cost"),
         "mnemonic_format_incorrect":
             MessageLookupByLibrary.simpleMessage("Mnemonic Format Incorrect"),
         "modify_guesture_password":
             MessageLookupByLibrary.simpleMessage("Modify Gesture Password"),
         "modify_password":
             MessageLookupByLibrary.simpleMessage("Modify Password"),
+        "my_invoice": MessageLookupByLibrary.simpleMessage("My Invoices"),
+        "my_nft": MessageLookupByLibrary.simpleMessage("My Nft"),
+        "my_transactions":
+            MessageLookupByLibrary.simpleMessage("My Transactions"),
         "new_guesture_password":
             MessageLookupByLibrary.simpleMessage("Input New Gesture Password"),
+        "nft": MessageLookupByLibrary.simpleMessage("NFT"),
+        "nft_detail": MessageLookupByLibrary.simpleMessage("Nft Detail"),
         "no_more_data": MessageLookupByLibrary.simpleMessage("No more data"),
-        "not_for_sell": MessageLookupByLibrary.simpleMessage("Not For Sell"),
+        "not_sell": MessageLookupByLibrary.simpleMessage("Not Sell"),
         "os_determine_auth": MessageLookupByLibrary.simpleMessage(
             "Let OS determine authentication method"),
-        "owner_id": MessageLookupByLibrary.simpleMessage("Owner Id"),
+        "owner_id": MessageLookupByLibrary.simpleMessage("Owner Principal"),
         "password_input_hint":
             MessageLookupByLibrary.simpleMessage("Please Input Password"),
         "password_insist_hint": MessageLookupByLibrary.simpleMessage(
@@ -136,10 +164,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Password has been Verified!"),
         "password_wrong_hint":
             MessageLookupByLibrary.simpleMessage("Wrong Password Input"),
+        "pay_the_bill": MessageLookupByLibrary.simpleMessage("Pay the Bill"),
         "price": MessageLookupByLibrary.simpleMessage("Price"),
         "pricinpal_id": MessageLookupByLibrary.simpleMessage("Pricinpal ID"),
+        "purchase": MessageLookupByLibrary.simpleMessage("Purchase"),
+        "purchase_price":
+            MessageLookupByLibrary.simpleMessage("Purchase Price"),
         "receipt_address":
             MessageLookupByLibrary.simpleMessage("Receipt Address"),
+        "receipt_principal":
+            MessageLookupByLibrary.simpleMessage("Receipt Principal"),
         "record": MessageLookupByLibrary.simpleMessage("Record"),
         "repeat_guesture_password":
             MessageLookupByLibrary.simpleMessage("Repeat Gesture Password"),
@@ -151,7 +185,11 @@ class MessageLookup extends MessageLookupByLibrary {
             "Has been set as default wallet"),
         "select_mnemonic_words":
             MessageLookupByLibrary.simpleMessage("Select Mnemonic words"),
+        "select_your_art":
+            MessageLookupByLibrary.simpleMessage("Select your Art!"),
         "sell": MessageLookupByLibrary.simpleMessage("Sell"),
+        "seller_address":
+            MessageLookupByLibrary.simpleMessage("Seller Address"),
         "set_guesture_password":
             MessageLookupByLibrary.simpleMessage("Set Gesture Password"),
         "set_price": MessageLookupByLibrary.simpleMessage("Set Price"),
@@ -159,7 +197,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "spawnCreator": MessageLookupByLibrary.simpleMessage("Spawn Creator"),
         "title": MessageLookupByLibrary.simpleMessage("Title"),
         "to": MessageLookupByLibrary.simpleMessage("To"),
-        "token_id": MessageLookupByLibrary.simpleMessage("Token Id"),
+        "token_id": MessageLookupByLibrary.simpleMessage("Token Principal"),
+        "token_index": MessageLookupByLibrary.simpleMessage("Token Id"),
+        "total_amount": MessageLookupByLibrary.simpleMessage("Total Amount"),
         "transaction_record":
             MessageLookupByLibrary.simpleMessage("Transactions Record"),
         "transfer": MessageLookupByLibrary.simpleMessage("Transfer"),

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_page_state.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
@@ -5,6 +8,7 @@ import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/model/wallet.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
+import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'password_page.dart';
@@ -212,8 +216,18 @@ class _MePageState extends BasePageState<MePage> {
         context, SlideRightRoute(page: PasswordPage(type: 'create_wallet')));
   }
 
-  void _importWallet() {
-    Navigator.push(context, SlideRightRoute(page: ImportWalletPage()));
+  void _importWallet() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      String filePath =result.files.single.path??"";
+      ICPAccountUtils.importPemWallet(filePath);
+    } else {
+      // User canceled the picker
+    }
+
+
+    // Navigator.push(context, SlideRightRoute(page: ImportWalletPage()));
   }
 
   void _onSettingClick() {

@@ -1,6 +1,15 @@
+type Result = 
+ variant {
+   err: text;
+   ok;
+ };
 type Hub = 
  service {
+   addAdmin: (text, text) -> (bool);
    downLoad: () -> (nat);
+   getApk: () -> (vec Apk);
+   getApkBuffer: (nat) -> (vec nat8);
+   getApkInfo: () -> (ApkInfo);
    getContractInfo: () -> (ContractInfo);
    getDownLoadNum: () -> (nat);
    getIOSDownLoadNum: () -> (nat);
@@ -8,12 +17,34 @@ type Hub =
    greet: (text) -> (text);
    init: (nat, nat, vec principal) -> ();
    iosDownLoad: () -> (nat);
+   updateAndroidDownLoadNum: (nat) -> (bool);
+   updateApk: (text, text, vec nat8, text) -> (Result);
+   updateApkFinish: (text, text, text) -> (bool);
+   updateBuffer: (text, text, vec nat8) -> (bool);
+   updateIOSdownLoadNum: (nat) -> (bool);
  };
 type ContractInfo = 
  record {
+   admins: vec record {
+                 text;
+                 text;
+               };
    cycles: nat;
    heap_size: nat;
    max_live_size: nat;
    memory_size: nat;
+ };
+type ApkInfo = 
+ record {
+   bufferSize: nat;
+   name: text;
+   size: nat;
+   suffix: text;
+ };
+type Apk = 
+ record {
+   data: vec nat8;
+   name: text;
+   suffix: text;
  };
 service : () -> Hub

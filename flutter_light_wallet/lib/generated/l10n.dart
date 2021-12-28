@@ -910,30 +910,30 @@ class S {
     );
   }
 
-  /// `Owner Id`
+  /// `Owner Principal`
   String get owner_id {
     return Intl.message(
-      'Owner Id',
+      'Owner Principal',
       name: 'owner_id',
       desc: '',
       args: [],
     );
   }
 
-  /// `Creator Id`
+  /// `Creator Principal`
   String get creator_id {
     return Intl.message(
-      'Creator Id',
+      'Creator Principal',
       name: 'creator_id',
       desc: '',
       args: [],
     );
   }
 
-  /// `Token Id`
+  /// `Token Principal`
   String get token_id {
     return Intl.message(
-      'Token Id',
+      'Token Principal',
       name: 'token_id',
       desc: '',
       args: [],
@@ -955,16 +955,6 @@ class S {
     return Intl.message(
       'Buy',
       name: 'buy',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Not For Sell`
-  String get not_for_sell {
-    return Intl.message(
-      'Not For Sell',
-      name: 'not_for_sell',
       desc: '',
       args: [],
     );
@@ -1045,6 +1035,296 @@ class S {
     return Intl.message(
       'Important Notice',
       name: 'important_notice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Make Your Own NFT Art`
+  String get make_your_nft {
+    return Intl.message(
+      'Make Your Own NFT Art',
+      name: 'make_your_nft',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `NFT`
+  String get nft {
+    return Intl.message(
+      'NFT',
+      name: 'nft',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My Nft`
+  String get my_nft {
+    return Intl.message(
+      'My Nft',
+      name: 'my_nft',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My Invoices`
+  String get my_invoice {
+    return Intl.message(
+      'My Invoices',
+      name: 'my_invoice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My Transactions`
+  String get my_transactions {
+    return Intl.message(
+      'My Transactions',
+      name: 'my_transactions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not Sell`
+  String get not_sell {
+    return Intl.message(
+      'Not Sell',
+      name: 'not_sell',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Burn`
+  String get burn {
+    return Intl.message(
+      'Burn',
+      name: 'burn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mint`
+  String get mint {
+    return Intl.message(
+      'Mint',
+      name: 'mint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purchase`
+  String get purchase {
+    return Intl.message(
+      'Purchase',
+      name: 'purchase',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Receipt Principal`
+  String get receipt_principal {
+    return Intl.message(
+      'Receipt Principal',
+      name: 'receipt_principal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid principal...`
+  String get invalid_principal {
+    return Intl.message(
+      'Invalid principal...',
+      name: 'invalid_principal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Burnt Token will be destoried forever!`
+  String get hint_burn_token {
+    return Intl.message(
+      'Burnt Token will be destoried forever!',
+      name: 'hint_burn_token',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select your Art!`
+  String get select_your_art {
+    return Intl.message(
+      'Select your Art!',
+      name: 'select_your_art',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mint Cost`
+  String get mint_cost {
+    return Intl.message(
+      'Mint Cost',
+      name: 'mint_cost',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Data is not ready...`
+  String get data_not_ready {
+    return Intl.message(
+      'Data is not ready...',
+      name: 'data_not_ready',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invoice`
+  String get invoice {
+    return Intl.message(
+      'Invoice',
+      name: 'invoice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pay the Bill`
+  String get pay_the_bill {
+    return Intl.message(
+      'Pay the Bill',
+      name: 'pay_the_bill',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nft Detail`
+  String get nft_detail {
+    return Intl.message(
+      'Nft Detail',
+      name: 'nft_detail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invoice No`
+  String get invoice_no {
+    return Intl.message(
+      'Invoice No',
+      name: 'invoice_no',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invoice Type`
+  String get invoice_type {
+    return Intl.message(
+      'Invoice Type',
+      name: 'invoice_type',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Counter Address`
+  String get counter_address {
+    return Intl.message(
+      'Counter Address',
+      name: 'counter_address',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purchase Price`
+  String get purchase_price {
+    return Intl.message(
+      'Purchase Price',
+      name: 'purchase_price',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Seller Address`
+  String get seller_address {
+    return Intl.message(
+      'Seller Address',
+      name: 'seller_address',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Amount`
+  String get total_amount {
+    return Intl.message(
+      'Total Amount',
+      name: 'total_amount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Issue Date`
+  String get issue_date {
+    return Intl.message(
+      'Issue Date',
+      name: 'issue_date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Token Id`
+  String get token_index {
+    return Intl.message(
+      'Token Id',
+      name: 'token_index',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your ICP blance is not enough!`
+  String get hint_icp_not_enough {
+    return Intl.message(
+      'Your ICP blance is not enough!',
+      name: 'hint_icp_not_enough',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Click to load More...`
+  String get click_to_load_more {
+    return Intl.message(
+      'Click to load More...',
+      name: 'click_to_load_more',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loading data...`
+  String get loading_data {
+    return Intl.message(
+      'Loading data...',
+      name: 'loading_data',
       desc: '',
       args: [],
     );
