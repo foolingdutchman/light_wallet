@@ -1,13 +1,7 @@
-import 'package:agent_dart/agent_dart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_light_wallet/utils/Instance_store.dart';
-import 'package:flutter_light_wallet/utils/canister_util.dart';
-import 'package:flutter_light_wallet/utils/constans.dart';
-import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
 import 'package:flutter_light_wallet/utils/nft_canister.dart';
 import 'package:flutter_light_wallet/view/nft/nft_data_store.dart';
 
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 import 'base_page_state.dart';
 

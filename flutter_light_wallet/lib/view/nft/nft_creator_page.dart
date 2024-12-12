@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_nft_page_state.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
@@ -124,7 +123,7 @@ class _NftCreatorPageState extends BaseNftPageState<NftCreatorPage> {
                   )),
                 ),
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Color(0xfff3ab39)),
+                  backgroundColor: WidgetStateProperty.all(Color(0xfff3ab39)),
                 ),
               ),
             ),

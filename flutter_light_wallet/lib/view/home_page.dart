@@ -134,7 +134,7 @@ class _HomePageState extends BasePageState<HomePage>
                           onPressed: onCreatePressed,
                           child: Text(S.of(context).create_wallet),
                           style: ButtonStyle(
-                            fixedSize: MaterialStateProperty.all(Size(
+                            fixedSize: WidgetStateProperty.all(Size(
                                 MediaQuery.of(context).size.width - 50, 50)),
                           ),
                         ),
@@ -145,7 +145,7 @@ class _HomePageState extends BasePageState<HomePage>
                           onPressed: onImportPressed,
                           child: Text(S.of(context).import_wallet),
                           style: ButtonStyle(
-                            fixedSize: MaterialStateProperty.all(Size(
+                            fixedSize: WidgetStateProperty.all(Size(
                                 MediaQuery.of(context).size.width - 50, 50)),
                           ),
                         ),

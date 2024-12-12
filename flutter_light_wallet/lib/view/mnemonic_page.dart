@@ -1,5 +1,4 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
@@ -112,7 +111,7 @@ class _MnemonicPageState extends State<MnemonicPage> {
             ),
             ElevatedButton(
                 style: ButtonStyle(
-                  fixedSize: MaterialStateProperty.all(
+                  fixedSize: WidgetStateProperty.all(
                       Size(MediaQuery.of(context).size.width - 50, 50)),
                 ),
                 onPressed: () {
@@ -124,7 +123,7 @@ class _MnemonicPageState extends State<MnemonicPage> {
             ),
             ElevatedButton(
                 style: ButtonStyle(
-                  fixedSize: MaterialStateProperty.all(
+                  fixedSize: WidgetStateProperty.all(
                       Size(MediaQuery.of(context).size.width - 50, 50)),
                 ),
                 onPressed: () {

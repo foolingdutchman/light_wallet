@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 class ImageUtil {
+  
   static Future<AssetEntity?> pickImage(BuildContext context) async {
+
+    
     AssetEntity? asset;
     List<AssetEntity>? assets =
-        await AssetPicker.pickAssets(context, maxAssets: 1);
-    if (assets!.length != 0) {
+        await AssetPicker.pickAssets(context);
+    if (assets!.length!= 0) {
       if (isAssetImage(assets[0])) {
         asset = assets[0];
       }
@@ -19,7 +22,7 @@ class ImageUtil {
   static bool isAssetImage(AssetEntity asset) {
     return asset.mimeType == 'image/jpeg' || asset.mimeType == 'image/png';
   }
-
+ 
  static Future<Uint8List> getThumbnailData(Uint8List list) async{
    var result = await FlutterImageCompress.compressWithList(
      list,
@@ -31,6 +34,8 @@ class ImageUtil {
    print(result.length);
    return result;
  }
+
+
 
 }
 

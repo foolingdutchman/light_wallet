@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
 import 'package:flutter_light_wallet/generated/l10n.dart';
@@ -122,7 +121,7 @@ class _PasswordPageState extends State<PasswordPage> {
                 child: Center(
                   child: ElevatedButton(
                       style: ButtonStyle(
-                        fixedSize: MaterialStateProperty.all(
+                        fixedSize: WidgetStateProperty.all(
                             Size(MediaQuery.of(context).size.width - 50, 50)),
                       ),
                       onPressed: () {

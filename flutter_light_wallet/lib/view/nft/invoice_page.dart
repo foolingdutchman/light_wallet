@@ -329,10 +329,10 @@ class _InvoicePageState extends BaseNftPageState<InvoicePage> {
                   ),
                   invoiceData.type == InvoiceType.BURN&&!invoiceData.isUncheckInvoice()? Container(): ElevatedButton(
                     style: ButtonStyle(
-                        fixedSize: MaterialStateProperty.all(
+                        fixedSize: WidgetStateProperty.all(
                             Size(MediaQuery.of(context).size.width - 50, 50)),
                         backgroundColor:
-                            MaterialStateProperty.all(Color(0xff39267e))),
+                            WidgetStateProperty.all(Color(0xff39267e))),
                     onPressed: () {
                       onButtonPressed(context);
                     },

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/generated/l10n.dart';
 
@@ -76,7 +75,7 @@ class _ConfirmMnemonicPageState extends State<ConfirmMnemonicPage> {
             ),
             ElevatedButton(
                 style: ButtonStyle(
-                  fixedSize: MaterialStateProperty.all(
+                  fixedSize: WidgetStateProperty.all(
                       Size(MediaQuery.of(context).size.width - 50, 50)),
                 ),
                 onPressed: confirMnemonic,

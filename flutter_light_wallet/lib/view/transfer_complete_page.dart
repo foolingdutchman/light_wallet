@@ -43,7 +43,7 @@ class TransactionCompletePage extends StatelessWidget {
                 padding: const EdgeInsets.all(20.0),
                 child: ElevatedButton(
                     style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all(Size(150, 50)),
+                      fixedSize: WidgetStateProperty.all(Size(150, 50)),
                     ),
                     onPressed: () {
                       Navigator.pop(context);

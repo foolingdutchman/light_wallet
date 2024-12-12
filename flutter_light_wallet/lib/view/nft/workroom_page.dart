@@ -1,19 +1,12 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_light_wallet/base/base_nft_page_state.dart';
 import 'package:flutter_light_wallet/base/base_page_state.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
 import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
-import 'package:flutter_light_wallet/utils/file_util.dart';
-import 'package:flutter_light_wallet/utils/nft_canister.dart';
 import 'package:flutter_light_wallet/view/nft/invoice_list_view.dart';
 import 'package:flutter_light_wallet/view/nft/nft_creator_page.dart';
-import 'package:flutter_light_wallet/view/nft/nft_page.dart';
 import 'package:flutter_light_wallet/view/nft/transfer_record_view.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import 'nft_list_view.dart';
 
