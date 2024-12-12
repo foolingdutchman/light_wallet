@@ -1,5 +1,4 @@
 import 'package:flutter/services.dart';
-import 'package:local_auth/auth_strings.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter_light_wallet/generated/l10n.dart';
 
@@ -47,13 +46,9 @@ class LocalAuthUtil {
     bool authenticated = false;
     try {
       authenticated = await _auth!.authenticate(
-          localizedReason: S.current.os_determine_auth,
-          useErrorDialogs: true,
-          biometricOnly: true,
-          androidAuthStrings: AndroidAuthMessages(
-            biometricHint: '',
-          ),
-          stickyAuth: true);
+        localizedReason: S.current.os_determine_auth,
+        options: AuthenticationOptions(stickyAuth: true),
+      );
     } on PlatformException catch (e) {
       rethrow;
     }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
-import 'package:flutter_light_wallet/view/%08password_page.dart';
+import 'package:flutter_light_wallet/view/password_page.dart';
 
 import 'package:flutter_light_wallet/view/guesture_password.dart';
 

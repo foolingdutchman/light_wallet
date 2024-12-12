@@ -13,7 +13,7 @@ import 'package:flutter_light_wallet/view/scan_page.dart';
 import 'package:flutter_light_wallet/view/transfer_complete_page.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
-import 'password_page.dart';
+import 'password_page.dart';
 import 'guesture_password.dart';
 
 class TransferPage extends StatefulWidget {

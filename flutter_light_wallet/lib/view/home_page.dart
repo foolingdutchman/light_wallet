@@ -12,7 +12,7 @@ import 'package:flutter_light_wallet/view/nft/nft_data_store.dart';
 
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
-import 'password_page.dart';
+import 'password_page.dart';
 import 'app_page.dart';
 import 'import_wallet_page.dart';
 

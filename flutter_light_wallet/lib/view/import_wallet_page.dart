@@ -6,7 +6,7 @@ import 'package:flutter_light_wallet/base/slide_right_route.dart';
 import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 
-import 'password_page.dart';
+import 'password_page.dart';
 
 class ImportWalletPage extends StatefulWidget {
   const ImportWalletPage({Key? key}) : super(key: key);

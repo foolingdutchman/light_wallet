@@ -6,7 +6,7 @@ import 'package:flutter_light_wallet/model/wallet.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
-import 'package:flutter_light_wallet/view/%08password_page.dart';
+import 'package:flutter_light_wallet/view/password_page.dart';
 
 import 'guesture_password.dart';
 import 'mnemonic_page.dart';
