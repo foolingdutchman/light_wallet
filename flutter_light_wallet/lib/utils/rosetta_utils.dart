@@ -39,8 +39,8 @@ class RosettaUtils {
       {invokeTransactions}) async {
     Future<SearchTransactionsResponse>? resp =
         _rosettaApi?.transactionsByAccount(accountAddress);
-    resp
-        ?.then((value) => invokeTransactions(value.transactions))
+    resp!
+        .then((value) => invokeTransactions(value.transactions))
         .onError((error, stackTrace) => print('error is' + error.toString()));
   }
 

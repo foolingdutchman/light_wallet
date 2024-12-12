@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +10,7 @@ import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'password_page.dart';
-import 'import_wallet_page.dart';
+import 'password_page.dart';
 import 'setting_page.dart';
 import 'wallet_manage_page.dart';
 

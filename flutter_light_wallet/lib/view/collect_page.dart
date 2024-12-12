@@ -112,7 +112,7 @@ class _CollectPageState extends BasePageState<CollectPage> {
                 ),
               style: ButtonStyle(
                 backgroundColor:
-                MaterialStateProperty.all(Color(0xffe4542a)),
+                WidgetStateProperty.all(Color(0xffe4542a)),
               ),),
 
           ],

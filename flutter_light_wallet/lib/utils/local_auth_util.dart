@@ -1,5 +1,5 @@
+
 import 'package:flutter/services.dart';
-import 'package:local_auth/auth_strings.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter_light_wallet/generated/l10n.dart';
 
@@ -25,7 +25,7 @@ class LocalAuthUtil {
       for (int i = 0; i < availableBiometrics.length; i++) {
         print('availableBiometric is : ' + availableBiometrics[i].toString());
       }
-    } on PlatformException catch (e) {
+    } on PlatformException {
       availableBiometrics = <BiometricType>[];
       rethrow;
     }
@@ -47,14 +47,12 @@ class LocalAuthUtil {
     bool authenticated = false;
     try {
       authenticated = await _auth!.authenticate(
-          localizedReason: S.current.os_determine_auth,
-          useErrorDialogs: true,
-          biometricOnly: true,
-          androidAuthStrings: AndroidAuthMessages(
-            biometricHint: '',
-          ),
-          stickyAuth: true);
-    } on PlatformException catch (e) {
+        localizedReason: S.current.os_determine_auth,
+        options: const AuthenticationOptions(
+          stickyAuth: true,
+        ),
+      );
+    } on PlatformException {
       rethrow;
     }
 

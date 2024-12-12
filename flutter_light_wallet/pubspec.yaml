@@ -40,7 +40,7 @@ dependencies:
   gesture_password_widget: ^2.0.0
   wechat_assets_picker: ^5.5.0
   path_provider: ^2.0.2
-  local_auth: ^1.1.2
+  local_auth: ^2.3.0
   qr_flutter: ^4.0.0
   image_gallery_saver: ^1.7.1
   scan: ^1.5.0

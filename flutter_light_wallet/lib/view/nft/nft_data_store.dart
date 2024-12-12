@@ -151,7 +151,7 @@ class NftDataStore {
     if (isCanisterInit) {
       List<NftDataWithOrder>? list =
           await walletCanister!.qureyNfts(nftDataPage);
-      if (list == null || list.length == 0) {
+      if (list!.length == 0) {
         SmartDialog.showToast(S.current.no_more_data);
         isAllNftFetched = true;
       }
@@ -160,7 +160,7 @@ class NftDataStore {
       var init = await waitUitlCanisterInit();
       List<NftDataWithOrder>? list =
           await walletCanister!.qureyNfts(nftDataPage);
-      if (list == null || list.length == 0) {
+      if (list!.length == 0) {
         SmartDialog.showToast(S.current.no_more_data);
         isAllNftFetched = true;
       }

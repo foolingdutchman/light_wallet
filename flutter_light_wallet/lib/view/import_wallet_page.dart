@@ -1,12 +1,11 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_page_state.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
 import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 
-import 'password_page.dart';
+import 'password_page.dart';
 
 class ImportWalletPage extends StatefulWidget {
   const ImportWalletPage({Key? key}) : super(key: key);
@@ -74,7 +73,7 @@ class _ImportWalletPageState extends BasePageState<ImportWalletPage> {
                 child: Center(
                   child: ElevatedButton(
                       style: ButtonStyle(
-                        fixedSize: MaterialStateProperty.all(
+                        fixedSize: WidgetStateProperty.all(
                             Size(MediaQuery.of(context).size.width - 50, 50)),
                       ),
                       child: Text(S.of(context).confirm_import_mnemonic),

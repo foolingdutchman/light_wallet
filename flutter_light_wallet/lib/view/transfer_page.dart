@@ -6,15 +6,12 @@ import 'package:flutter_light_wallet/model/wallet.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
-import 'package:flutter_light_wallet/utils/local_auth_util.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
 import 'package:flutter_light_wallet/utils/verification_util.dart';
 import 'package:flutter_light_wallet/view/scan_page.dart';
 import 'package:flutter_light_wallet/view/transfer_complete_page.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
-import 'password_page.dart';
-import 'guesture_password.dart';
 
 class TransferPage extends StatefulWidget {
   const TransferPage({Key? key}) : super(key: key);
@@ -265,10 +262,10 @@ class _TransferPageState extends BasePageState<TransferPage> {
               ),
               ElevatedButton(
                 style: ButtonStyle(
-                    fixedSize: MaterialStateProperty.all(
+                    fixedSize: WidgetStateProperty.all(
                         Size(MediaQuery.of(context).size.width - 50, 50)),
                     backgroundColor:
-                        MaterialStateProperty.all(Color(0xff39267e))),
+                        WidgetStateProperty.all(Color(0xff39267e))),
                 onPressed: onButtonPressed,
                 child: Text(S.of(context).confirm),
               ),

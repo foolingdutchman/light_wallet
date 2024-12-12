@@ -3,9 +3,7 @@ import 'dart:io';
 
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class FileUtil {
   static File getFileByPath(String path) {
@@ -43,6 +41,7 @@ class FileUtil {
     File file = File(_localPath + '/' + name + "." + filetype);
     bool isFileExist = await file.exists();
     if(isFileExist) return file;
+    return null;
 
   }
 

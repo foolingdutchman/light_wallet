@@ -12,7 +12,6 @@ import 'package:flutter_light_wallet/utils/image_util.dart';
 import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
 import 'package:flutter_light_wallet/utils/nft_canister.dart';
 import 'package:flutter_light_wallet/utils/time_util.dart';
-import 'package:flutter_light_wallet/view/nft/nft_page.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
@@ -314,11 +313,13 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
   }
 
   _selectImage(BuildContext context) async {
+    
     asset = await ImageUtil.pickImage(context);
     if (asset != null) {
       setState(() {});
       _getMintPrice();
     }
+    
   }
 
   _getMintPrice() async{
@@ -327,8 +328,8 @@ class _MakeNftPageState extends BaseNftPageState<MakeNftPage> {
       File? file =await asset!.file;
 
 
-      var size = await file!.length();
-      cost = await walletCanister!.getMintPrice(size);
+      var size = await file?.length();
+      cost = await walletCanister!.getMintPrice(size!);
       SmartDialog.dismiss();
       setState(() {
         price = getMintPriceString();

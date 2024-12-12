@@ -12,7 +12,7 @@ import 'package:flutter_light_wallet/view/nft/nft_data_store.dart';
 
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
-import 'password_page.dart';
+import 'password_page.dart';
 import 'app_page.dart';
 import 'import_wallet_page.dart';
 
@@ -134,7 +134,7 @@ class _HomePageState extends BasePageState<HomePage>
                           onPressed: onCreatePressed,
                           child: Text(S.of(context).create_wallet),
                           style: ButtonStyle(
-                            fixedSize: MaterialStateProperty.all(Size(
+                            fixedSize: WidgetStateProperty.all(Size(
                                 MediaQuery.of(context).size.width - 50, 50)),
                           ),
                         ),
@@ -145,7 +145,7 @@ class _HomePageState extends BasePageState<HomePage>
                           onPressed: onImportPressed,
                           child: Text(S.of(context).import_wallet),
                           style: ButtonStyle(
-                            fixedSize: MaterialStateProperty.all(Size(
+                            fixedSize: WidgetStateProperty.all(Size(
                                 MediaQuery.of(context).size.width - 50, 50)),
                           ),
                         ),

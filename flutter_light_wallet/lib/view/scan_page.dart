@@ -72,18 +72,18 @@ class _ScanPageState extends State<ScanPage> {
   }
 
   void _selectCodeImage(BuildContext context) async {
+
     AssetEntity? assetEntity = await ImageUtil.pickImage(context);
     if (assetEntity != null) {
       File? file = await assetEntity.file;
-      String path = file?.path ?? "";
+      String path = file!.path ?? "";
       if (path != "") {
         String? result = await Scan.parse(path);
-        if (result != null) {
-          setResult(context, result);
-        }
-        print("result is : $result");
+        setResult(context, result!);
+              print("result is : $result");
       }
     }
+
   }
 
   setResult(BuildContext context, String result) {

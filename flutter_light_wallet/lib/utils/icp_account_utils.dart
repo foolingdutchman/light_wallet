@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
@@ -16,7 +15,7 @@ import 'package:flutter_light_wallet/utils/time_util.dart';
 
 class ICPAccountUtils {
   static String generateBip39Mnemonic() {
-    String m = keysmith.genrateMnemonic();
+    String m = keysmith.generateMnemonic();
     print('Mnemonic is : ' + m);
     return m;
   }

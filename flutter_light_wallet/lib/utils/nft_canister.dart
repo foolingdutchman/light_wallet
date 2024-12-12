@@ -1,9 +1,6 @@
 import 'dart:core';
-import 'dart:core';
 import 'dart:typed_data';
 import 'package:agent_dart/agent_dart.dart';
-import 'package:agent_dart/candid/idl.dart';
-import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
 import 'package:flutter_light_wallet/view/nft/make_nft_page.dart';
 
 class WalletCanisterProperty {
@@ -784,6 +781,7 @@ class WalletCanister {
     } catch (e) {
       rethrow;
     }
+    return null;
   }
 
   Future<Invoice?> claimTransferInvoice(Principal principal) async {
@@ -805,6 +803,7 @@ class WalletCanister {
     } catch (e) {
       rethrow;
     }
+    return null;
   }
 
   Future<Invoice?> claimBurnInvoice(Principal principal) async {
@@ -826,6 +825,7 @@ class WalletCanister {
     } catch (e) {
       rethrow;
     }
+    return null;
   }
 
   Future<Invoice?> claimPurchaseInvoice(Order order) async {
@@ -883,6 +883,7 @@ class WalletCanister {
     } catch (e) {
       rethrow;
     }
+    return null;
   }
 
   Future<List<NftDataWithOrder>?> qureyNfts(int page) async {

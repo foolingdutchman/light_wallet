@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:extended_image/extended_image.dart';
@@ -64,13 +63,11 @@ class _NftMetaPageState extends BaseNftPageState<NftMetaPage> {
       Uint8List? bytes =
           await walletCanister!.getNftMeta(nftData!.principal.toString());
       SmartDialog.dismiss();
-      if (bytes != null) {
-        print("image downloaded ....");
-        image = await FileUtil.writeBytestoFile(
-            nftData!.principal.toString(), nftData!.mediaType, bytes);
-        setState(() {});
-      }
-    } else {
+      print("image downloaded ....");
+      image = await FileUtil.writeBytestoFile(
+          nftData!.principal.toString(), nftData!.mediaType, bytes!);
+      setState(() {});
+        } else {
       print(" image found ....");
       setState(() {});
     }
