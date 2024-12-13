@@ -32,7 +32,7 @@ class NftPage extends StatefulWidget {
 }
 
 class _NftPageState extends BaseNftPageState<NftPage> {
-  _NftPageState(String observerKey, this._principal, {this.nftData, this.order})
+  _NftPageState(String observerKey, this._principal, {this.nftData})
       : super(observerKey);
   NftData? nftData;
   Order? order;

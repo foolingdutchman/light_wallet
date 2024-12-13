@@ -43,6 +43,7 @@ class FileUtil {
     File file = File(_localPath + '/' + name + "." + filetype);
     bool isFileExist = await file.exists();
     if(isFileExist) return file;
+    return null;
 
   }
 

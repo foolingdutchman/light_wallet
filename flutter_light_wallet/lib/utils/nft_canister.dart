@@ -784,6 +784,7 @@ class WalletCanister {
     } catch (e) {
       rethrow;
     }
+    return null;
   }
 
   Future<Invoice?> claimTransferInvoice(Principal principal) async {
@@ -805,6 +806,7 @@ class WalletCanister {
     } catch (e) {
       rethrow;
     }
+    return null;
   }
 
   Future<Invoice?> claimBurnInvoice(Principal principal) async {
@@ -826,6 +828,7 @@ class WalletCanister {
     } catch (e) {
       rethrow;
     }
+    return null;
   }
 
   Future<Invoice?> claimPurchaseInvoice(Order order) async {
@@ -883,6 +886,7 @@ class WalletCanister {
     } catch (e) {
       rethrow;
     }
+    return null;
   }
 
   Future<List<NftDataWithOrder>?> qureyNfts(int page) async {

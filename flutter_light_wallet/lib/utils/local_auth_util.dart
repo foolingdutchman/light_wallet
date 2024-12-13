@@ -24,7 +24,7 @@ class LocalAuthUtil {
       for (int i = 0; i < availableBiometrics.length; i++) {
         print('availableBiometric is : ' + availableBiometrics[i].toString());
       }
-    } on PlatformException catch (e) {
+    } on PlatformException {
       availableBiometrics = <BiometricType>[];
       rethrow;
     }
@@ -49,7 +49,7 @@ class LocalAuthUtil {
         localizedReason: S.current.os_determine_auth,
         options: AuthenticationOptions(stickyAuth: true),
       );
-    } on PlatformException catch (e) {
+    } on PlatformException {
       rethrow;
     }
 

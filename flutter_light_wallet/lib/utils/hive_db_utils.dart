@@ -1,7 +1,6 @@
 import 'package:flutter_light_wallet/model/wallet.dart';
 import 'package:flutter_light_wallet/model/token.dart';
 
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 
