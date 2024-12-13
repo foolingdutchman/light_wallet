@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_nft_page_state.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';

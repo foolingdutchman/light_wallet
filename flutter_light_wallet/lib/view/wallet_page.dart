@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_page_state.dart';
 import 'package:flutter_light_wallet/base/slide_right_route.dart';
@@ -7,7 +6,6 @@ import 'package:flutter_light_wallet/model/wallet.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';
 import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
-import 'package:flutter_light_wallet/utils/rosetta_utils.dart';
 import 'package:flutter_light_wallet/utils/string_util.dart';
 import 'package:flutter_light_wallet/view/collect_page.dart';
 import 'package:flutter_light_wallet/view/transfer_page.dart';
