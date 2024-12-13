@@ -9,7 +9,6 @@ import 'package:flutter_light_wallet/view/wallet_page.dart';
 
 import 'me_page.dart';
 import 'record_page.dart';
-import 'transfer_page.dart';
 
 class AppPage extends StatefulWidget {
   const AppPage({Key? key, required this.title}) : super(key: key);

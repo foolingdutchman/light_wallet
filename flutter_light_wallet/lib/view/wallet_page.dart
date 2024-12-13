@@ -172,10 +172,10 @@ class _WalletPageState extends BasePageState<WalletPage> {
                               S.of(context).collect,
                             ),
                             style: ButtonStyle(
-                              fixedSize: MaterialStateProperty.all(
+                              fixedSize: WidgetStateProperty.all(
                                   Size.fromHeight(50)),
                               backgroundColor:
-                              MaterialStateProperty.all(Color(0xffe4542a)),
+                              WidgetStateProperty.all(Color(0xffe4542a)),
                             ),
                           ),
                         ),
@@ -190,10 +190,10 @@ class _WalletPageState extends BasePageState<WalletPage> {
                             },
                             child: Text(S.of(context).transfer),
                             style: ButtonStyle(
-                              fixedSize: MaterialStateProperty.all(
+                              fixedSize: WidgetStateProperty.all(
                                   Size.fromHeight(50)),
                               backgroundColor:
-                              MaterialStateProperty.all(Color(0xff39267e)),
+                              WidgetStateProperty.all(Color(0xff39267e)),
                             ),
                           ),
                         ),

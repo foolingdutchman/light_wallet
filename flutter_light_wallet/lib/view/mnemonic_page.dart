@@ -112,7 +112,7 @@ class _MnemonicPageState extends State<MnemonicPage> {
             ),
             ElevatedButton(
                 style: ButtonStyle(
-                  fixedSize: MaterialStateProperty.all(
+                  fixedSize: WidgetStateProperty.all(
                       Size(MediaQuery.of(context).size.width - 50, 50)),
                 ),
                 onPressed: () {
@@ -124,7 +124,7 @@ class _MnemonicPageState extends State<MnemonicPage> {
             ),
             ElevatedButton(
                 style: ButtonStyle(
-                  fixedSize: MaterialStateProperty.all(
+                  fixedSize: WidgetStateProperty.all(
                       Size(MediaQuery.of(context).size.width - 50, 50)),
                 ),
                 onPressed: () {

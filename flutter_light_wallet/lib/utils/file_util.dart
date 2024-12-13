@@ -3,9 +3,7 @@ import 'dart:io';
 
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class FileUtil {
   static File getFileByPath(String path) {

@@ -12,7 +12,6 @@ import 'package:flutter_light_wallet/utils/image_util.dart';
 import 'package:flutter_light_wallet/utils/icp_account_utils.dart';
 import 'package:flutter_light_wallet/utils/nft_canister.dart';
 import 'package:flutter_light_wallet/utils/time_util.dart';
-import 'package:flutter_light_wallet/view/nft/nft_page.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 

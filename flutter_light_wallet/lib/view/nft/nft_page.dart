@@ -197,7 +197,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                                     padding: const EdgeInsets.only(top: 15),
                                     child: ElevatedButton(
                                       style: ButtonStyle(
-                                          fixedSize: MaterialStateProperty.all(
+                                          fixedSize: WidgetStateProperty.all(
                                               Size(
                                                   MediaQuery.of(context)
                                                           .size
@@ -205,7 +205,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                                                       50,
                                                   50)),
                                           backgroundColor:
-                                              MaterialStateProperty.all(
+                                              WidgetStateProperty.all(
                                                   Color(0xff39267e))),
                                       onPressed: () {
                                         onTransferPressed(context);
@@ -217,7 +217,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                                     padding: const EdgeInsets.only(top: 15),
                                     child: ElevatedButton(
                                       style: ButtonStyle(
-                                          fixedSize: MaterialStateProperty.all(
+                                          fixedSize: WidgetStateProperty.all(
                                               Size(
                                                   MediaQuery.of(context)
                                                           .size
@@ -225,7 +225,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                                                       50,
                                                   50)),
                                           backgroundColor:
-                                              MaterialStateProperty.all(
+                                              WidgetStateProperty.all(
                                                   Color(0xfff3ab39))),
                                       onPressed: () {
                                         onBurnPressed(context);
@@ -288,8 +288,8 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                             : S.of(context).not_sell)),
                     style: ButtonStyle(
                       backgroundColor: !isOwnerView() && !isNftSell()
-                          ? MaterialStateProperty.all(Color(0x11000000))
-                          : MaterialStateProperty.all(Colors.blue),
+                          ? WidgetStateProperty.all(Color(0x11000000))
+                          : WidgetStateProperty.all(Colors.blue),
                     ),
                   ),
                 ],
@@ -345,7 +345,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                 },
                 child: Text(S.of(context).confirm),
                 style: ButtonStyle(
-                  fixedSize: MaterialStateProperty.all(
+                  fixedSize: WidgetStateProperty.all(
                       Size(MediaQuery.of(context).size.width - 50, 50)),
                 ),
               ),
@@ -381,7 +381,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
                 },
                 child: Text(S.of(context).change_price),
                 style: ButtonStyle(
-                  fixedSize: MaterialStateProperty.all(
+                  fixedSize: WidgetStateProperty.all(
                       Size(MediaQuery.of(context).size.width - 60, 50)),
                 ),
               ),
@@ -392,7 +392,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
               },
               child: Text(S.of(context).cancel_sell),
               style: ButtonStyle(
-                fixedSize: MaterialStateProperty.all(
+                fixedSize: WidgetStateProperty.all(
                     Size(MediaQuery.of(context).size.width - 60, 50)),
               ),
             )
@@ -442,7 +442,7 @@ class _NftPageState extends BaseNftPageState<NftPage> {
               },
               child: Text(S.of(context).confirm),
               style: ButtonStyle(
-                fixedSize: MaterialStateProperty.all(
+                fixedSize: WidgetStateProperty.all(
                     Size(MediaQuery.of(context).size.width - 60, 50)),
               ),
             )

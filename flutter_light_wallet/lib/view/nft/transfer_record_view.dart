@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_light_wallet/base/base_nft_page_state.dart';
-import 'package:flutter_light_wallet/base/slide_right_route.dart';
 import 'package:flutter_light_wallet/generated/l10n.dart';
 import 'package:flutter_light_wallet/utils/Instance_store.dart';
 import 'package:flutter_light_wallet/utils/event_bus_util.dart';

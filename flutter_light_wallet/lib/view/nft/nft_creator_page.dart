@@ -124,7 +124,7 @@ class _NftCreatorPageState extends BaseNftPageState<NftCreatorPage> {
                   )),
                 ),
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Color(0xfff3ab39)),
+                  backgroundColor: WidgetStateProperty.all(Color(0xfff3ab39)),
                 ),
               ),
             ),

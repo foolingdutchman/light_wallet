@@ -74,7 +74,7 @@ class _ImportWalletPageState extends BasePageState<ImportWalletPage> {
                 child: Center(
                   child: ElevatedButton(
                       style: ButtonStyle(
-                        fixedSize: MaterialStateProperty.all(
+                        fixedSize: WidgetStateProperty.all(
                             Size(MediaQuery.of(context).size.width - 50, 50)),
                       ),
                       child: Text(S.of(context).confirm_import_mnemonic),
